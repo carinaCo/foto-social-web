@@ -1,17 +1,21 @@
 import * as React from 'react';
 import {
-    AppBar, Avatar, CssBaseline, IconButton,
-    List, ListItemAvatar,
-    ListItemButton, ListItemText,
-    Paper, Toolbar,
-    Typography
+    AppBar, Box, CssBaseline
 } from "@mui/material";
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import BottomNavigationBar from "./bottomNavigationBar.tsx";
 import GroupChat from "./groupChat.tsx";
+import AppToolbar from "./AppToolbar.tsx";
 
-interface mainPageProperties {
-    name: string;
+const mainPageStyles = {
+    chatBackground: {
+        backgroundColor: '#1c1c1c', // dark background
+        borderRadius: 4,            // 16px rounded corners (theme.spacing(4))
+        padding: 3,                 // internal padding
+        margin: 2,                  // spacing around the box
+        maxWidth: '1000px',
+        height: '700px',
+        mx: 'auto',                 // center horizontally
+    }
 }
 
 
@@ -21,25 +25,11 @@ const MainPage: React.FC = () => {
         <>
             <CssBaseline enableColorScheme />
                     <AppBar>
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
-                                Groups
-                            </Typography>
-                                <div>
-                                    <IconButton
-                                        size="large"
-                                        aria-label="account of current user"
-                                        aria-controls="menu-appbar"
-                                        aria-haspopup="true"
-                                        color="inherit"
-                                    >
-                                        <LibraryAddIcon />
-                                    </IconButton>
-                                </div>
-                        </Toolbar>
+                        <AppToolbar/>
                     </AppBar>
-                <GroupChat/>
-            <BottomNavigationBar/>
+            <Box sx={mainPageStyles.chatBackground} >
+                <GroupChat />
+            </Box>
         </>
     )
 }
