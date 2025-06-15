@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import MainPage from "./MainPage/mainpage.tsx";
+import Login from "./Authentification/Login.tsx"
+import Registration from "./Authentification/Registration.tsx"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
 const darkTheme = createTheme({
