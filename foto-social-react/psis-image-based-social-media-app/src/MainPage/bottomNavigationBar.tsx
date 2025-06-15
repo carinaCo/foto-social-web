@@ -32,6 +32,9 @@ const BottomNavigationBar: React.FC = () => {
                     showLabels
                     value={value}
                     onChange={handleChange}
+                    sx={{
+                        bgcolor: '#1c1c1c'
+                    }}
                 >
                     <BottomNavigationAction label="Friends" icon={<ContactsIcon />} />
                     <BottomNavigationAction label="Groups" icon={<ChatIcon />} />

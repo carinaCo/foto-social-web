@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    Avatar,
+    Avatar, Box,
     Divider, InputAdornment,
     List,
     ListItem,
@@ -29,7 +29,8 @@ const GroupChat: React.FC = () => {
     const isPromptFieldDisabled = false;
 
     return (
-        <List sx={{ width: '100%', maxWidth: '1000px', height: '100%', maxHeight: 1000, bgcolor: '#1c1c1c' }}>
+        <Box sx={{ height: "100%", overflowY: "auto", pr: 1 }}>
+        <List sx={{ width: '100%', maxWidth: '1000px', height: '100%', maxHeight: 1000, bgcolor: '#1c1c1c'}}>
                 {groupElements.map((
                     element, index) =>
                     (
@@ -55,12 +56,14 @@ const GroupChat: React.FC = () => {
                             <ListItemText
                                 primary={element.groupName}
                                 secondary={
-                                <Stack direction="row" spacing={2}>
+                                <Stack direction="column" spacing={2}>
                                     <TextField id={'prompt-field-today' + element.id} label={'Heute'} variant="outlined" size="small" slotProps=
                                         {{
                                             input: {
-                                                disabled: isPromptFieldDisabled,
+                                                readOnly: true,
+                                                disabled: true,
                                             }}}
+                                               value={element.promptToday}
 
                                     />
                                     <TextField id={'prompt-field-tomorrow' + element.id} label={'Morgen'} variant="outlined" size="small" slotProps=
@@ -85,6 +88,7 @@ const GroupChat: React.FC = () => {
                     ))
                 }
         </List>
+        </Box>
     );
 };
 
