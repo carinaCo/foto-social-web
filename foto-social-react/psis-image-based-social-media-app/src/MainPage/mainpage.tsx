@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import GroupChat from "./groupChat.tsx";
 import AppToolbar from "./AppToolbar.tsx";
+import NewGroupDrawer from "./newGroupDrawer.tsx";
 
 const mainPageStyles = {
     chatBackground: {
@@ -20,16 +21,22 @@ const mainPageStyles = {
 
 
 const MainPage: React.FC = () => {
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const toggleDrawer = (open: boolean) => () => {
+        setDrawerOpen(open);
+    };
 
     return (
         <>
             <CssBaseline enableColorScheme />
                     <AppBar>
-                        <AppToolbar/>
+                        <AppToolbar onAddGroupClick={toggleDrawer(true)}/>
                     </AppBar>
             <Box sx={mainPageStyles.chatBackground} >
                 <GroupChat />
             </Box>
+
+            <NewGroupDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
     )
 }
