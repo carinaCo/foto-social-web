@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import {Route, Routes } from 'react-router-dom';
 import './App.css'
 import MainPage from "./MainPage/mainpage.tsx";
-import Login from "./Authentification/Login.tsx"
-import Registration from "./Authentification/Registration.tsx"
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {createTheme, ThemeProvider} from "@mui/material";
+import BottomNavigationBar from "./MainPage/bottomNavigationBar.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -11,15 +10,18 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
-  const [count, setCount] = useState<number>(0)
-
+const App = () => {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <MainPage name={'photoMerger'}></MainPage>
-      </ThemeProvider>
+        <Routes>
+            <Route path="/groups" element={<MainPage />} />
+            {/* TODO: Hier dann die friends bzw. settings page auskommentieren */}
+            {/*<Route path="/friends" element={<FriendsPage />} />*/}
+            {/*<Route path="/settings" element={<SettingsPage />} />*/}
+        </Routes>
+        <BottomNavigationBar />
+    </ThemeProvider>
     </>
   )
 }
