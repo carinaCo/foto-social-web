@@ -1,12 +1,14 @@
-import {BottomNavigation, BottomNavigationAction, Box, Paper} from "@mui/material";
+import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import React from "react";
 import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import {useLocation, useNavigate} from "react-router-dom";
+import PublicIcon from '@mui/icons-material/Public';
 
 const routeIndexMap = [
     "/friends",   // index 0
+    "/global",   // index 0
     "/groups",    // index 1
     "/settings"   // index 2
 ];
@@ -37,6 +39,7 @@ const BottomNavigationBar: React.FC = () => {
                     }}
                 >
                     <BottomNavigationAction label="Friends" icon={<ContactsIcon />} />
+                    <BottomNavigationAction label="Global" icon={<PublicIcon />} />
                     <BottomNavigationAction label="Groups" icon={<ChatIcon />} />
                     <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
                 </BottomNavigation>
