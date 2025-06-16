@@ -4,6 +4,8 @@ import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ContactsIcon from '@mui/icons-material/Contacts';
 
+
+
 const BottomNavigationBar: React.FC = () => {
     const [value, setValue] = React.useState(0);
 
