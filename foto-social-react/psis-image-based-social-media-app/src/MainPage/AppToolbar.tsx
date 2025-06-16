@@ -3,7 +3,11 @@ import {Toolbar, Typography, IconButton, Avatar, Box,} from '@mui/material';
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {pink} from "@mui/material/colors";
 
-const AppToolbar: React.FC = () => {
+interface AppToolbarProps {
+    onAddGroupClick: () => void;
+}
+
+const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
     return (
         <Toolbar>
             <IconButton
@@ -25,6 +29,7 @@ const AppToolbar: React.FC = () => {
                 edge="end"
                 aria-label="library-add-icon"
                 color="inherit"
+                onClick={onAddGroupClick}
             >
                 <LibraryAddIcon />
             </IconButton>
