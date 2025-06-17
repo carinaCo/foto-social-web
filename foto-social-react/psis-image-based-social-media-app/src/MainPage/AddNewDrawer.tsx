@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import {
     Drawer, Box, Typography, IconButton,
-    ButtonBase, Divider
+    ButtonBase, Divider, TextField
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -10,7 +10,86 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { Slide } from "@mui/material";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 
+const styles = {
+    drawerPaper: {
+        height: '95vh',
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+        bgcolor: 'rgba(28, 28, 28, 0)',
+        backdropFilter: 'blur(12px)',
+        color: '#fff',
+        px: 3,
+        py: 2
+    },
+    continueButton: {
+        position: 'absolute',
+        top: 12,
+        right: 8,
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.75,
+        px: 1,
+        py: 0.5,
+        borderRadius: 1,
+        fontWeight: 500,
+        fontSize: '0.95rem'
+    },
+    newGroupButton: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        px: 2,
+        py: 1.5,
+        borderRadius: 1,
+        '&:hover': {
+            backgroundColor: 'action.hover',
+        }
+    },
+    newContactButton: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        px: 2,
+        py: 1.5,
+        borderRadius: 1,
+        '&:hover': {
+            backgroundColor: 'action.hover',
+        }
+    },
+    contactSummary: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        py: 1,
+        px: 2,
+        borderRadius: 2,
+        backgroundColor: 'rgba(255, 255, 255, 0.04)',
+        mb: 1,
+    },
+    addGroupButton: {
+        mt: 4,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        mx: 'auto',
+        px: 4,
+        py: 1.6,
+        borderRadius: '12px',
+        fontSize: '1rem',
+        textTransform: 'none',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        transition: 'all 0.2s ease-in-out',
+    }
+};
 
 interface AddNewDrawerProps {
     open: boolean;
@@ -18,15 +97,33 @@ interface AddNewDrawerProps {
 }
 
 const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
-    const [view, setView] = useState<'main' | 'groupAdd'>('main');
+    const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate'>('main');
     const [selectedContacts, setSelectedContacts] = useState<number[]>([]);
-    const [wasInGroupAdd, setWasInGroupAdd] = useState(false);
+    const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
+    const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
+    const [groupName, setGroupName] = useState<string>('');
 
     const handleClose = () => {
         setView('main'); // reset view on close
         setWasInGroupAdd(false); // auch resetten beim schliessen
+        setWasInGroupCreate(false);
+        setSelectedContacts([]);
         onClose();
     };
+
+    const handleBackClick = () => {
+        if (view === 'main') {
+            handleClose();
+        }
+        else if (view === 'groupAdd') {
+            setWasInGroupCreate(false);
+            setSelectedContacts([]);
+            setView('main');
+        }
+        else {
+            setView('groupAdd');
+        }
+    }
 
     const handleToggleContact = (id: number) => {
         setSelectedContacts((prev) =>
@@ -36,14 +133,28 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         );
     };
 
-    const hardCodedContacts =
-        [
-            {id: 1, firstName: 'Peter', lastName: 'Mayer' },
-            {id: 2, firstName: 'Anna', lastName: 'Ulrich' },
-            {id: 3, firstName: 'Mister', lastName: 'Bro' },
-            {id: 4, firstName: 'Frederik', lastName: 'Frikadelle' },
-            {id: 5, firstName: 'So-ein', lastName: 'Dude' },
-        ];
+    const isEmptyStringOrOnlySpaces = (passedString: string) => {
+        return passedString.trim() === ''
+    }
+
+    const hardCodedContacts = [
+        { id: 1, firstName: 'Peter', lastName: 'Mayer' },
+        { id: 2, firstName: 'Anna', lastName: 'Ulrich' },
+        { id: 3, firstName: 'Mister', lastName: 'Bro' },
+        { id: 4, firstName: 'Frederik', lastName: 'Frikadelle' },
+        { id: 5, firstName: 'So-ein', lastName: 'Dude' },
+        { id: 6, firstName: 'Bruno', lastName: 'Bananenbrot' },
+        { id: 7, firstName: 'Lotta', lastName: 'Lachsfilet' },
+        { id: 8, firstName: 'Horst', lastName: 'Hüpfburg' },
+        { id: 9, firstName: 'Gisela', lastName: 'Glitzerstaub' },
+        { id: 10, firstName: 'Kevin', lastName: 'Kaktus' },
+        { id: 11, firstName: 'Chantal', lastName: 'Champignon' },
+        { id: 12, firstName: 'Uwe', lastName: 'Unwetter' },
+        { id: 13, firstName: 'Susi', lastName: 'Sonnenbrand' },
+        { id: 14, firstName: 'Heinz', lastName: 'Hörnchen' },
+        { id: 15, firstName: 'Berta', lastName: 'Besenstiel' },
+    ];
+
 
     return (
         <Drawer
@@ -52,22 +163,13 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             onClose={handleClose}
             slotProps={{
                 paper: {
-                    sx: {
-                        height: '95vh',
-                        borderTopLeftRadius: 16,
-                        borderTopRightRadius: 16,
-                        bgcolor: 'rgba(28, 28, 28, 0)',
-                        backdropFilter: 'blur(12px)',
-                        color: '#fff',
-                        px: 3,
-                        py: 2,
-                    }
+                    sx: styles.drawerPaper
                 }
             }}
         >
             <Box sx={{ position: 'relative', height: '100%' }}>
                 <IconButton
-                    onClick={view === 'main' ? handleClose : () => setView('main')}
+                    onClick={() => {handleBackClick()}}
                     sx={{
                         position: 'absolute',
                         top: 8,
@@ -77,10 +179,37 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                 >
                     {view === 'main' ? <CloseIcon /> : <ArrowBackIcon />}
                 </IconButton>
+                {view === 'groupAdd' && (
+                    <ButtonBase
+                        onClick={() => {
+                            console.log("Selected IDs:", selectedContacts);
+                            setWasInGroupCreate(true);
+                            setView('groupCreate');
+                        }}
+                        disabled={selectedContacts.length === 0}
+                        sx={{
+                            ...styles.continueButton,
+                            color: selectedContacts.length === 0
+                                ? 'rgba(255, 255, 255, 0.4)'
+                                : '#ffffff',
+                            textTransform: 'none',
+                            '&:hover': {
+                                color: selectedContacts.length === 0
+                                    ? 'rgba(255, 255, 255, 0.4)'
+                                    : '#dbeafe'
+                            }
+                        }}
+                    >
+                        <Typography variant="body1" component={'span'}>
+                            Continue
+                        </Typography>
+                        <ArrowForwardIcon />
+                    </ButtonBase>
+                )}
 
                 {view === 'main' && (
                     <Slide direction="right" in={view === 'main'} appear={wasInGroupAdd} mountOnEnter unmountOnExit>
-                    <Box sx={{ pt: 6 }}>
+                    <Box sx={{ pt: 8 }}>
                         <Typography variant="h5" align="center">New Groups</Typography>
                         <Typography variant="body1" align="center" sx={{ pt: 3 }}>
                             Create a new group or add new contacts!
@@ -93,18 +222,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                     setWasInGroupAdd(true);
                                     setView('groupAdd');
                                 }}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-start',
-                                    width: '100%',
-                                    px: 2,
-                                    py: 1.5,
-                                    borderRadius: 1,
-                                    '&:hover': {
-                                        backgroundColor: 'action.hover',
-                                    }
-                                }}
+                                sx={styles.newGroupButton}
                             >
                                 <GroupAddIcon fontSize="large" />
                                 <Typography variant="h6" sx={{ ml: 5 }}>
@@ -116,18 +234,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
                             <ButtonBase
                                 onClick={() => { console.log('Add contact') }}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-start',
-                                    width: '100%',
-                                    px: 2,
-                                    py: 1.5,
-                                    borderRadius: 1,
-                                    '&:hover': {
-                                        backgroundColor: 'action.hover',
-                                    }
-                                }}
+                                sx={styles.newContactButton}
                             >
                                 <PersonAddIcon fontSize="large" />
                                 <Typography variant="h6" sx={{ ml: 5 }}>
@@ -140,22 +247,31 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                 )}
 
                 {view === 'groupAdd' && (
-                    <Slide direction="left" in={view === 'groupAdd'} mountOnEnter unmountOnExit>
-                    <Box sx={{ pt: 6 }}>
+                    <Slide direction={wasInGroupAddCreate ? 'right' : 'left'} in={view === 'groupAdd'} mountOnEnter unmountOnExit>
+                    <Box sx={{ pt: 8 }}>
                         <Typography variant="h5" align="center">Members</Typography>
                         <Typography variant="body1" align="center" sx={{ pt: 3, pb: 4 }}>
                             Select group members!
                         </Typography>
 
+                        <Box
+                            sx={{
+                                maxHeight: '71vh', // Höhe anpassen je nach Bedarf
+                                overflowY: 'auto',
+                                mr: -1, // optional: negiert Scrollbar-Breite
+                            }}
+                        >
                         {hardCodedContacts.map((contact) => (
                             <FormControlLabel
                                 key={contact.id}
                                 control={
-                                    <Checkbox
-                                        checked={selectedContacts.includes(contact.id)}
-                                        onChange={() => handleToggleContact(contact.id)}
-                                        sx={{ color: 'white', py: 2 }}
-                                    />
+                                        <Checkbox
+                                            checked={selectedContacts.includes(contact.id)}
+                                            onChange={() => handleToggleContact(contact.id)}
+                                            icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
+                                            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#3B82F6' }} />}
+                                            sx={{ color: 'white', py: 2 }}
+                                        />
                                 }
                                 label={`${contact.firstName} ${contact.lastName}`}
                                 sx={{
@@ -169,24 +285,117 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 }}
                             />
                         ))}
-                        <ButtonBase
-                            onClick={() => console.log("Selected IDs:", selectedContacts)}
-                            sx={{
-                                mt: 3,
-                                display: 'block',
-                                mx: 'auto',
-                                px: 3,
-                                py: 1.5,
-                                borderRadius: 2,
-                                bgcolor: 'primary.main',
-                                color: '#fff',
-                                '&:hover': {
-                                    bgcolor: 'primary.dark',
-                                }
-                            }}
-                        >
-                            Create Group
-                        </ButtonBase>
+                        </Box>
+                    </Box>
+                    </Slide>
+                )}
+
+                {view === 'groupCreate' && (
+                    <Slide direction="left" in={view === 'groupCreate'} mountOnEnter unmountOnExit>
+                    <Box sx={{ pt: 8 }}>
+                        <Typography variant="h5" align="center">New Group</Typography>
+                        <Box sx={{ px: 2, pb: 2, pt: 2 }}>
+                            <TextField
+                                variant="outlined"
+                                fullWidth
+                                placeholder="Group name"
+                                value={groupName}
+                                onChange={(e) => setGroupName(e.target.value)}
+                                InputProps={{
+                                    sx: {
+                                        bgcolor: 'rgba(255, 255, 255, 0.04)',
+                                        borderRadius: 2,
+                                        color: 'white',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#3B82F6',
+                                        },
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#3B82F6',
+                                        },
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                    },
+                                }}
+                            />
+                        </Box>
+
+                        <Box sx={{ mt: 4, px: 2 }}>
+                            {selectedContacts.slice(0,6).map((id) => {
+                                    const contact = hardCodedContacts.find(c => c.id === id);
+                                    if (!contact) return null;
+
+                                    return (
+                                        <Box
+                                            key={contact.id}
+                                            sx={styles.contactSummary}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    width: 32,
+                                                    height: 32,
+                                                    borderRadius: '50%',
+                                                    bgcolor: '#3B82F6',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: 500,
+                                                }}
+                                            >
+                                                {contact.firstName[0]}
+                                            </Box>
+                                            <Typography>
+                                                {contact.firstName} {contact.lastName}
+                                            </Typography>
+                                        </Box>
+                                    );
+                                })
+                            }
+                            {selectedContacts.length > 6 && (
+                                <Typography
+                                    sx={{
+                                        mt: 1,
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        fontStyle: 'italic',
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    + {selectedContacts.length - 6} more
+                                </Typography>
+                            )}
+                            <ButtonBase
+                                onClick={() => {
+                                    console.log("Gruppe erstellt mit: " + selectedContacts + " und Name: ", groupName);
+                                    // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
+                                }}
+                                disabled={isEmptyStringOrOnlySpaces(groupName)}
+                                sx={{...styles.addGroupButton,
+                                    bgcolor: isEmptyStringOrOnlySpaces(groupName)
+                                        ? 'rgba(255, 255, 255, 0.05)'
+                                        : 'rgba(59, 130, 246, 0.75)', // Glassy blue
+                                    color: isEmptyStringOrOnlySpaces(groupName)
+                                        ? 'rgba(255, 255, 255, 0.4)'
+                                        : '#ffffff',
+                                    boxShadow: isEmptyStringOrOnlySpaces(groupName)
+                                        ? 'none'
+                                        : '0 4px 12px rgba(59, 130, 246, 0.2)',
+                                    '&:hover': {
+                                        bgcolor: isEmptyStringOrOnlySpaces(groupName)
+                                            ? 'rgba(255, 255, 255, 0.05)'
+                                            : 'rgba(59, 130, 246, 0.25)',
+                                    },
+                                }}
+                            >
+                                Add Group
+                            </ButtonBase>
+
+                        </Box>
                     </Box>
                     </Slide>
                 )}

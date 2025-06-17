@@ -25,7 +25,6 @@ const GroupChat: React.FC = () => {
             {id: 5, groupName: 'Die fünfte Gruppe', promptToday: 'Dies Das', promptTomorrow: 'Ananas' },
         ];
 
-    // TODO: 'Heute' field sollte disabled sein, wenn der Prompt festgelegt ist
     const isPromptFieldDisabled = false;
 
     return (
@@ -81,9 +80,6 @@ const GroupChat: React.FC = () => {
                                 slotProps={{secondary: {component: 'div'}}}
                             />
                         </ListItem>
-                            {/*{index < groupElements.length - 1 && (*/}
-                            {/*    <Divider variant="inset" component="li" sx={{paddingBottom: '15px'}}/>*/}
-                            {/*)}*/}
                     </React.Fragment>
                     ))
                 }
