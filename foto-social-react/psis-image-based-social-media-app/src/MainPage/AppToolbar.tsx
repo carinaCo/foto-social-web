@@ -20,7 +20,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
                 <Avatar sx={{ bgcolor: pink[500] }}/>
             </IconButton>
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                <Typography variant="h6" component="div">
+                <Typography variant="h5" component="div">
                     Groups
                 </Typography>
             </Box>
