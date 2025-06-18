@@ -97,17 +97,27 @@ interface AddNewDrawerProps {
 }
 
 const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
-    const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate'>('main');
+    const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate' | 'contactAdd'>('main');
     const [selectedContacts, setSelectedContacts] = useState<number[]>([]);
     const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
     const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
+    const [wasInContactAdd, setWasInContactAdd] = useState<boolean>(false);
     const [groupName, setGroupName] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [userId, setUserId] = useState<string>('');
+
 
     const handleClose = () => {
         setView('main'); // reset view on close
         setWasInGroupAdd(false); // auch resetten beim schliessen
+        setWasInContactAdd(false);
         setWasInGroupCreate(false);
         setSelectedContacts([]);
+        setGroupName('');
+        setFirstName('');
+        setLastName('');
+        setUserId('');
         onClose();
     };
 
@@ -120,8 +130,15 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             setSelectedContacts([]);
             setView('main');
         }
+        else if (view === 'contactAdd') {
+            setFirstName('');
+            setLastName('');
+            setUserId('');
+            setView('main');
+        }
         else {
             setView('groupAdd');
+            setGroupName('');
         }
     }
 
@@ -136,6 +153,12 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const isEmptyStringOrOnlySpaces = (passedString: string) => {
         return passedString.trim() === ''
     }
+
+    const isContactAddFormInvalid = [
+        firstName,
+        lastName,
+        userId
+    ].some(isEmptyStringOrOnlySpaces);
 
     const hardCodedContacts = [
         { id: 1, firstName: 'Peter', lastName: 'Mayer' },
@@ -208,7 +231,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                 )}
 
                 {view === 'main' && (
-                    <Slide direction="right" in={view === 'main'} appear={wasInGroupAdd} mountOnEnter unmountOnExit>
+                    <Slide direction={wasInGroupAdd || wasInContactAdd ? 'right' : 'down'} in={view === 'main'} appear={wasInGroupAdd || wasInContactAdd} mountOnEnter unmountOnExit>
                     <Box sx={{ pt: 8 }}>
                         <Typography variant="h5" align="center">New Groups</Typography>
                         <Typography variant="body1" align="center" sx={{ pt: 3 }}>
@@ -233,7 +256,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             <Divider sx={{ my: 2 }} />
 
                             <ButtonBase
-                                onClick={() => { console.log('Add contact') }}
+                                onClick={() =>{
+                                    setWasInContactAdd(true);
+                                    setView('contactAdd')
+                                }}
                                 sx={styles.newContactButton}
                             >
                                 <PersonAddIcon fontSize="large" />
@@ -394,9 +420,130 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             >
                                 Add Group
                             </ButtonBase>
-
                         </Box>
                     </Box>
+                    </Slide>
+                )}
+                {view === 'contactAdd' && (
+                    <Slide direction={'left'} in={view === 'contactAdd'} mountOnEnter unmountOnExit>
+                        <Box sx={{ pt: 8 }}>
+                            <Typography variant="h5" align="center">New Contact</Typography>
+                            <Box sx={{ px: 2, pb: 1, pt: 4 }}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    placeholder="First name"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    InputProps={{
+                                        sx: {
+                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
+                                            borderRadius: 2,
+                                            color: 'white',
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                            },
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                        },
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ px: 2, pb: 2, pt: 0 }}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    placeholder="Last name"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    InputProps={{
+                                        sx: {
+                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
+                                            borderRadius: 2,
+                                            color: 'white',
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                            },
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                        },
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ px: 2, pb: 2, pt: 4 }}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    placeholder="User id"
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value)}
+                                    InputProps={{
+                                        sx: {
+                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
+                                            borderRadius: 2,
+                                            color: 'white',
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                            },
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#3B82F6',
+                                            },
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                        },
+                                    }}
+                                />
+                            </Box>
+                            <ButtonBase
+                                onClick={() => {
+                                    console.log("Added " + firstName + ' ' + lastName + ' with the userId ' + userId + ' to your contacts!');
+                                    // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
+                                }}
+                                disabled={isContactAddFormInvalid}
+                                sx={{...styles.addGroupButton,
+                                    bgcolor: isContactAddFormInvalid
+                                        ? 'rgba(255, 255, 255, 0.05)'
+                                        : 'rgba(59, 130, 246, 0.75)', // Glassy blue
+                                    color: isContactAddFormInvalid
+                                        ? 'rgba(255, 255, 255, 0.4)'
+                                        : '#ffffff',
+                                    boxShadow: isContactAddFormInvalid
+                                        ? 'none'
+                                        : '0 4px 12px rgba(59, 130, 246, 0.2)',
+                                    '&:hover': {
+                                        bgcolor: isContactAddFormInvalid
+                                            ? 'rgba(255, 255, 255, 0.05)'
+                                            : 'rgba(59, 130, 246, 0.25)',
+                                    },
+                                }}
+                            >
+                                Add Contact
+                            </ButtonBase>
+                        </Box>
                     </Slide>
                 )}
             </Box>
