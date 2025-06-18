@@ -36,44 +36,38 @@ const Register = () => {
                     </Avatar>
                     <Typography variant="h5">Register</Typography>
                     <Box sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="name"
-                                    required
-                                    fullWidth
-                                    id="name"
-                                    label="Name"
-                                    autoFocus
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </Grid>
-                        </Grid>
+                        <TextField
+                            name="name"
+                            required
+                            fullWidth
+                            sx={{ mt: 1, mb: 1 }}
+                            id="name"
+                            label="Name"
+                            autoFocus
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            fullWidth
+                            sx={{ mt: 1, mb: 1 }}
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            fullWidth
+                            sx={{ mt: 1, mb: 1 }}
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                         <Button
                             fullWidth
                             variant="contained"
