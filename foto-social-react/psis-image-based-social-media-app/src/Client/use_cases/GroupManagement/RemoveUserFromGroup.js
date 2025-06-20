@@ -1,0 +1,1 @@
+//TODO: Removes a user from a group. Expects its user-ID as well as the group-ID
