@@ -28,6 +28,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
                 return 'Groups';
             case '/global':
                 return 'Global';
+            case '/friends':
+                return 'Friends';
             case '/settings':
                 return 'Settings';
             default:
@@ -66,7 +68,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
                         aria-label="library-add-icon"
                         color="inherit"
                         onClick={onAddGroupClick}
-                        sx={{visibility: location.pathname === '/groups' ? 'visible' : 'hidden'}}
+                        sx={{visibility: location.pathname === '/groups' || location.pathname === '/friends' ? 'visible' : 'hidden'}}
                     >
                         <LibraryAddIcon/>
                     </IconButton>
