@@ -7,6 +7,7 @@ import Login from "./Authentification/Login.tsx"
 import Register from "./Authentification/Register.tsx"
 import GlobalPromptPage from "./GlobalPromptPage/GlobalPromptPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
+import FriendsPage from "./FriendsPage/friendsPage.tsx";
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -38,7 +39,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/settings" element={<SettingsPage />} />
             {/* TODO: Hier dann die friends bzw. settings page auskommentieren */}
-            {/*<Route path="/friends" element={<FriendsPage />} />*/}
+            <Route path="/friends" element={<FriendsPage />} />
             {/*<Route path="/settings" element={<SettingsPage />} />*/}
         </Routes>
           {isNavBarVisible() ? (
