@@ -3,8 +3,8 @@ import {
     AppBar, Box, CssBaseline
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
-import AppToolbar from "./AppToolbar.tsx";
-import AddNewFriend from "./AddNewFriend.tsx";
+import AppToolbar from "../MainPage/AppToolbar.tsx";
+import AddNewDrawer from "./AddNewFriend.tsx";
 
 const mainPageStyles = {
     friendsBackground: {
@@ -20,7 +20,7 @@ const mainPageStyles = {
 }
 
 
-const MainPage: React.FC = () => {
+const FriendsPage: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
@@ -34,7 +34,7 @@ const MainPage: React.FC = () => {
                     </AppBar>
             {/*<Box sx={mainPageStyles.chatBackground} >*/}
             {/*</Box>*/}
-            <GroupChat />
+            <FriendBox />
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>

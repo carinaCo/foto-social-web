@@ -557,4 +557,4 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     );
 };
 
-export default AddNewFriend;
+export default AddNewDrawer;
