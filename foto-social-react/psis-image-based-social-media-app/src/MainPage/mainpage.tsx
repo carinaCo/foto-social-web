@@ -8,13 +8,13 @@ import AddNewDrawer from "./AddNewDrawer.tsx";
 
 const mainPageStyles = {
     chatBackground: {
-        backgroundColor: '#1c1c1c', // dark background
+        background: 'linear-gradient(145deg, #1E1F2F, #2C2E4A, #3B3E5C)',
         borderRadius: 4,            // 16px rounded corners (theme.spacing(4))
-        paddingLeft: 3,
+        paddingLeft: 2,
         paddingRight: 2, // internal padding
         margin: 2,                  // spacing around the box
-        maxWidth: '1000px',
-        height: '780px',
+        maxWidth: '100vw',
+        height: '85vh',
         mx: 'auto',                 // center horizontally
     }
 }
@@ -32,9 +32,9 @@ const MainPage: React.FC = () => {
                     <AppBar>
                         <AppToolbar onAddGroupClick={toggleDrawer(true)}/>
                     </AppBar>
-            <Box sx={mainPageStyles.chatBackground} >
-                <GroupChat />
-            </Box>
+            {/*<Box sx={mainPageStyles.chatBackground} >*/}
+            {/*</Box>*/}
+            <GroupChat />
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
