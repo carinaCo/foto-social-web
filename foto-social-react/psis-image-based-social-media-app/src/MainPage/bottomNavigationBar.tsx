@@ -29,13 +29,25 @@ const BottomNavigationBar: React.FC = () => {
     };
 
     return (
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={10}>
+            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, width: '100vw'}} elevation={10}>
                 <BottomNavigation
                     showLabels
                     value={value}
                     onChange={handleChange}
                     sx={{
-                        bgcolor: '#1c1c1c'
+                        background: '#3B3E5C',
+                        boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
+                        filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
+                        backdropFilter: 'blur(10px) saturate(180%)',
+                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                        '& .Mui-selected': {
+                            color: '#6C63FF', // selected color
+                            filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))'
+                        },
+                        '& .MuiBottomNavigationAction-root.Mui-selected .MuiSvgIcon-root': {
+                            color: '#6C63FF', // icon color
+                            filter: 'drop-shadow(0 0 3px rgba(108, 100, 225, 0.4))',
+                        },
                     }}
                 >
                     <BottomNavigationAction label="Friends" icon={<ContactsIcon />} />

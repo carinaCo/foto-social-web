@@ -32,20 +32,28 @@ const GroupChat: React.FC = () => {
     const isPromptFieldDisabled = false;
 
     return (
-        <Box sx={{ height: "100%", overflowY: "auto", pr: 1 }}>
-        <List sx={{ width: '100%', maxWidth: '1000px', height: '100%', maxHeight: 1000, bgcolor: '#1c1c1c'}}>
+        <Box sx={{ height: "100%", overflowY: "auto",
+            scrollbarWidth: "none", // Firefox
+            "&::-webkit-scrollbar": {
+                display: "none", // Chrome/Safari
+            }
+        }}>
+        <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
                 {groupElements.map((
                     element, index) =>
                     (
                         <React.Fragment key={element.id || index}>
-                        <ListItem 
+
+                       
                             
-                            // onClick={() => navigate(`/chat/${element.id}`)}
-                            // component={RouterLink}
-                            // to={ `/chat/${element.id}`}
-                            alignItems="center" key={index} sx={{
+
+                        <ListItem alignItems="center" key={index} sx={{
                             cursor: "pointer",
-                            background: 'linear-gradient(135deg, #1a1a1a, #292929, #1f3b4d)',
+                            // background: 'linear-gradient(135deg, #1a1a1a, #292929, #1f3b4d)',
+                            background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
+                            backdropFilter: 'blur(10px) saturate(180%)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+
                             borderRadius: 3,
                             marginBottom: 3,
                             px: 2,   // Innenabstand x
