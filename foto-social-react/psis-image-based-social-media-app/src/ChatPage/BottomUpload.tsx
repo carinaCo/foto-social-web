@@ -97,6 +97,7 @@ const BottomBeforeUpload: React.FC = () => {
               <Typography variant="subtitle2">Gallery</Typography>
             </Box>
           </Stack>
+          
 
           {/* Cancel 按钮 */}
           <Box

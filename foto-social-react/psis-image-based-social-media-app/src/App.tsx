@@ -19,20 +19,16 @@ const App = () => {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-     <div className="App">
-      <ChatPage />
-     </div>
-
-        {/* <Routes>
+        <Routes>
             <Route path="/groups" element={<MainPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/chat/:id" element={<ChatPage />} />
             {/* TODO: Hier dann die friends bzw. settings page auskommentieren */}
             {/*<Route path="/friends" element={<FriendsPage />} />*/}
             {/*<Route path="/settings" element={<SettingsPage />} />*/}
-        {/* </Routes>
-        // <BottomNavigationBar /> */} 
+        </Routes>
+        <BottomNavigationBar />
     </ThemeProvider>
     </>
   )
