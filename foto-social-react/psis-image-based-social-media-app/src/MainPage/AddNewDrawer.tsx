@@ -19,7 +19,8 @@ const styles = {
         height: '95vh',
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
-        bgcolor: 'rgba(28, 28, 28, 0)',
+        bgcolor: 'rgba(110, 80, 150, 0.08)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(12px)',
         color: '#fff',
         px: 3,
@@ -85,7 +86,6 @@ const styles = {
         fontSize: '1rem',
         textTransform: 'none',
         backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
         border: '1px solid rgba(255, 255, 255, 0.12)',
         transition: 'all 0.2s ease-in-out',
     }
@@ -282,7 +282,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
                         <Box
                             sx={{
-                                maxHeight: '71vh', // Höhe anpassen je nach Bedarf
+                                maxHeight: '71vh',
                                 overflowY: 'auto',
                                 mr: -1, // optional: negiert Scrollbar-Breite
                             }}
@@ -295,7 +295,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                             checked={selectedContacts.includes(contact.id)}
                                             onChange={() => handleToggleContact(contact.id)}
                                             icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
-                                            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#3B82F6' }} />}
+                                            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#5A54D1', filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))' }} />}
                                             sx={{ color: 'white', py: 2 }}
                                         />
                                 }
@@ -333,19 +333,23 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                         borderRadius: 2,
                                         color: 'white',
                                         '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                                            borderColor: '#5A54D1',
                                         },
                                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#3B82F6',
+                                            borderColor: '#5A54D1',
                                         },
                                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#3B82F6',
+                                            borderColor: '#5A54D1',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#5A54D1', // fokus border
                                         },
                                     },
                                 }}
                                 InputLabelProps={{
                                     sx: {
                                         color: 'rgba(255, 255, 255, 0.6)',
+                                        borderColor: 'rgba(108, 100, 225, 0.4)'
                                     },
                                 }}
                             />
@@ -398,23 +402,24 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             <ButtonBase
                                 onClick={() => {
                                     console.log("Gruppe erstellt mit: " + selectedContacts + " und Name: ", groupName);
+                                    handleClose();
                                     // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
                                 }}
                                 disabled={isEmptyStringOrOnlySpaces(groupName)}
                                 sx={{...styles.addGroupButton,
                                     bgcolor: isEmptyStringOrOnlySpaces(groupName)
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(59, 130, 246, 0.75)', // Glassy blue
+                                        : '#5A54D1', // glassy violet
                                     color: isEmptyStringOrOnlySpaces(groupName)
                                         ? 'rgba(255, 255, 255, 0.4)'
                                         : '#ffffff',
                                     boxShadow: isEmptyStringOrOnlySpaces(groupName)
                                         ? 'none'
-                                        : '0 4px 12px rgba(59, 130, 246, 0.2)',
+                                        : '0 4px 12px #6C64E1',
                                     '&:hover': {
                                         bgcolor: isEmptyStringOrOnlySpaces(groupName)
                                             ? 'rgba(255, 255, 255, 0.05)'
-                                            : 'rgba(59, 130, 246, 0.25)',
+                                            : '#6C64E1',
                                     },
                                 }}
                             >
@@ -521,23 +526,24 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             <ButtonBase
                                 onClick={() => {
                                     console.log("Added " + firstName + ' ' + lastName + ' with the userId ' + userId + ' to your contacts!');
-                                    // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
+                                    handleClose();
+                                    // hier dann iwi einen contactCreatedHandler({ name: groupName, members: selectedContacts });
                                 }}
                                 disabled={isContactAddFormInvalid}
                                 sx={{...styles.addGroupButton,
                                     bgcolor: isContactAddFormInvalid
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(59, 130, 246, 0.75)', // Glassy blue
+                                        : '#5A54D1', // Glassy violet
                                     color: isContactAddFormInvalid
                                         ? 'rgba(255, 255, 255, 0.4)'
                                         : '#ffffff',
                                     boxShadow: isContactAddFormInvalid
                                         ? 'none'
-                                        : '0 4px 12px rgba(59, 130, 246, 0.2)',
+                                        : '0 4px 12px #6C64E1',
                                     '&:hover': {
                                         bgcolor: isContactAddFormInvalid
                                             ? 'rgba(255, 255, 255, 0.05)'
-                                            : 'rgba(59, 130, 246, 0.25)',
+                                            : '#6C64E1',
                                     },
                                 }}
                             >
