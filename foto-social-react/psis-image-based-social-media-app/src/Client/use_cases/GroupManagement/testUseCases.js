@@ -1,7 +1,4 @@
 import { GetGroup } from './GetGroup.js';
-import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
-import { HttpClient } from '../../../utils/httpClient.js';
-import { getFirestoreAccessToken } from '../../../utils/getFirestoreToken.js';
 import { GetUserData } from '../UserManagement/GetUserData.js';
 
 
@@ -46,3 +43,4 @@ const test = async () => {
   };
 */
 testGroup();
+testGetUserData();

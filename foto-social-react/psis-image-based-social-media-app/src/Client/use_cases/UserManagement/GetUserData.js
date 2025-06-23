@@ -4,9 +4,9 @@
 
 //TODO: change w data from DB!
 
-import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper';
-import { HttpClient } from '../../../utils/httpClient';
-import { getFirestoreToken } from '../../../utils/getFirestoreToken';
+import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
+import { HttpClient } from '../../../utils/httpClient.js';
+import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 export class GetUserData {
   constructor({ projectId }) {
@@ -14,13 +14,15 @@ export class GetUserData {
   }
 
   async execute({ userId }) {
-    const accessToken = await getFirestoreToken();
+    const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
     const userDocUrl = firestoreHelper.getUserDoc(userId);
+    console.log("these are the userFields : " + userDocUrl);
     const userResponse = await httpClient.get(userDocUrl);
     const userFields = userResponse.fields;
+    console.log("userResponse : " + userResponse);
 
     const username = userFields.username?.stringValue || null;
 
@@ -38,9 +40,9 @@ export class GetUserData {
 
     return {
       userId,
-      username,
-      friends,
-      blockedUsers
+      username
+      //friends,
+      //blockedUsers
     };
   }
 }

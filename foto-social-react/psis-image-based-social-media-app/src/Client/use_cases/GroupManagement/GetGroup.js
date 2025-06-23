@@ -3,7 +3,7 @@
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
-import { getFirestoreAccessToken } from '../../../utils/getFirestoreToken.js';
+import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 export class GetGroup {
   constructor({ projectId }) {
