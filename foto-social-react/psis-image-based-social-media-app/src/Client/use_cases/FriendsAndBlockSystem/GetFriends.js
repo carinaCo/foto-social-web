@@ -1,9 +1,9 @@
-//TODO: Takes the user ID (GUID) of a user (eg. logged in user)
+//Takes the user ID (GUID) of a user (eg. logged in user)
 //retrieves a list of user IDs that the user is friends with
 
-import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper';
-import { HttpClient } from '../../../utils/httpClient';
-import { getFirestoreToken } from '../../../utils/getFirestoreToken';
+import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
+import { HttpClient } from '../../../utils/httpClient.js';
+import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 export class GetFriends {
   constructor({ projectId }) {
@@ -12,11 +12,11 @@ export class GetFriends {
 
   // Retrieves a list of user IDs that the user is friends with
   async execute({ userId }) {
-    const accessToken = await getFirestoreToken();
+    const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    // 1. Retrieve the user's list of friends
+    // Retrieve the user's list of friends
     const friendsCollectionUrl = firestoreHelper.getUserFriendsUrl(userId); // Should point to /users/{userId}/friends
     const friendsResponse = await httpClient.listDocuments(friendsCollectionUrl); // Assuming listDocuments fetches all documents in the collection
 

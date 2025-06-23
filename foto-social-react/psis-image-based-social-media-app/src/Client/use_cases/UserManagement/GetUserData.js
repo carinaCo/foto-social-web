@@ -1,8 +1,6 @@
-//TODO: Expects a User-ID and 
+//Expects a User-ID and 
 //retrieves public user data such as username, friend list and block list
 //Used for checking if certain actions such as add friend or invite to group are possible
-
-//TODO: change w data from DB!
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
@@ -40,9 +38,9 @@ export class GetUserData {
 
     return {
       userId,
-      username
-      //friends,
-      //blockedUsers
+      username,
+      friends,
+      blockedUsers
     };
   }
 }

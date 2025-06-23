@@ -9,39 +9,39 @@ export class FirestoreCommunicationHelper {
     }
   
     getUserDoc(userId) {
-      return `${this.baseFirestoreUrl}/users/${userId}`;
+      return `${this.baseFirestoreUrl}/Users/${userId}`;
     }
   
     registerUserUrl() {
-      return `${this.baseFirestoreUrl}/users`;
+      return `${this.baseFirestoreUrl}/Users`;
     }
   
     getFriendsUrl(userId) {
-      return `${this.baseFirestoreUrl}/users/${userId}/friends`;
+      return `${this.baseFirestoreUrl}/Users/${userId}/friends`;
     }
   
     getPendingFriendRequestsUrl(userId) {
-      return `${this.baseFirestoreUrl}/users/${userId}/pendingFriendRequests`;
+      return `${this.baseFirestoreUrl}/Users/${userId}/pendingFriendRequests`;
     }
   
     getBlockedByUserListUrl(userId) {
-      return `${this.baseFirestoreUrl}/users/${userId}/blockedUsers`;
+      return `${this.baseFirestoreUrl}/Users/${userId}/blockedUsers`;
     }
   
     removeFriendUrl(userId, friendId) {
-      return `${this.baseFirestoreUrl}/users/${userId}/friends/${friendId}`;
+      return `${this.baseFirestoreUrl}/Users/${userId}/friends/${friendId}`;
     }
   
     blockUserUrl(userId, targetUserId) {
-      return `${this.baseFirestoreUrl}/users/${userId}/blockedUsers/${targetUserId}`;
+      return `${this.baseFirestoreUrl}/Users/${userId}/blockedUsers/${targetUserId}`;
     }
   
     sendFriendRequestUrl(senderId) {
-      return `${this.baseFirestoreUrl}/users/${senderId}/sentFriendRequests`;
+      return `${this.baseFirestoreUrl}/Users/${senderId}/sentFriendRequests`;
     }
   
     findMatchingUsersUrl() {
-      return `${this.baseFirestoreUrl}/users:runQuery`;
+      return `${this.baseFirestoreUrl}/Users:runQuery`;
     }
   
     getGroupUrl(groupId) {
