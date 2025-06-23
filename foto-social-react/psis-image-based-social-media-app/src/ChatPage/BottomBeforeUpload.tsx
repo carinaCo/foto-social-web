@@ -47,7 +47,11 @@ const BottomBeforeUpload: React.FC = () => {
       {!expanded && (
         <BottomNavigation showLabels value={0} 
         sx={{
-            bgcolor: '#1c1c1c'
+          background: '#3B3E5C',
+          boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
+          filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
+          backdropFilter: 'blur(10px) saturate(180%)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         }}>
          <BottomNavigationAction
           label="upload an image"
@@ -66,7 +70,11 @@ const BottomBeforeUpload: React.FC = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            bgcolor: '#1c1c1c'
+            background: '#3B3E5C',
+            boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
+            filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
+            backdropFilter: 'blur(10px) saturate(180%)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
           {/* 横向图标按钮组 */}
