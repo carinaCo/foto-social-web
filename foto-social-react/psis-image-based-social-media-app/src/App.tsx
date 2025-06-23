@@ -5,7 +5,7 @@ import {createTheme, ThemeProvider, CssBaseline} from "@mui/material";
 import BottomNavigationBar from "./MainPage/bottomNavigationBar.tsx";
 import Login from "./Authentification/Login.tsx"
 import Register from "./Authentification/Register.tsx"
-import ChatPage from "./ChatPage/ChatBefore.tsx";
+import ChatPage from "./ChatPage/ChatPage.tsx"; 
 import GlobalPromptPage from "./GlobalPromptPage/GlobalPromptPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import FriendsPage from "./FriendsPage/friendsPage.tsx";
