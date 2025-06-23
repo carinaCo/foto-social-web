@@ -13,7 +13,14 @@ const AppToolBar: React.FC = () => {
   const prompttoday = location.state?.promptToday || 'undefined';
 
     return (
-        <Toolbar>
+        <Toolbar   sx={{
+            width: '100vw', background: '#3B3E5C',
+            boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
+            backdropFilter: 'blur(10px) saturate(180%)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}
+            
+            >
             <IconButton
                 size="large"
                 aria-label="back-icon"
