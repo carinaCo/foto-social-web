@@ -1,17 +1,12 @@
-import { getAuth } from "firebase/auth";
-
 export async function getFirestoreAccessToken() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-
-  if (!user) throw new Error("User not authenticated");
-
-  const idToken = await user.getIdToken();
+  const secretKey = 'F$7pZx@9!kWm#4Ru2&QyL*vTj63Eca^oNXdY!g0hzPKuB&1fAJnVb%MLq8w#rTXC';
 
   const response = await fetch("https://foto-social-web-function-513469743668.europe-west3.run.app", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ firebaseIdToken: idToken }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': secretKey
+    }
   });
 
   const data = await response.json();

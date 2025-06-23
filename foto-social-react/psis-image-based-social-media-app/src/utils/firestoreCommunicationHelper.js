@@ -45,28 +45,28 @@ export class FirestoreCommunicationHelper {
     }
   
     getGroupUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}`;
     }
 
     //TODO: add if need be
     getGroupMembersUrl(groupId) {
-        return `${this.baseFirestoreUrl}/groups/${groupId}/members`;
+        return `${this.baseFirestoreUrl}/Groups/${groupId}/members`;
       }
   
     getGroupPostsUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/posts`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/posts`;
     }
   
     getGroupMessagesUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/messages`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/messages`;
     }
   
     getGroupFeedUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/feed`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/feed`;
     }
   
     getGroupInvitesUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/invites`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/invites`;
     }
   
     sendGroupInviteUrl(groupId) {
@@ -77,15 +77,15 @@ export class FirestoreCommunicationHelper {
     }
 
     getGroupMemberUrl(groupId, userId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/members/${userId}`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/members/${userId}`;
     }
 
     getGroupInviteUrl(groupId, inviteId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/invites/${inviteId}`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/invites/${inviteId}`;
     }
 
     sendGroupInviteUrl(groupId) {
-      return `${this.baseFirestoreUrl}/groups/${groupId}/invites`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/invites`;
     }
     
 
