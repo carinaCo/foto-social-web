@@ -3,8 +3,8 @@ import {
     AppBar, Box, CssBaseline, Container
 } from "@mui/material";
 import AppToolBar from "./AppToolBar.tsx";
-import BottomBeforeUpload from "./BottomUpload.tsx";
-import ChatPageContent from './HiddenChat.tsx';
+import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
+import ChatPageContent from './ChatPageContent.tsx';
 
 
 // const chatPageStyles = {
