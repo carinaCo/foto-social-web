@@ -8,6 +8,7 @@ import Register from "./Authentification/Register.tsx"
 import ChatPage from "./ChatPage/ChatBefore.tsx";
 import GlobalPromptPage from "./GlobalPromptPage/GlobalPromptPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
+import FriendsPage from "./FriendsPage/friendsPage.tsx";
 
 const darkTheme = createTheme({
   
@@ -44,7 +45,7 @@ const App = () => {
             <Route path="/settings" element={<SettingsPage />} />
 
             {/* TODO: Hier dann die friends bzw. settings page auskommentieren */}
-            {/*<Route path="/friends" element={<FriendsPage />} />*/}
+            <Route path="/friends" element={<FriendsPage />} />
             {/*<Route path="/settings" element={<SettingsPage />} />*/}
         </Routes>
           {isNavBarVisible() ? (
