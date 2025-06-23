@@ -35,13 +35,15 @@ const ChatPageContent: React.FC = () => {
             
          height: "100%", width: "100%", overflowY: "auto" }}>
 
-        <List sx={{ width: '100%',  maxWidth: '1000px', height: '100%', maxHeight: 1000, p: 0, bgcolor: '#1c1c1c'}}>
+        <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
                 {sampleChats.map((
                     element, index) =>
                     (
                         <React.Fragment key={element.id || index}>
                         <ListItem alignItems="center" key={index} sx={{
-                            background: 'linear-gradient(135deg, #1a1a1a, #292929, #1f3b4d)',
+                            background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
+                            backdropFilter: 'blur(10px) saturate(180%)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
                             borderRadius: 3,
                             marginBottom: 3,
                             px: 2,   // Innenabstand x
@@ -69,8 +71,8 @@ const ChatPageContent: React.FC = () => {
                               display="flex"
                               justifyContent="center"
                               alignItems="center"
-                              width={300}
-                              height={200}
+                              width={200}
+                              height={150}
                               bgcolor="grey.300"
                               borderRadius={2}
                             >
