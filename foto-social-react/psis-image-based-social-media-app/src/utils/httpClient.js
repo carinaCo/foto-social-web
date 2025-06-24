@@ -73,6 +73,19 @@ export class HttpClient {
           documents: data.documents || []
         };
       }
+
+      async patch(url, body) {
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) throw new Error(`PATCH failed: ${response.status} ${response.statusText}`);
+        return response.json();
+      }
       
       
   }
