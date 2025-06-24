@@ -2,12 +2,11 @@ import * as React from 'react';
 import {
     AppBar, CssBaseline
 } from "@mui/material";
-import FriendBox from "./friendBox.tsx";
-import AppToolbar from "../MainPage/AppToolbar.tsx";
-import AddNewDrawer from "./AddNewFriend.tsx";
+import GroupChat from "./groupChat.tsx";
+import AppToolbar from "./AppToolbar.tsx";
+import AddNewDrawer from "./AddNewDrawer.tsx";
 
-
-const FriendsPage: React.FC = () => {
+const GroupsPage: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
@@ -19,10 +18,11 @@ const FriendsPage: React.FC = () => {
                     <AppBar>
                         <AppToolbar onAddClick={toggleDrawer(true)}/>
                     </AppBar>
-            <FriendBox />
+            <GroupChat />
+
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
     )
 }
 
-export default FriendsPage;
+export default GroupsPage;
