@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
 import AppToolbar from "../MainPage/AppToolbar.tsx";
-import AddNewDrawer from "./AddNewFriend.tsx";
+import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
 
 
 const FriendsPage: React.FC = () => {
