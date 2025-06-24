@@ -45,7 +45,7 @@ const FriendBox: React.FC = () => {
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                             borderRadius: 3,
                             marginBottom: 3,
-                            px: 2,   // Innenabstand x
+                            px: 10,   // Innenabstand x
                             py: 1.5,  // Innenabstand y
                             transition: 'all 0.3s ease-in-out',
                             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
