@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
 import AppToolbar from "../MainPage/AppToolbar.tsx";
-import AddNewDrawer from "./AddNewFriend.tsx";
+import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
 
 const mainPageStyles = {
     friendsBackground: {
@@ -30,7 +30,7 @@ const FriendsPage: React.FC = () => {
         <>
             <CssBaseline enableColorScheme />
                     <AppBar>
-                        <AppToolbar onAddFriendClick={toggleDrawer(true)}/>
+                        <AppToolbar onAddGroupClick={toggleDrawer(true)}/>
                     </AppBar>
             {/*<Box sx={mainPageStyles.chatBackground} >*/}
             {/*</Box>*/}
