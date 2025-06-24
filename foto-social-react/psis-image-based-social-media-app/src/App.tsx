@@ -1,6 +1,6 @@
 import {Route, Routes } from 'react-router-dom';
 import './App.css'
-import MainPage from "./MainPage/mainpage.tsx";
+import GroupsPage from "./MainPage/groupsPage.tsx";
 import {createTheme, ThemeProvider} from "@mui/material";
 import BottomNavigationBar from "./MainPage/bottomNavigationBar.tsx";
 import Login from "./Authentification/Login.tsx"
@@ -34,13 +34,11 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <Routes>
             <Route path="/global" element={<GlobalPromptPage />} />
-            <Route path="/groups" element={<MainPage />} />
+            <Route path="/groups" element={<GroupsPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/settings" element={<SettingsPage />} />
-            {/* TODO: Hier dann die friends bzw. settings page auskommentieren */}
             <Route path="/friends" element={<FriendsPage />} />
-            {/*<Route path="/settings" element={<SettingsPage />} />*/}
         </Routes>
           {isNavBarVisible() ? (
         <BottomNavigationBar  />

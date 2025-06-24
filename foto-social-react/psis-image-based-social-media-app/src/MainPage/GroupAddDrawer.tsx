@@ -4,10 +4,9 @@ import {
     Box,
     Typography,
     ButtonBase,
-    Divider, IconButton, Slide, Fade
+    Divider, IconButton
 } from '@mui/material';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface GroupAddProps {

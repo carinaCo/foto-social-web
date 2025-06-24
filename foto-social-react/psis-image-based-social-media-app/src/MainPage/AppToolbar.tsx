@@ -6,10 +6,10 @@ import UserInfoPopover from "./UserInfoPopper.tsx";
 
 
 interface AppToolbarProps {
-    onAddGroupClick?: () => void;
+    onAddClick?: () => void;
 }
 
-const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
+const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
     const location = useLocation();
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -67,7 +67,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddGroupClick }) => {
                         edge="end"
                         aria-label="library-add-icon"
                         color="inherit"
-                        onClick={onAddGroupClick}
+                        onClick={onAddClick}
                         sx={{visibility: location.pathname === '/groups' || location.pathname === '/friends' ? 'visible' : 'hidden'}}
                     >
                         <LibraryAddIcon/>
