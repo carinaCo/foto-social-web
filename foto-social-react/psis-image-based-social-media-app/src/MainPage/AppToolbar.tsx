@@ -1,8 +1,9 @@
 import React from 'react';
-import {Toolbar, Typography, IconButton, Avatar, Box} from '@mui/material';
+import {Toolbar, Typography, IconButton, Avatar, Box, Alert, Snackbar} from '@mui/material';
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { useLocation } from 'react-router-dom';
 import UserInfoPopover from "./UserInfoPopper.tsx";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 
 interface AppToolbarProps {
@@ -13,6 +14,15 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
     const location = useLocation();
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [copiedId, setCopiedId] = React.useState<string | null>(null);
+
+    const handleItemClick = (userId: string) => {
+        navigator.clipboard.writeText(userId).then(() => {
+            setCopiedId(userId);
+            setSnackbarOpen(true);
+        });
+    };
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -78,7 +88,32 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
                         anchorEl={anchorEl}
                         userId={userId}
                         onClose={handleClose}
+                        onCopy={() => handleItemClick(userId)}
                     />
+                <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={1500}
+                    onClose={() => setSnackbarOpen(false)}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <Alert
+                        severity="success"
+                        icon={<CheckCircleIcon />}
+                        sx={{
+                            backdropFilter: 'blur(12px) saturate(180%)',
+                            backgroundColor: 'rgba(180, 100, 255, 0.2)',
+                            // backgroundColor: 'rgba(180, 100, 255, 0.2)', // die farbe war auch lit
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: 2,
+                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 500,
+                        }}
+                        onClose={() => setSnackbarOpen(false)}
+                    >
+                        ID {copiedId} copied to clipboard!
+                    </Alert>
+                </Snackbar>
             </>
     );
 };
