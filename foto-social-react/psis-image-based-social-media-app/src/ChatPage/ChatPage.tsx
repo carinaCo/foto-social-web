@@ -9,7 +9,6 @@ import ChatPageContent from './ChatPageContent.tsx';
 
 
 
-
 const ChatPage: React.FC = () => {
     // const [drawerOpen, setDrawerOpen] = React.useState(false);
     // const toggleDrawer = (open: boolean) => () => {
