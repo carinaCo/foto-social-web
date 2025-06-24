@@ -88,6 +88,10 @@ export class FirestoreCommunicationHelper {
       return `${this.baseFirestoreUrl}/Groups/${groupId}/invites`;
     }
     
+    getUsersCollectionUrl() {
+      return `${this.baseFirestoreUrl}/Users`;
+    }    
+    
 
 }
   
