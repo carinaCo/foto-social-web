@@ -1,11 +1,10 @@
 import React from 'react';
 import {Toolbar, Typography, IconButton, Box,} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-//import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
-const AppToolBar: React.FC = () => {
+const AppBarOnlyBack: React.FC = () => {
     const navigate = useNavigate();              // 获取跳转函数
     const location = useLocation();
     const { id } = useParams<{ id: string }>();
@@ -39,23 +38,10 @@ const AppToolBar: React.FC = () => {
                 {prompttoday}
                 </Typography>
             </Box>
-            <IconButton
-                size="large"
-                edge="end"
-                aria-label="More-icon"
-                color="inherit"
-                onClick={() => navigate('/pageImage', {
-                    state: {
-                      groupName: groupname, // 传递当前标题
-                      promptToday: prompttoday // 如果你page4也需要这个数据，可以传递
-                    }
-                  })}
-            >
-                <LockOpenIcon />
-            </IconButton>
+            
 
         </Toolbar>
     );
 };
 
-export default AppToolBar;
+export default AppBarOnlyBack;

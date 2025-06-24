@@ -1,25 +1,29 @@
 import React from 'react';
+//import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
+//import IconButton from '@mui/material/IconButton';
+//import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import HideImageIcon from '@mui/icons-material/HideImage';
 //import Toolbar from '@mui/material/Toolbar';
-import {
-    Avatar, Box,
-    Divider, InputAdornment,
+import choco from '../assets/choco.jpg';
+import straydog from '../assets/straydog.png';
+import {   
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText, Stack, TextField, Container
 } from "@mui/material";
 
 
-const ChatPageContent: React.FC = () => {
+
+const ChatWithImage: React.FC = () => {
 
     const sampleChats =
         [
-            {id: 1, userName: 'Alice', hasImage: true, imageUrl: 'https://placekitten.com/300/200' },
-            {id: 2, userName: 'Bob', hasImage: true, imageUrl: 'https://placekitten.com/300/210' },
-            {id: 3, userName: 'Cara', hasImage: true, imageUrl: 'https://placekitten.com/300/200' },
-            {id: 4, userName: 'Daniel', hasImage: true, imageUrl: 'https://placekitten.com/300/210' },
+            {id: 1, userName: 'Alice', hasImage: true, imageUrl: choco },
+            {id: 2, userName: 'Bob', hasImage: true, imageUrl: straydog },
+            {id: 3, userName: 'Cara', hasImage: false, imageUrl: 'https://placekitten.com/300/200' },
+            {id: 4, userName: 'Daniel', hasImage: false, imageUrl: 'https://placekitten.com/300/210' },
             
         ];
     const getAvatarColor = (userId: string) => {
@@ -28,6 +32,7 @@ const ChatPageContent: React.FC = () => {
         return colors[index];
         };
     
+    const visibleChats = sampleChats.filter(chat => chat.hasImage);
 
     return (
         
@@ -36,7 +41,7 @@ const ChatPageContent: React.FC = () => {
          height: "100%", width: "100%", overflowY: "auto" }}>
 
         <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
-                {sampleChats.map((
+                {visibleChats.map((
                     element, index) =>
                     (
                         <React.Fragment key={element.id || index}>
@@ -71,14 +76,15 @@ const ChatPageContent: React.FC = () => {
                               display="flex"
                               justifyContent="center"
                               alignItems="center"
-                              width={200}
-                              height={150}
-                              bgcolor="grey.300"
-                              borderRadius={2}
+                            //   width={200}
+                            //   height={150}
+                            //   borderRadius={2}
+                              component="img"
+                              src={element.imageUrl}
+                              alt={`${element.userName}'s upload`}
+                              sx={{ width: '100%', height: '100%', borderRadius: 2, objectFit: 'cover' }}
                             >
-                              
-                
-                               <HideImageIcon sx={{ fontSize: 64, color: 'grey.600' }} />
+                            
                             </Box>
                             </Box>        
                             {/* </Box> */}
@@ -92,4 +98,4 @@ const ChatPageContent: React.FC = () => {
     );
 };
 
-export default ChatPageContent;
+export default ChatWithImage;

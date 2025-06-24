@@ -1,16 +1,15 @@
 import * as React from 'react';
 import {
-    AppBar, Box, CssBaseline, Container
+    AppBar, Box, CssBaseline, 
 } from "@mui/material";
-import AppToolBar from "./AppToolBar.tsx";
-import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
-import ChatPageContent from './ChatPageContent.tsx';
+import AppBarOnlyBack from "./AppBarOnlyBack.tsx";
+//import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
+import ChatWithImage from './ChatWithImage.tsx';
 
 
 
 
-
-const ChatPage: React.FC = () => {
+const ChatPageWithImage: React.FC = () => {
     // const [drawerOpen, setDrawerOpen] = React.useState(false);
     // const toggleDrawer = (open: boolean) => () => {
     //     setDrawerOpen(open);
@@ -20,7 +19,7 @@ const ChatPage: React.FC = () => {
         <>
             <CssBaseline enableColorScheme />
                     <AppBar>
-                        <AppToolBar/>
+                        <AppBarOnlyBack/>
                     </AppBar>
             
                     <Box sx={{marginLeft: '-32px',
@@ -29,14 +28,14 @@ const ChatPage: React.FC = () => {
                             //  paddingRight: '16px',
                              boxSizing: 'border-box',
                              }} >
-                <ChatPageContent />
+                <ChatWithImage />
             </Box>
                     
           
-           <BottomBeforeUpload />
+           {/* <BottomBeforeUpload /> */}
            
         </>
     )
 }
 
-export default ChatPage;
+export default ChatPageWithImage;

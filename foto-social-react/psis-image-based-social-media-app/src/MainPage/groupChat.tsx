@@ -67,12 +67,21 @@ const GroupChat: React.FC = () => {
                                 transform: 'scale(1.01)', // minimal größer
                             },
                         }}
-                        onClick={() =>
-                            navigate(`/chat/${element.id}`, { state: { groupName: element.groupName , promptToday: element.promptToday,} })
-                          }
+                        
                         >
                             <ListItemAvatar>
-                                <Avatar alt="Group Picture"/>
+                                <Avatar alt="Group Picture"
+                                  onClick={() =>
+                                    navigate(`/chat/${element.id}`, {
+                                      state: {
+                                        groupName: element.groupName,
+                                        promptToday: element.promptToday,
+                                      },
+                                    })
+                                  }
+                                
+                                />
+                                
                             </ListItemAvatar>
                             <ListItemText
                                 primary={element.groupName}
