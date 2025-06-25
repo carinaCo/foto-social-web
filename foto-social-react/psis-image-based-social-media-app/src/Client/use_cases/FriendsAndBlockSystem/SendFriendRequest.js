@@ -1,0 +1,2 @@
+//TODO: Expects the user-ID of the sending (logged in) user and the user-ID of the receiver
+//Creates a document in the collection of the pending firend request list of the receiver with the ID of the user sending it
