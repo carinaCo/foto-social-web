@@ -48,9 +48,8 @@ export class FirestoreCommunicationHelper {
       return `${this.baseFirestoreUrl}/Groups/${groupId}`;
     }
 
-    //TODO: add if need be
-    getGroupMembersUrl(groupId) {
-        return `${this.baseFirestoreUrl}/Groups/${groupId}/members`;
+    getGroupUsersUrl(groupId) {
+        return `${this.baseFirestoreUrl}/Groups/${groupId}/Users`;
       }
   
     getGroupPostsUrl(groupId) {
@@ -77,7 +76,7 @@ export class FirestoreCommunicationHelper {
     }
 
     getGroupMemberUrl(groupId, userId) {
-      return `${this.baseFirestoreUrl}/Groups/${groupId}/members/${userId}`;
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/Users/${userId}`;
     }
 
     getGroupInviteUrl(groupId, inviteId) {
