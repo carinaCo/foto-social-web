@@ -3,8 +3,8 @@ import {
     AppBar, CssBaseline
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
-import AppToolbar from "../MainPage/AppToolbar.tsx";
-import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
+import AppToolbar from "../GroupPage/AppToolbar.tsx";
+import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
 
 
 const FriendsPage: React.FC = () => {
