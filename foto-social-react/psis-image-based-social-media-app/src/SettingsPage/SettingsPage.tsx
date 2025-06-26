@@ -3,7 +3,7 @@ import {
     AppBar, Box,
     CssBaseline
 } from "@mui/material";
-import AppToolbar from "../MainPage/AppToolbar.tsx";
+import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 
