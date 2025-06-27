@@ -10,7 +10,7 @@ export class CreateGroup {
     this.projectId = projectId;
   }
 
-  async execute({ groupId, founderId, groupName }) {
+  async execute({groupId, founderId, groupName }) {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
@@ -26,7 +26,7 @@ export class CreateGroup {
     
     await httpClient.patch(groupDocUrl, groupDocBody);
   
-    const membersUrl = firestoreHelper.getGroupMembersUrl(groupId);
+    const usersUrl = firestoreHelper.getGroupUsersUrl(groupId);
     const memberDocBody = {
       fields: {
         userId: { stringValue: founderId },
@@ -34,7 +34,7 @@ export class CreateGroup {
       }
     };
   
-    await httpClient.post(membersUrl, memberDocBody);
+    await httpClient.post(usersUrl, memberDocBody);
   
     return { success: true };
   }

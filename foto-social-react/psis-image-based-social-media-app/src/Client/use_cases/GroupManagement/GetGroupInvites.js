@@ -22,10 +22,10 @@ export class GetGroupInvites {
     const groupData = groupResponse.fields;
     console.log('Group response:', groupResponse);
 
-    const membersUrl = firestoreHelper.getGroupMembersUrl(groupId);
-    const membersResponse = await httpClient.listDocuments(membersUrl);
+    const usersUrl = firestoreHelper.getGroupUsersUrl(groupId);
+    const usersResponse = await httpClient.listDocuments(usersUrl);
 
-    const invitedUsers = membersResponse.documents
+    const invitedUsers = usersResponse.documents
       .map(doc => {
         const fields = doc.fields;
         return {
