@@ -24,19 +24,22 @@ export class GetGroup {
 
     const usersUrl = firestoreHelper.getGroupUsersUrl(groupId);
     const usersResponse = await httpClient.listDocuments(usersUrl);
+    console.log('usersResponse:', usersResponse);
+
     const users = usersResponse.documents.map(doc => {
-      const fields = doc.fields;
+      const fields = doc.fields || {};
       return {
-        userId: fields.userId.stringValue,
-        role: fields.role.stringValue
+        userId: fields.userId?.stringValue || null,
+        role: fields.role?.stringValue || null
       };
-    });
+    });    
+    console.log('users:', users);
 
     return {
       name: groupData.name?.stringValue || null,
       createdAt: groupResponse.createTime,
-      //founderId: groupData.founderId.stringValue,
-      //members
+      founderId: groupData.founderId?.stringValue || null,
+      members: users
     };
   }
 }
