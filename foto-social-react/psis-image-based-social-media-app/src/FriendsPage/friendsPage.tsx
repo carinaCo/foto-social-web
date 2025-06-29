@@ -11,20 +11,7 @@ import FriendBox from "./friendBox.tsx";
 import FriendRequestBox from "./friendRequestBox.tsx";
 import AppToolbar from "../MainPage/AppToolbar.tsx";
 import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
-
-const mainPageStyles = {
-    friendsBackground: {
-        background: 'linear-gradient(145deg, #1E1F2F, #2C2E4A, #3B3E5C)',
-        borderRadius: 4,            // 16px rounded corners (theme.spacing(4))
-        paddingLeft: 2,
-        paddingRight: 2, // internal padding
-        margin: 2,                  // spacing around the box
-        maxWidth: '100vw',
-        height: '85vh',
-        mx: 'auto',                 // center horizontally
-    }
-}
-
+import type {User} from "../Models/User.tsx";
 
 const FriendsPage: React.FC = () => {
     //for addFriend/Group
@@ -33,28 +20,30 @@ const FriendsPage: React.FC = () => {
         setDrawerOpen(open);
     };
 //for friends/friendrequests
-    const [activeTab, setActiveTab] = useState<TabOption>('friends');
+    const [activeTab, setActiveTab] = useState<'friends' | 'requests'>('friends');
 
     const [friends, setFriends] = useState<User[]>([
-        { id: 1, name: 'Donald' },
+        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
+        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
+        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
     ]);
     const [friendRequests, setFriendRequests] = useState<User[]>([
-        { id: 2, name: 'Tick' },
-        { id: 3, name: 'Trick' },
+        { id: 2, firstName: 'Tick', lastName: 'Duck', userId: '123456799' },
+        { id: 3, firstName: 'Trick', lastName: 'Duck', userId: '123456749' },
     ]);
 
-    const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    const handleTabChange = (_: React.SyntheticEvent, newValue: number | undefined) => {
         setActiveTab(newValue === 0 ? 'friends' : 'requests');
     };
 
-    const handleAccept = (id: number) => {
+    const handleAccept = (id: number | undefined) => {
         const user = friendRequests.find((r) => r.id === id);
         if (!user) return;
         setFriends((prev) => [...prev, user]);
         setFriendRequests((prev) => prev.filter((r) => r.id !== id));
     };
 
-    const handleReject = (id: number) => {
+    const handleReject = (id: number | undefined) => {
         setFriendRequests((prev) => prev.filter((r) => r.id !== id));
     };
 

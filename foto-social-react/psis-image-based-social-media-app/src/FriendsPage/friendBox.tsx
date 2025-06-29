@@ -1,23 +1,23 @@
 import * as React from "react";
 import {
     Avatar, Box,
-    Divider, InputAdornment,
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText, Stack, TextField,
+    ListItemText,
 } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
+import type {User} from "../Models/User.tsx";
 
 /**
  * sollte irgendwie mappen über einträge
  * ein eintrag pro gruppe -> ein component render i guess
  *
  */
-const FriendBox: React.FC = ({
-    friends
-                             }) => {
+interface friendsBoxProps {
+    friends: User[]
+}
 
+const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
     return (
         <Box sx={{ height: "100%", overflowY: "auto",
             scrollbarWidth: "none", // Firefox
@@ -52,7 +52,8 @@ const FriendBox: React.FC = ({
                                 <Avatar alt="Profile Picture"/>
                             </ListItemAvatar>
                             <ListItemText
-                                primary={element.name}
+                                primary={element.firstName}
+                                secondary={element.lastName}
                             />
                         </ListItem>
                     </React.Fragment>
