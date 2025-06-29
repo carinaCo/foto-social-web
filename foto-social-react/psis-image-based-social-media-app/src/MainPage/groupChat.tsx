@@ -3,11 +3,13 @@ import {
     Avatar, Box,
     InputAdornment,
     List,
-    ListItem,
     ListItemAvatar,
     ListItemText, Stack, TextField,
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from "react-router-dom";
+//import { Link as RouterLink } from "react-router-dom";
+import ListItem from '@mui/material/ListItem';
 
 /**
  * sollte irgendwie mappen über einträge
@@ -15,6 +17,8 @@ import EditIcon from '@mui/icons-material/Edit';
  *
  */
 const GroupChat: React.FC = () => {
+    const navigate = useNavigate();
+
 
     const groupElements =
         [
@@ -39,11 +43,17 @@ const GroupChat: React.FC = () => {
                     element, index) =>
                     (
                         <React.Fragment key={element.id || index}>
+
+                       
+                            
+
                         <ListItem alignItems="center" key={index} sx={{
+                            cursor: "pointer",
                             // background: 'linear-gradient(135deg, #1a1a1a, #292929, #1f3b4d)',
                             background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
                             backdropFilter: 'blur(10px) saturate(180%)',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
+
                             borderRadius: 3,
                             marginBottom: 3,
                             px: 2,   // Innenabstand x
@@ -56,9 +66,22 @@ const GroupChat: React.FC = () => {
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
                                 transform: 'scale(1.01)', // minimal größer
                             },
-                        }}>
+                        }}
+                        
+                        >
                             <ListItemAvatar>
-                                <Avatar alt="Group Picture"/>
+                                <Avatar alt="Group Picture"
+                                  onClick={() =>
+                                    navigate(`/chat/${element.id}`, {
+                                      state: {
+                                        groupName: element.groupName,
+                                        promptToday: element.promptToday,
+                                      },
+                                    })
+                                  }
+                                
+                                />
+                                
                             </ListItemAvatar>
                             <ListItemText
                                 primary={element.groupName}
