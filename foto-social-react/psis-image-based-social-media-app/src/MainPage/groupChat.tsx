@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     Avatar, Box,
-    Divider, InputAdornment,
+    InputAdornment,
     List,
     ListItemAvatar,
     ListItemText, Stack, TextField,
