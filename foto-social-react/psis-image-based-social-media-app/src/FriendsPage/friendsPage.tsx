@@ -1,8 +1,14 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
-    AppBar, Box, CssBaseline
+    AppBar,
+    Box,
+    CssBaseline,
+    Tabs,
+    Tab,
+    List,
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
+import FriendRequestBox from "./friendRequestBox.tsx";
 import AppToolbar from "../MainPage/AppToolbar.tsx";
 import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
 
@@ -21,9 +27,35 @@ const mainPageStyles = {
 
 
 const FriendsPage: React.FC = () => {
+    //for addFriend/Group
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
+    };
+//for friends/friendrequests
+    const [activeTab, setActiveTab] = useState<TabOption>('friends');
+
+    const [friends, setFriends] = useState<User[]>([
+        { id: 1, name: 'Donald' },
+    ]);
+    const [friendRequests, setFriendRequests] = useState<User[]>([
+        { id: 2, name: 'Tick' },
+        { id: 3, name: 'Trick' },
+    ]);
+
+    const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+        setActiveTab(newValue === 0 ? 'friends' : 'requests');
+    };
+
+    const handleAccept = (id: number) => {
+        const user = friendRequests.find((r) => r.id === id);
+        if (!user) return;
+        setFriends((prev) => [...prev, user]);
+        setFriendRequests((prev) => prev.filter((r) => r.id !== id));
+    };
+
+    const handleReject = (id: number) => {
+        setFriendRequests((prev) => prev.filter((r) => r.id !== id));
     };
 
     return (
@@ -34,7 +66,35 @@ const FriendsPage: React.FC = () => {
                     </AppBar>
             {/*<Box sx={mainPageStyles.chatBackground} >*/}
             {/*</Box>*/}
-            <FriendBox />
+            <Box sx={{ paddingTop: '1rem', paddingBottom: '4rem' /* leave space for nav bars */ }}>
+                <Tabs
+                    value={activeTab === 'friends' ? 0 : 1}
+                    onChange={handleTabChange}
+                    centered
+                    variant="fullWidth"
+                    textColor="primary"
+                    indicatorColor="primary"
+                >
+                    <Tab label="Friends" />
+                    <Tab label="Friend Requests" />
+                </Tabs>
+
+                <Box sx={{ marginTop: 2 }}>
+                    {activeTab === 'friends' && (
+                        <FriendBox friends={friends} />
+                    )}
+
+                    {activeTab === 'requests' && (
+                        <List>
+                            <FriendRequestBox
+                                requests={friendRequests}
+                                onAccept={handleAccept}
+                                onReject={handleReject}
+                            />
+                        </List>
+                    )}
+                </Box>
+            </Box>
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>

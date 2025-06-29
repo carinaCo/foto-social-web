@@ -14,17 +14,9 @@ import EditIcon from '@mui/icons-material/Edit';
  * ein eintrag pro gruppe -> ein component render i guess
  *
  */
-const FriendBox: React.FC = () => {
-
-    const friendElements =
-        [
-            {id: 1, name: 'Tick'},
-            {id: 2, name: 'Trick'},
-            {id: 3, name: 'Track'},
-            {id: 4, name: 'Donald'},
-            {id: 5, name: 'Daisy'},
-        ];
-
+const FriendBox: React.FC = ({
+    friends
+                             }) => {
 
     return (
         <Box sx={{ height: "100%", overflowY: "auto",
@@ -34,7 +26,7 @@ const FriendBox: React.FC = () => {
             }
         }}>
         <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
-                {friendElements.map((
+                {friends.map((
                     element, index) =>
                     (
                         <React.Fragment key={element.id || index}>
