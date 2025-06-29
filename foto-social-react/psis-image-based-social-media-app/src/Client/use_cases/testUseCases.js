@@ -1,23 +1,23 @@
-import { GetGroup } from './GetGroup.js';
-import { GetUserData } from '../UserManagement/GetUserData.js';
-import { GetFriends } from '../FriendsAndBlockSystem/GetFriends.js';
-import { GetGroupPosts } from '../InGroupMessagesAndPosts/GetGroupPosts.js';
-import { GetPendingFriendRequests } from '../FriendsAndBlockSystem/GetPendingFriendRequests.js';
-import { GetGroupFeed } from '../InGroupMessagesAndPosts/GetGroupFeed.js';
-import { GetGroupMessages } from '../InGroupMessagesAndPosts/GetGroupMessages.js';
-import { GetGroupInvites } from '../GroupManagement/GetGroupInvites.js';
-import { GetGroupUserRights } from '../GroupManagement/GetGroupUserRights.js';
-import { FindMatchingUsers } from '../UserSearch/FindMatchingUsers.js';
-import { GetBlockedByUserList } from '../FriendsAndBlockSystem/GetBlockedByUserList.js';
-import { CreateGroup } from '../GroupManagement/CreateGroup.js';
+import { GetGroup } from './GroupManagement/GetGroup.js';
+import { GetUserData } from './UserManagement/GetUserData.js';
+import { GetFriends } from './FriendsAndBlockSystem/GetFriends.js';
+import { GetGroupPosts } from './InGroupMessagesAndPosts/GetGroupPosts.js';
+import { GetPendingFriendRequests } from './FriendsAndBlockSystem/GetPendingFriendRequests.js';
+import { GetGroupFeed } from './InGroupMessagesAndPosts/GetGroupFeed.js';
+import { GetGroupMessages } from './InGroupMessagesAndPosts/GetGroupMessages.js';
+import { GetGroupInvites } from './GroupManagement/GetGroupInvites.js';
+import { GetGroupUserRights } from './GroupManagement/GetGroupUserRights.js';
+import { FindMatchingUsers } from './UserSearch/FindMatchingUsers.js';
+import { GetBlockedByUserList } from './FriendsAndBlockSystem/GetBlockedByUserList.js';
+import { CreateGroup } from './GroupManagement/CreateGroup.js';
 
 import { randomUUID } from 'crypto';
-import { RegisterUser } from '../UserManagement/RegisterUser.js';
-import { LoginUser } from '../UserManagement/LoginUser.js';
-import { LogoutUser } from '../UserManagement/LogoutUser.js';
-import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
-import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
-import { HttpClient } from '../../../utils/httpClient.js';
+import { RegisterUser } from './UserManagement/RegisterUser.js';
+import { LoginUser } from './UserManagement/LoginUser.js';
+import { LogoutUser } from './UserManagement/LogoutUser.js';
+import { getFirestoreAccessToken } from '../../utils/getFirestoreAccessToken.js';
+import { FirestoreCommunicationHelper } from '../../utils/firestoreCommunicationHelper.js';
+import { HttpClient } from '../../utils/httpClient.js';
 
 //GET Test Cases
 const testGroup = async () => {
@@ -248,9 +248,9 @@ const testLogoutUser = async () => {
   const userId = randomUUID();
 
   const createUser = async () => {
-    const { getFirestoreAccessToken } = await import('../../../utils/getFirestoreAccessToken.js');
-    const { FirestoreCommunicationHelper } = await import('../../../utils/firestoreCommunicationHelper.js');
-    const { HttpClient } = await import('../../../utils/httpClient.js');
+    const { getFirestoreAccessToken } = await import('../../utils/getFirestoreAccessToken.js');
+    const { FirestoreCommunicationHelper } = await import('../../utils/firestoreCommunicationHelper.js');
+    const { HttpClient } = await import('../../utils/httpClient.js');
 
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
@@ -321,7 +321,7 @@ const testRegisterUser = async () => {
 };
 
 //GET
-//testGroup();
+testGroup();
 //testGetUserData();
 //testGetFriends();
 //testGetPosts();
