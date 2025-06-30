@@ -51,10 +51,8 @@ const FriendsPage: React.FC = () => {
         <>
             <CssBaseline enableColorScheme />
                     <AppBar>
-                        <AppToolbar onAddGroupClick={toggleDrawer(true)}/>
+                        <AppToolbar onAddClick={toggleDrawer(true)}/>
                     </AppBar>
-            {/*<Box sx={mainPageStyles.chatBackground} >*/}
-            {/*</Box>*/}
             <Box sx={{ paddingTop: '1rem', paddingBottom: '4rem' /* leave space for nav bars */ }}>
                 <Tabs
                     value={activeTab === 'friends' ? 0 : 1}
