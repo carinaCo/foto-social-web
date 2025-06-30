@@ -34,17 +34,22 @@ const FriendRequestBox: React.FC<Props> = ({
     onReject
 }) => {
     return (
-        <Box sx={{ height: "100%", overflowY: "auto",
-            scrollbarWidth: "none", // Firefox
+        <Box sx={{
+            height: "100%",
+            width: '350px',
+            overflowY: "auto",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none", // IE 10+
             "&::-webkit-scrollbar": {
-                display: "none", // Chrome/Safari
-            }
+                width: 0, // Safari + Chrome
+                height: 0,
+            },
         }}>
-            <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
+            <List sx={{ width: '100%' }}>
                 {requests.map((
                     req) =>
                     (
-                        <ListItem key={req.id} divider>
+                        <ListItem key={req.id} divider sx={{ width: '100%' }}>
                             <ListItemAvatar>
                                 <Avatar alt="Profile Picture"/>
                             </ListItemAvatar>
