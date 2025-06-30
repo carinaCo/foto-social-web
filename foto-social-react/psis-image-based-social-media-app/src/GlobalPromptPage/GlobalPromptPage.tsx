@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     AppBar, CssBaseline
 } from "@mui/material";
-import AppToolbar from "../MainPage/AppToolbar.tsx";
+import AppToolbar from "../GroupPage/AppToolbar.tsx";
 
 const GlobalPromptPage: React.FC = () => {
     return (

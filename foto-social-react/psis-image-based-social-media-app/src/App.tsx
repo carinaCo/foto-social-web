@@ -1,8 +1,8 @@
 import {Route, Routes } from 'react-router-dom';
 import './App.css'
-import GroupsPage from "./MainPage/groupsPage.tsx";
+import GroupsPage from "./GroupPage/groupsPage.tsx";
 import {createTheme, ThemeProvider} from "@mui/material";
-import BottomNavigationBar from "./MainPage/bottomNavigationBar.tsx";
+import BottomNavigationBar from "./GroupPage/bottomNavigationBar.tsx";
 import Login from "./Authentification/Login.tsx"
 import Register from "./Authentification/Register.tsx"
 import ChatPage from "./ChatPage/ChatPage.tsx";

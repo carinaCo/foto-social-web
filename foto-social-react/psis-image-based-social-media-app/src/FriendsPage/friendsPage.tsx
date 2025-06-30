@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import FriendBox from "./friendBox.tsx";
 import FriendRequestBox from "./friendRequestBox.tsx";
-import AppToolbar from "../MainPage/AppToolbar.tsx";
-import AddNewDrawer from "../MainPage/AddNewDrawer.tsx";
 import type {User} from "../Models/User.tsx";
+import AppToolbar from "../GroupPage/AppToolbar.tsx";
+import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
+
 
 const FriendsPage: React.FC = () => {
     //for addFriend/Group

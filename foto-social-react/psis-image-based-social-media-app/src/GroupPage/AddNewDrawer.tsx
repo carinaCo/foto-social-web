@@ -13,6 +13,9 @@ import { Slide } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import {handleCreateGroup} from "./helpers/groupHelper.tsx";
+
+const MY_FOUNDER_ID = '1119876_test_andi';
 
 const styles = {
     drawerPaper: {
@@ -403,7 +406,14 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 onClick={() => {
                                     console.log("Gruppe erstellt mit: " + selectedContacts + " und Name: ", groupName);
                                     handleClose();
-                                    // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
+                                    // handleCreateGroup('testId_string', MY_FOUNDER_ID, groupName )
+                                    //     .then((result) => {
+                                    //         console.log("Erstellt result:", result);
+                                    //         // groupCreateHandler({ name: groupName, members: selectedContacts });
+                                    //     })
+                                    //     .catch((error) => {
+                                    //         console.error("Fehler beim Erstellen der Gruppe:", error);
+                                    //     });
                                 }}
                                 disabled={isEmptyStringOrOnlySpaces(groupName)}
                                 sx={{...styles.addGroupButton,
