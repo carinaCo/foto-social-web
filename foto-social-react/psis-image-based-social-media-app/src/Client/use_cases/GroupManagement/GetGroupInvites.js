@@ -26,6 +26,7 @@ export class GetGroupInvites {
     const usersResponse = await httpClient.listDocuments(usersUrl);
 
     const invitedUsers = usersResponse.documents
+
       .map(doc => {
         const fields = doc.fields;
         return {

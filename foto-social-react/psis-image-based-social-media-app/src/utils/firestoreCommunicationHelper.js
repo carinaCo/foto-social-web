@@ -1,9 +1,10 @@
   export class FirestoreCommunicationHelper {
+
     constructor({ projectId, databaseId = '(default)' }) {
       this.projectId = projectId;
       this.databaseId = databaseId;
     }
-
+    
     get baseFirestoreUrl() {
       return `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/${this.databaseId}/documents`;
     }
@@ -100,4 +101,5 @@
     }
     
   }
+
   
