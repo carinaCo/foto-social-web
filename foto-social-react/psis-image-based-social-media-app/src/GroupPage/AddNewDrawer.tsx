@@ -406,15 +406,14 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 onClick={() => {
                                     console.log("Gruppe erstellt mit: " + selectedContacts + " und Name: ", groupName);
                                     handleClose();
-                                    handleCreateGroup('testId_string', MY_FOUNDER_ID, groupName )
-                                        .then((result) => {
-                                            console.log("Erstellt result:", result);
-                                            // groupCreateHandler({ name: groupName, members: selectedContacts });
-                                        })
-                                        .catch((error) => {
-                                            console.error("Fehler beim Erstellen der Gruppe:", error);
-                                        });
-                                    // hier dann iwi einen groupCreateHandler({ name: groupName, members: selectedContacts });
+                                    // handleCreateGroup('testId_string', MY_FOUNDER_ID, groupName )
+                                    //     .then((result) => {
+                                    //         console.log("Erstellt result:", result);
+                                    //         // groupCreateHandler({ name: groupName, members: selectedContacts });
+                                    //     })
+                                    //     .catch((error) => {
+                                    //         console.error("Fehler beim Erstellen der Gruppe:", error);
+                                    //     });
                                 }}
                                 disabled={isEmptyStringOrOnlySpaces(groupName)}
                                 sx={{...styles.addGroupButton,

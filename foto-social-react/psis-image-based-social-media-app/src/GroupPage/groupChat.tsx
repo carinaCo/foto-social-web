@@ -9,15 +9,12 @@ import {
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
+import {useNavigate} from "react-router-dom";
 
-/**
- * sollte irgendwie mappen über einträge
- * ein eintrag pro gruppe -> ein component render i guess
- *
- */
 const GroupChat: React.FC = () => {
 
     const [openDialog, setOpenDialog] = React.useState(false);
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         const isUserTurn = true; // Replace with actual logic
@@ -74,7 +71,17 @@ const GroupChat: React.FC = () => {
                                     },
                                 }}>
                                     <ListItemAvatar>
-                                        <Avatar alt="Group Picture"/>
+                                        <Avatar alt="Group Picture"
+                                                onClick={() =>
+                                                    navigate(`/chat/${element.id}`, {
+                                                        state: {
+                                                            groupName: element.groupName,
+                                                            promptToday: element.promptToday,
+                                                        },
+                                                    })
+                                                }
+
+                                        />
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary={element.groupName}

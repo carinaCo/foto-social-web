@@ -3,7 +3,7 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 
 const PROJECT_ID = 'foto-social-web';
-
+// TODO work in progress, hier können helper funktionen für die groupPage hin
 export const handleCreateGroup = async (groupName: string, founderId: string, groupId: string) => {
     try {
         const createGroup = new CreateGroup({ projectId: PROJECT_ID });
