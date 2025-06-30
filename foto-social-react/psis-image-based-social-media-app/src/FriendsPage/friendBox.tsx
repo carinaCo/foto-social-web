@@ -4,28 +4,15 @@ import {
     ListItemText, Snackbar, Alert
 } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import type {User} from "../Models/User.tsx";
 
-/**
- * sollte irgendwie mappen über einträge
- * ein eintrag pro gruppe -> ein component render i guess
- *
- */
-const FriendBox: React.FC = () => {
+interface friendsBoxProps {
+    friends: User[]
+}
+
+const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [copiedId, setCopiedId] = React.useState<string | null>(null);
-
-    const friendElements = [
-        { id: 1, firstName: 'Tick', lastName: 'Duck', userId: '123456789' },
-        { id: 2, firstName: 'Trick', lastName: 'Duck', userId: '075849333' },
-        { id: 3, firstName: 'Track', lastName: 'Duck', userId: '018736588' },
-        { id: 4, firstName: 'Donald', lastName: 'Duck', userId: '678905432' },
-        { id: 5, firstName: 'Daisy', lastName: 'Duck', userId: '453243243' },
-        { id: 6, firstName: 'Scrooge', lastName: 'McDuck', userId: '998877665' },
-        { id: 7, firstName: 'Huey', lastName: 'Duck', userId: '112233445' },
-        { id: 8, firstName: 'Dewey', lastName: 'Duck', userId: '556677889' },
-        { id: 9, firstName: 'Louie', lastName: 'Duck', userId: '667788990' },
-        { id: 10, firstName: 'Gladstone', lastName: 'Gander', userId: '334455667' },
-    ];
 
     const handleItemClick = (userId: string) => {
         navigator.clipboard.writeText(userId).then(() => {
@@ -33,9 +20,6 @@ const FriendBox: React.FC = () => {
             setSnackbarOpen(true);
         });
     };
-
-
-
 
     return (
         <>
@@ -50,13 +34,13 @@ const FriendBox: React.FC = () => {
                     height: 0,
                 },
             }}>
-                <List sx={{ width: '100%', pt: 9, px: 0 }}>
-                    {friendElements.map((element, index) => (
+                <List sx={{ width: '100%'}}>
+                    {friends.map((friend, index) => (
                         <React.Fragment key={index}>
                             <ListItem
-                                key={element.id}
+                                key={friend.firstName + friend.userId}
                                 alignItems="center"
-                                onClick={() => handleItemClick(element.userId)}
+                                onClick={() => handleItemClick(friend.userId)}
                                 sx={{
                                     background: 'rgba(255, 255, 255, 0.01)',
                                     // backdropFilter: 'blur(10px)',
@@ -80,8 +64,8 @@ const FriendBox: React.FC = () => {
                                     <Avatar alt="Profile Picture" />
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={element.firstName + ' ' + element.lastName}
-                                    secondary={'ID: ' + element.userId}
+                                    primary={friend.firstName + ' ' + friend.lastName}
+                                    secondary={'ID: ' + friend.userId}
                                 />
                             </ListItem>
                         </React.Fragment>
