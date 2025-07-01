@@ -321,13 +321,13 @@ const testRegisterUser = async () => {
 };
 
 //GET
-testGetGroup();
+//testGetGroup(); //TODO: FIX!
 //testGetUserData();
-//testGetFriends();
+//testGetFriends(); //TODO: FIX!
 //testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
-//testGetGroupUserRights();
+testGetGroupUserRights();
 //testGetBlockedByUserList();
 
 //testFindMatchingUsers(); //TODO: fix
