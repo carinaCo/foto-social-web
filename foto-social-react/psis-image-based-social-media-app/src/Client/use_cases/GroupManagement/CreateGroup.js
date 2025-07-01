@@ -26,7 +26,7 @@ export class CreateGroup {
     
     await httpClient.patch(groupDocUrl, groupDocBody);
   
-    const membersUrl = firestoreHelper.getGroupMembersUrl(groupId);
+    const membersUrl = firestoreHelper.getGroupUsersUrl(groupId);
     const memberDocBody = {
       fields: {
         userId: { stringValue: founderId },

@@ -29,7 +29,7 @@ export class GetBlockedByUserList {
     const blockedBy = [];
 
     for (const userDoc of usersResponse.documents) {
-      const blockerId = userDoc.name.split('/').pop(); // Extract userId from the document path
+      const blockerId = userDoc.name.split('/').pop();
       const blockedUsersUrl = firestoreHelper.getBlockedByUserListUrl(blockerId);
 
       const blockedListResponse = await httpClient.listDocuments(blockedUsersUrl);
