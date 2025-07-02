@@ -1,7 +1,6 @@
 import React from 'react';
 import {Toolbar, Typography, IconButton, Box,} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 const AppBarOnlyBack: React.FC = () => {

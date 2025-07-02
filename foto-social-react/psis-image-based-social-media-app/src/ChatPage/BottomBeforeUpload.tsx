@@ -4,7 +4,6 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Box,
-  IconButton,
   Typography,
   Stack,
 } from '@mui/material';
