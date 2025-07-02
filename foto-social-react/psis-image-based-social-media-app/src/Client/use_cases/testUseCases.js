@@ -21,6 +21,7 @@ import { getFirestoreAccessToken } from '../../utils/getFirestoreAccessToken.js'
 import { FirestoreCommunicationHelper } from '../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../utils/httpClient.js';
 import { AddUserToGroup } from './GroupManagement/AddUserToGroup.js';
+import { AddFriend } from './FriendsAndBlockSystem/AddFriend.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -354,6 +355,21 @@ const testAddUserToGroup = async () => {
   }
 };
 
+const testAddFriend = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
+    const toAddUserId = 'cd697104-0205-443f-bda4-807ecba100a4';
+    
+    const addFriend = new AddFriend({ projectId});
+    const result = await addFriend.execute({ userId, toAddUserId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testAddFriend:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -379,9 +395,10 @@ const testAddUserToGroup = async () => {
 
 //DELETE
 
-//PUT
+//PATCH
 //testBlockUser();
 //testAddUserToGroup();
+//testAddFriend();
 
 
 //PromptLogic
