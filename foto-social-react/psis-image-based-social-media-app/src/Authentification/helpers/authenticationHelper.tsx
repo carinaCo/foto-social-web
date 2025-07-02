@@ -5,16 +5,16 @@ export const registerUser = async (
     email: string, username: string, encryptedPassword: string
 ) => {
     try {
-        const userId = crypto.randomUUID();
+        // const userId = crypto.randomUUID();
         const projectId = 'foto-social-web';
         const registerUser = new RegisterUser({ projectId });
         const result = await registerUser
-            .execute({ userId, email, username, encryptedPassword });
+            .execute({ email, username, encryptedPassword });
 
         console.log('registerUser result: ', result);
         console.log('Registered username: ', username);
         console.log('Registered email: ', email);
-        console.log('generated userId: ', userId);
+        // console.log('generated userId: ', userId);
 
         return result;
     } catch (error) {

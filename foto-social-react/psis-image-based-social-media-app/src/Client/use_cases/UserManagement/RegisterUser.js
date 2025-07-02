@@ -3,7 +3,6 @@
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
-import { randomUUID } from 'crypto';
 
 export class RegisterUser {
   constructor({ projectId }) {
@@ -15,7 +14,7 @@ export class RegisterUser {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const userId = randomUUID();
+    const userId = crypto.randomUUID();
     console.log('Generated userId:', userId);
 
     //TODO: fix indexing in Firestore for this to work!

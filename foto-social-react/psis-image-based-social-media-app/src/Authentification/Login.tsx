@@ -10,63 +10,23 @@ import {
     Grid,
 } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, loginUser} from "./helpers/authenticationHelper.tsx";
 import toast from "react-hot-toast";
-
-const styles = {
-    lockWrapper: {
-        animation: 'bounceGlow 2.5s infinite',
-        '@keyframes bounceGlow': {
-            '0%, 100%': {
-                transform: 'translateY(0)'
-            },
-            '50%': {
-                transform: 'translateY(-6px)'
-            }
-        }
-    },
-    lockIcon: {
-        m: 1,
-        bgcolor: "primary.light",
-        animation: 'flashGlow 6s infinite',
-        boxShadow: '0 0 8px rgba(108, 100, 225, 0.4)',
-        '@keyframes flashGlow': {
-            '0%, 95%, 100%': {
-                filter: 'brightness(1)',
-                transform: 'scale(1) rotate(0deg)',
-            },
-            '96%': {
-                filter: 'brightness(1.6)',
-                transform: 'scale(1.1) rotate(-10deg)',
-            },
-            '97%': {
-                filter: 'brightness(2)',
-                transform: 'scale(1.2) rotate(10deg)',
-            },
-            '98%': {
-                filter: 'brightness(1.6)',
-                transform: 'scale(1.1) rotate(-5deg)',
-            },
-            '99%': {
-                filter: 'brightness(1.2)',
-                transform: 'scale(1.05) rotate(0deg)',
-            },
-        }
-
-    }
-};
+import {authStyles} from "./helpers/authenticationStyles.ts";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLoginUser = async (userId: string) => {
         try {
             const result = await loginUser(userId);
             if (result.success) {
                 toast.success('Login erfolgreich!');
+                navigate('/groups');
             } else {
                 toast.error('Login fehlgeschlagen.');
             }
@@ -91,8 +51,8 @@ const Login = () => {
                         alignItems: "center",
                     }}
                 >
-                    <Box sx={styles.lockWrapper}>
-                        <Avatar sx={styles.lockIcon}>
+                    <Box sx={authStyles.lockWrapper}>
+                        <Avatar sx={authStyles.lockIcon}>
                             <LockOutlined />
                         </Avatar>
                     </Box>
@@ -129,7 +89,7 @@ const Login = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={ async () => {
-                                await handleLoginUser('7c71b52c-5454-4e7e-9b0d-34ee3d681d4f')
+                                await handleLoginUser('0a60fb39-d985-4543-8b3f-69aa79eb3839')
                             }}
                             disabled={isRegisterOrLoginDisabled(email, password)}
                         >

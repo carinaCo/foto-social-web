@@ -3,7 +3,7 @@ export interface RegisterUserOptions {
 }
 
 export interface RegisterUserInput {
-    userId: string;
+    // userId: string;
     email: string;
     username: string;
     encryptedPassword: string;
