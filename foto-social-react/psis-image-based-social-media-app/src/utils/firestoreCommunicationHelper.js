@@ -52,6 +52,10 @@
         return `${this.baseFirestoreUrl}/Groups/${groupId}/Users`;
       }
 
+    getGroupUserDocUrl(groupId, userId) {
+        return `${this.baseFirestoreUrl}/Groups/${groupId}/Users/${userId}`;
+      }
+      
     getGroupPostsUrl(groupId) {
       return `${this.baseFirestoreUrl}/Groups/${groupId}/Posts`;
     }

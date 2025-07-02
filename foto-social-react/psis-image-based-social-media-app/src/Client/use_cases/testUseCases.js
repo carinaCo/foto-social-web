@@ -20,6 +20,7 @@ import { LogoutUser } from './UserManagement/LogoutUser.js';
 import { getFirestoreAccessToken } from '../../utils/getFirestoreAccessToken.js';
 import { FirestoreCommunicationHelper } from '../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../utils/httpClient.js';
+import { AddUserToGroup } from './GroupManagement/AddUserToGroup.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -337,6 +338,23 @@ const testBlockUser = async () => {
   }
 };
 
+
+const testAddUserToGroup = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    
+    const addUser = new AddUserToGroup({ projectId});
+    const result = await addUser.execute({ userId, groupId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testAddUserToGroup:', error);
+  }
+};
+
+
 //GET
 //testGetGroup(); //TODO: FIX!
 //testGetUserData();
@@ -363,6 +381,7 @@ const testBlockUser = async () => {
 
 //PUT
 //testBlockUser(); //TODO: debug!
+//testAddUserToGroup();
 
 
 //PromptLogic

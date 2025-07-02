@@ -1,4 +1,4 @@
-//TODO: Adds a user to a group. Expects its user-ID as well as the group-ID
+//Adds a user to a group. Expects its user-ID as well as the group-ID
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
@@ -20,7 +20,21 @@ export class AddUserToGroup {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    
+    const userDocUrl = firestoreHelper.getGroupUserDocUrl(groupId, userId);
+
+    try {
+        await httpClient.patch(userDocUrl, {
+            fields: {
+                joinedAt: { timestampValue: new Date().toISOString() }
+            }
+          }); 
+      } catch (err) {
+        console.error('Failed to add user to group:', err);
+        return {
+          success: false,
+          error: 'Failed to add user to group. Please try again later.'
+        };
+      }     
 
     return {
         success: true,
