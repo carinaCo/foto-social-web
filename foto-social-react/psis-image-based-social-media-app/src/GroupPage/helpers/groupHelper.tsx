@@ -1,24 +1,31 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 
-const PROJECT_ID = 'foto-social-web';
-// TODO work in progress, hier können helper funktionen für die groupPage hin
-export const handleCreateGroup = async (groupName: string, founderId: string, groupId: string) => {
+export const createGroup = async (
+    founderId: string,
+    groupName: string
+) => {
     try {
-        const createGroup = new CreateGroup({ projectId: PROJECT_ID });
+        // randomly generated group id when creating new group
+        const groupId = crypto.randomUUID();
+        const projectId = 'foto-social-web';
+        const createGroupInstance = new CreateGroup({ projectId });
 
-        const result = await createGroup.execute({
-            groupId: groupId,
-            founderId: founderId,
-            groupName: groupName
+        // founder id should be current user id, since the acting user creates the group
+        // how to get current user id?
+        const result = await createGroupInstance.execute({
+            groupId,
+            founderId,
+            groupName
         });
-        console.log('result in handleCreateGroup: ', result);
 
-        if (result.success) {
-            console.log('Gruppe erfolgreich erstellt!');
-        }
+        console.log('createGroup result:', result);
+        console.log('Created group name:', groupName);
+        console.log('Group ID:', groupId);
+        console.log('Founder ID:', founderId);
+
+        return result;
     } catch (error) {
-        console.error('Fehler beim Erstellen der Gruppe:', error);
+        console.error('Error in createGroup:', error);
+        throw error;
     }
 };
