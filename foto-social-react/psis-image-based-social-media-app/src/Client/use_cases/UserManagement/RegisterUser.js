@@ -68,7 +68,8 @@ export class RegisterUser {
     };
 
     try {
-      await httpClient.get(userDocUrl);
+      const result = await httpClient.get(userDocUrl);
+      console.log('getUserDocUrl result: ', result);
       console.log('User already exists, skipping registration');
       return { success: false, message: 'User already exists' };
     } catch (err) {

@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
+import {isRegisterOrLoginDisabled, loginUser} from "./helpers/authenticationHelper.tsx";
+import toast from "react-hot-toast";
 
 const styles = {
     lockWrapper: {
@@ -60,7 +62,21 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = () => {};
+    const handleLoginUser = async (userId: string) => {
+        try {
+            const result = await loginUser(userId);
+            if (result.success) {
+                toast.success('Login erfolgreich!');
+            } else {
+                toast.error('Login fehlgeschlagen.');
+            }
+            console.log('login result: ', result);
+        } catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten lmao.');
+            console.error('Error in LoginUser: ', error);
+            throw error;
+        }
+    };
 
     return (
         <>
@@ -112,12 +128,15 @@ const Login = () => {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={handleLogin}
+                            onClick={ async () => {
+                                await handleLoginUser('7c71b52c-5454-4e7e-9b0d-34ee3d681d4f')
+                            }}
+                            disabled={isRegisterOrLoginDisabled(email, password)}
                         >
                             Login
                         </Button>
                         <Grid container justifyContent={"flex-end"}>
-                            <Grid item>
+                            <Grid>
                                 <Link to="/register">Don't have an account? Register</Link>
                             </Grid>
                         </Grid>

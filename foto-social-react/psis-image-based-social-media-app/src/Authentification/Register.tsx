@@ -12,6 +12,8 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
+import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
+import toast from 'react-hot-toast';
 
 const styles = {
     lockWrapper: {
@@ -61,8 +63,22 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleRegister = async () => {};
+    const handleRegister = async () => {
+        try {
+            const result = await registerUser(email, name, password);
 
+            if (result?.success) {
+                toast.success('Registrierung erfolgreich!');
+            } else {
+                toast.error(result?.message || 'Registrierung fehlgeschlagen.');
+            }
+        } catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+        }
+
+    };
+// ananas_pw
     return (
         <>
             <ParticleLayer />
@@ -120,11 +136,12 @@ const Register = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleRegister}
+                            disabled={isRegisterOrLoginDisabled(email, password, name)}
                         >
                             Register
                         </Button>
                         <Grid container justifyContent="flex-end">
-                            <Grid item>
+                            <Grid>
                                 <Link to="/login">Already have an account? Login</Link>
                             </Grid>
                         </Grid>
