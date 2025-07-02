@@ -1,19 +1,17 @@
-//TODO: Removes a user from a group. Expects its user-ID as well as the group-ID
+//TODO: 
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
-export class RemoveUserFromGroup {
+export class AddFriend {
   constructor({ projectId }) {
     this.projectId = projectId;
   }
 
-  async execute({ userId, groupId }) {
+  async execute({ userId }) {
     if (!userId) {
       throw new Error('Missing required parameter: userId');
-    } else if(!groupId){
-        throw new Error('Missing required parameter: groupId');
     }
 
     const accessToken = await getFirestoreAccessToken();
@@ -21,11 +19,5 @@ export class RemoveUserFromGroup {
     const httpClient = new HttpClient(accessToken);
 
     
-
-    return {
-        success: true,
-        message: `User ${userId} has successfully been removed from group ${groupId}`
-      };
-
   }
 }

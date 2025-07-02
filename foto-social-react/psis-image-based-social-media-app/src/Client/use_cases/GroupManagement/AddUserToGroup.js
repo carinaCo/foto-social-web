@@ -1,10 +1,10 @@
-//TODO: Removes a user from a group. Expects its user-ID as well as the group-ID
+//TODO: Adds a user to a group. Expects its user-ID as well as the group-ID
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
-export class RemoveUserFromGroup {
+export class AddUserToGroup {
   constructor({ projectId }) {
     this.projectId = projectId;
   }
@@ -24,7 +24,7 @@ export class RemoveUserFromGroup {
 
     return {
         success: true,
-        message: `User ${userId} has successfully been removed from group ${groupId}`
+        message: `User ${userId} has successfully been added to group ${groupId}`
       };
 
   }
