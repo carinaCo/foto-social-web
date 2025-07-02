@@ -27,6 +27,7 @@ const GroupChat: React.FC = () => {
         }
     }, []);
 
+
     const groupElements =
         [
             {id: 1, groupName: 'Die wilden Kerle', promptToday: 'Happy Place', promptTomorrow: 'Tasty Food' },
