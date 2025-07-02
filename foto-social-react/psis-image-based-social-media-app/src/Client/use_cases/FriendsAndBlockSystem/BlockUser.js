@@ -25,7 +25,7 @@ export class BlockUser {
     const blockDocUrl = firestoreHelper.blockUserUrl(blockingUserId, toBeBlockedUserId);
 
     try {
-        await httpClient.put(blockDocUrl, {
+        await httpClient.patch(blockDocUrl, {
             fields: {
               blockedAt: { timestampValue: new Date().toISOString() }
             }

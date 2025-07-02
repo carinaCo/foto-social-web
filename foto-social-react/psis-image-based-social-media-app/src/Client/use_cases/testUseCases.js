@@ -380,7 +380,7 @@ const testAddUserToGroup = async () => {
 //DELETE
 
 //PUT
-//testBlockUser(); //TODO: debug!
+//testBlockUser();
 //testAddUserToGroup();
 
 
