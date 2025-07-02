@@ -1,9 +1,9 @@
 //TODO: Expects a group-ID and a date
 //Retrieves all post- and message-IDs that have been posted in the group on a day
 
-import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper';
-import { HttpClient } from '../../../utils/httpClient';
-import { getFirestoreToken } from '../../../utils/getFirestoreToken';
+import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
+import { HttpClient } from '../../../utils/httpClient.js';
+import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 export class GetGroupFeed {
   constructor({ projectId }) {
@@ -12,7 +12,7 @@ export class GetGroupFeed {
 
   //TODO: change w data from DB!
   async execute({ groupId, date }) {
-    const accessToken = await getFirestoreToken();
+    const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
