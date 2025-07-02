@@ -14,31 +14,33 @@ export class GetGroup {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
-
-    // 1. Retrieve group document
+  
     const groupDocUrl = firestoreHelper.getGroupUrl(groupId);
     console.log("this is the groupDocurl : " + groupDocUrl);
-
+  
     const groupResponse = await httpClient.get(groupDocUrl);
     const groupData = groupResponse.fields;
     console.log('groupResponse:', groupResponse);
-
-    // 2. Retrieve group members
-    const membersUrl = firestoreHelper.getGroupMembersUrl(groupId);
-    const membersResponse = await httpClient.listDocuments(membersUrl);
-    const members = membersResponse.documents.map(doc => {
+  
+    const usersUrl = firestoreHelper.getGroupUsersUrl(groupId);
+    const usersResponse = await httpClient.listDocuments(usersUrl);
+    console.log('usersResponse:', usersResponse);
+  
+    const users = usersResponse.documents.map(doc => {
       const fields = doc.fields;
       return {
         userId: fields.userId.stringValue,
         role: fields.role.stringValue
       };
     });
-
+    console.log('users:', users);
+  
     return {
       name: groupData.name?.stringValue || null,
       createdAt: groupResponse.createTime,
-      //founderId: groupData.founderId.stringValue,
-      //members
+      founderId: groupData.founderId?.stringValue || null,
+      members: users
     };
   }
+  
 }
