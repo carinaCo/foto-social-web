@@ -22,8 +22,9 @@ const testGroup = async () => {
 const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
-  
+      // const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
+
       const getUserData = new GetUserData({ projectId });
   
       const result = await getUserData.execute({ userId });
@@ -77,6 +78,6 @@ const test = async () => {
 */
 
 //testGroup();
-//testGetUserData();
+testGetUserData();
 //testGetFriends();
-testGetPosts();
+//testGetPosts();
