@@ -23,8 +23,8 @@ export class RemoveFriend {
 
     // 3. Delete both sides of the friendship
     await httpClient.delete(userFriendDocUrl);
-    await httpClient.delete(friendDocUrl); // Optional based on your data model
-
+    await httpClient.delete(friendDocUrl);
+    
     return {
       success: true,
       message: `Friendship between ${userId} and ${friendId} removed.`

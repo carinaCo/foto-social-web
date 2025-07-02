@@ -86,7 +86,23 @@ export class HttpClient {
         if (!response.ok) throw new Error(`PATCH failed: ${response.status} ${response.statusText}`);
         return response.json();
       }
-      
-      
-  }
+
+      async put(url, body) {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+    
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(`HTTP PUT failed: ${response.status} ${response.statusText} - ${errorBody}`);
+        }
+    
+        return response.json();
+      }
+    }
   

@@ -9,6 +9,8 @@ import { GetGroupInvites } from './GroupManagement/GetGroupInvites.js';
 import { GetGroupUserRights } from './GroupManagement/GetGroupUserRights.js';
 import { FindMatchingUsers } from './UserSearch/FindMatchingUsers.js';
 import { GetBlockedByUserList } from './FriendsAndBlockSystem/GetBlockedByUserList.js';
+import { BlockUser } from './FriendsAndBlockSystem/BlockUser.js';
+
 import { CreateGroup } from './GroupManagement/CreateGroup.js';
 
 import { randomUUID } from 'crypto';
@@ -53,7 +55,7 @@ const testGetUserData = async () => {
   const testGetFriends = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const userId = '043d591f-d20d-4777-a154-661d75a447d0';
   
       const getFriends = new GetFriends({ projectId });
   
@@ -320,6 +322,21 @@ const testRegisterUser = async () => {
   }
 };
 
+const testBlockUser = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const blockingUserId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    const toBeBlockedUserId = '68df53c2-1156-4638-a76e-8c2c8bf9774a';
+    
+    const blockUser = new BlockUser({ projectId});
+    const result = await blockUser.execute({ blockingUserId, toBeBlockedUserId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testBlockUser:', error);
+  }
+};
+
 //GET
 //testGetGroup(); //TODO: FIX!
 //testGetUserData();
@@ -327,7 +344,7 @@ const testRegisterUser = async () => {
 //testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
-testGetGroupUserRights();
+//testGetGroupUserRights();
 //testGetBlockedByUserList();
 
 //testFindMatchingUsers(); //TODO: fix
@@ -343,6 +360,9 @@ testGetGroupUserRights();
 //testRegisterUser();
 
 //DELETE
+
+//PUT
+//testBlockUser(); //TODO: debug!
 
 
 //PromptLogic
