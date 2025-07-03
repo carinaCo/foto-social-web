@@ -374,8 +374,8 @@ const testAddFriend = async () => {
 const testSendFriendRequest = async () => {
   try {
     const projectId = 'foto-social-web';
-    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
-    const friendId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+    const friendId = '57779e68-adff-42c1-8ca4-e70039828c55';
     
     const sendFriendRequest = new SendFriendRequest({ projectId});
     const result = await sendFriendRequest.execute({ userId, friendId });
@@ -410,7 +410,7 @@ const testSendFriendRequest = async () => {
 //testRegisterUser();
 
 //POST
-testSendFriendRequest();
+//testSendFriendRequest();
 
 //REMOVE
 
