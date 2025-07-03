@@ -15,13 +15,10 @@ export class RemoveFriend {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    // 1. Build the URL to the friend document in user's collection
     const userFriendDocUrl = firestoreHelper.removeFriendUrl(userId, friendId);
 
-    // 2. Optionally: Build reciprocal removal, if friendship is bidirectional
     const friendDocUrl = firestoreHelper.removeFriendUrl(friendId, userId);
 
-    // 3. Delete both sides of the friendship
     await httpClient.delete(userFriendDocUrl);
     await httpClient.delete(friendDocUrl);
     
