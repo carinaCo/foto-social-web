@@ -422,7 +422,7 @@ const testRemoveFriend = async () => {
 //GET
 //testGetGroup(); //TODO: FIX!
 //testGetUserData();
-//testGetFriends(); //TODO: FIX!
+//testGetFriends();
 //testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
