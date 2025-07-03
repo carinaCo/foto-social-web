@@ -1,4 +1,4 @@
-//TODO: Removes a user from a group. Expects its user-ID as well as the group-ID
+//Removes a user from a group. Expects its user-ID as well as the group-ID
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
@@ -20,12 +20,23 @@ export class RemoveUserFromGroup {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    
+  const groupUsersBaseUrl = firestoreHelper.getGroupUsersUrl(groupId);
+  const userDocUrl = `${groupUsersBaseUrl}/${userId}`;
 
+  try {
+    await httpClient.delete(userDocUrl);
+  } catch (err) {
+    console.error('Failed to remove user from group:', err);
     return {
-        success: true,
-        message: `User ${userId} has successfully been removed from group ${groupId}`
-      };
+      success: false,
+      error: `Failed to remove user ${userId} from group ${groupId}`
+    };
+  }
+
+  return {
+    success: true,
+    message: `User ${userId} has successfully been removed from group ${groupId}`
+  };
 
   }
 }

@@ -23,6 +23,7 @@ import { HttpClient } from '../../utils/httpClient.js';
 import { AddUserToGroup } from './GroupManagement/AddUserToGroup.js';
 import { AddFriend } from './FriendsAndBlockSystem/AddFriend.js';
 import { SendFriendRequest } from './FriendsAndBlockSystem/SendFriendRequest.js';
+import { RemoveUserFromGroup } from './GroupManagement/RemoveUserFromGroup.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -386,6 +387,21 @@ const testSendFriendRequest = async () => {
   }
 };
 
+const testRemoveUserFromGroup = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    
+    const removeUser = new RemoveUserFromGroup({ projectId});
+    const result = await removeUser.execute({ userId, groupId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testRemoveUserFromGroup:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -413,6 +429,7 @@ const testSendFriendRequest = async () => {
 //testSendFriendRequest();
 
 //REMOVE
+//testRemoveUserFromGroup();
 
 //PATCH
 //testBlockUser();
