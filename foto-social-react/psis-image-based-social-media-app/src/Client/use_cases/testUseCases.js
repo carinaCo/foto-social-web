@@ -22,6 +22,7 @@ import { FirestoreCommunicationHelper } from '../../utils/firestoreCommunication
 import { HttpClient } from '../../utils/httpClient.js';
 import { AddUserToGroup } from './GroupManagement/AddUserToGroup.js';
 import { AddFriend } from './FriendsAndBlockSystem/AddFriend.js';
+import { SendFriendRequest } from './FriendsAndBlockSystem/SendFriendRequest.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -370,6 +371,21 @@ const testAddFriend = async () => {
   }
 };
 
+const testSendFriendRequest = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
+    const friendId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    
+    const sendFriendRequest = new SendFriendRequest({ projectId});
+    const result = await sendFriendRequest.execute({ userId, friendId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testAddFriend:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -393,7 +409,10 @@ const testAddFriend = async () => {
 //testCreateGroup();
 //testRegisterUser();
 
-//DELETE
+//POST
+testSendFriendRequest();
+
+//REMOVE
 
 //PATCH
 //testBlockUser();
