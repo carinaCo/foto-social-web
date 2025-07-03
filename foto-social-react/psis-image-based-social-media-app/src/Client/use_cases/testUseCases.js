@@ -24,6 +24,7 @@ import { AddUserToGroup } from './GroupManagement/AddUserToGroup.js';
 import { AddFriend } from './FriendsAndBlockSystem/AddFriend.js';
 import { SendFriendRequest } from './FriendsAndBlockSystem/SendFriendRequest.js';
 import { RemoveUserFromGroup } from './GroupManagement/RemoveUserFromGroup.js';
+import { RemoveFriend } from './FriendsAndBlockSystem/RemoveFriend.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -402,6 +403,21 @@ const testRemoveUserFromGroup = async () => {
   }
 };
 
+const testRemoveFriend = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
+    const friendId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+    
+    const removeFriend = new RemoveFriend({ projectId});
+    const result = await removeFriend.execute({ userId, friendId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testRemoveFriend:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -430,6 +446,7 @@ const testRemoveUserFromGroup = async () => {
 
 //REMOVE
 //testRemoveUserFromGroup();
+//testRemoveFriend();
 
 //PATCH
 //testBlockUser();
