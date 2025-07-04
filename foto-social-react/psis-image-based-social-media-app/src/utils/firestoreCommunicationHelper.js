@@ -105,7 +105,12 @@
 
     getRunQueryUrl() {
       return `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/(default)/documents:runQuery`;
-    }     
+    }
+
+    getGroupPromptsUrl(groupId) {
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/Prompts`;
+    }
+    
     
   }
   

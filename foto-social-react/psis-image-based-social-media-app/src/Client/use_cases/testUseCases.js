@@ -25,6 +25,7 @@ import { AddFriend } from './FriendsAndBlockSystem/AddFriend.js';
 import { SendFriendRequest } from './FriendsAndBlockSystem/SendFriendRequest.js';
 import { RemoveUserFromGroup } from './GroupManagement/RemoveUserFromGroup.js';
 import { RemoveFriend } from './FriendsAndBlockSystem/RemoveFriend.js';
+import { GeneratePromptByUser } from './PromptGeneration/GeneratePromptByUser.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -417,6 +418,22 @@ const testRemoveFriend = async () => {
   }
 };
 
+const testGeneratePromptByUser = async () => {
+  try {
+    const projectId = 'foto-social-web';
+
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    const promptText = 'new prompt to start';
+    
+    const generatePrompt = new GeneratePromptByUser({ projectId});
+    const result = await generatePrompt.execute({ groupId, promptText });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testGeneratePromptByUser:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -454,3 +471,4 @@ const testRemoveFriend = async () => {
 
 
 //PromptLogic
+//testGeneratePromptByUser();
