@@ -21,7 +21,7 @@ export class RegisterUser {
     //TODO: fix indexing in Firestore for this to work!
     //TODO: fix post such that the user created has a Friends & Blocked collection
 
-    const queryUrl = firestoreHelper.getUsersQueryUrl();
+    const queryUrl = firestoreHelper.getRunQueryUrl();
 
     const queryBody = {
       structuredQuery: {

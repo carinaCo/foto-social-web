@@ -103,10 +103,9 @@
       return `${this.baseFirestoreUrl}/Groups/${groupId}/Messages/${messageId}`;
     }
 
-    getUsersQueryUrl() {
+    getRunQueryUrl() {
       return `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/(default)/documents:runQuery`;
     }
-    
     
   }
   
