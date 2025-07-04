@@ -154,7 +154,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
     const handleCreateGroup = async () => {
         try {
-            // for now hardcoded founder id für name: 'neuer user 1'
+            // TODO: for now hardcoded founder id für name: 'neuer user 1', should be fetched before
             const founderId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
             const result = await createGroup(founderId, groupName);
             if (result?.success) {
