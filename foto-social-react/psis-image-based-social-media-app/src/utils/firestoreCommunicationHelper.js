@@ -105,7 +105,7 @@
 
     getRunQueryUrl() {
       return `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/(default)/documents:runQuery`;
-    }
+    }     
     
   }
   

@@ -110,7 +110,7 @@ const testGetUserData = async () => {
       const date = '2025-06-23';
       const getGroupFeed = new GetGroupFeed({ projectId });
   
-      const result = await getGroupFeed.execute({ groupId, date });
+      const result = await getGroupFeed.execute({ groupId });
   
       console.log('RESULT:', JSON.stringify(result, null, 2));
     } catch (error) {
@@ -123,10 +123,9 @@ const testGetUserData = async () => {
       const projectId = 'foto-social-web';
       const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
   
-      const date = '2025-06-23';
       const getGroupMessages = new GetGroupMessages({ projectId });
   
-      const result = await getGroupMessages.execute({ groupId, date });
+      const result = await getGroupMessages.execute({ groupId });
   
       console.log('RESULT:', JSON.stringify(result, null, 2));
     } catch (error) {
@@ -430,8 +429,8 @@ const testRemoveFriend = async () => {
 //testGetBlockedByUserList();
 
 //testFindMatchingUsers(); //TODO: fix
-//testGetGroupMessages(); //TODO: fix
-//testGetGroupFeed(); //TODO: fix!
+//testGetGroupMessages();
+//testGetGroupFeed();
 
 //functionality
 //testLoginUser();
