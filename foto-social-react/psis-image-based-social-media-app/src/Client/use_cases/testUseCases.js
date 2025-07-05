@@ -28,6 +28,7 @@ import { RemoveFriend } from './FriendsAndBlockSystem/RemoveFriend.js';
 import { GeneratePromptByUser } from './PromptGeneration/GeneratePromptByUser.js';
 import { GetPrompt } from './PromptGeneration/GetPrompt.js';
 import { SendGroupInvite } from './GroupManagement/SendGroupInvite.js';
+import { SendGroupInvites } from './GroupManagement/SendGroupInvites.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -453,11 +454,25 @@ const testGetPrompt = async () => {
 const testSendGroupInvite = async () => {
   try {
     const projectId = 'foto-social-web';
-    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    const groupId = '0c61ae73-c32b-4821-b7d9-bf61a3d32ec4';
     const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
     
     const sendGroupInvite = new SendGroupInvite({ projectId});
     const result = await sendGroupInvite.execute({ userId, groupId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testSendGroupInvite:', error);
+  }
+};
+
+const testSendGroupInvites = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const groupId = '0c61ae73-c32b-4821-b7d9-bf61a3d32ec4';
+    
+    const sendGroupInvites = new SendGroupInvites({ projectId});
+    const result = await sendGroupInvites.execute({ groupId });
 
     console.log('result:', result);
   } catch (error) {
@@ -483,6 +498,7 @@ const testSendGroupInvite = async () => {
 //testLogoutUser();
 //testFindMatchingUsers(); //TODO: fix
 //testSendGroupInvite();
+//testSendGroupInvites(); //TODO: works but test again once more data!
 
 //Create
 //testCreateGroup();
