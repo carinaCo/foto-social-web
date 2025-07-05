@@ -35,29 +35,19 @@ export class GeneratePromptByUser {
   
     const promptsUrl = firestoreHelper.getGroupPromptsUrl(groupId);
   
-    let promptsExist = false;
-    try {
-      const response = await httpClient.get(promptsUrl);
-      promptsExist = Array.isArray(response.documents) && response.documents.length > 0;
-    } catch (err) {
-      promptsExist = false;
-    }
-  
-    if (!promptsExist) {
-      const promptDoc = {
-        fields: {
-          promptText: { stringValue: promptText },
-          createdAt: { timestampValue: new Date().toISOString() },
-          groupId: { stringValue: groupId }
-        }
-      };
-  
-      try {
-        await httpClient.post(promptsUrl, promptDoc);
-      } catch (err) {
-        console.error('Failed to create first prompt:', err);
-        throw err;
+    const promptDoc = {
+      fields: {
+        promptText: { stringValue: promptText },
+        createdAt: { timestampValue: new Date().toISOString() },
+        groupId: { stringValue: groupId }
       }
+    };
+  
+    try {
+      await httpClient.post(promptsUrl, promptDoc);
+    } catch (err) {
+      console.error('Failed to create prompt:', err);
+      throw err;
     }
   
     return {
@@ -65,5 +55,4 @@ export class GeneratePromptByUser {
       message: `Prompt has successfully been created for group ${groupId}`
     };
   }
-  
 }
