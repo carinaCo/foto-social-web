@@ -7,7 +7,7 @@ import { GetGroupPosts } from '../InGroupMessagesAndPosts/GetGroupPosts.js';
 const testGroup = async () => {
   try {
     const projectId = 'foto-social-web';
-    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    const groupId = '6d041607-4ee5-4c35-9114-a49dd1fc0e1e';
 
     const getGroup = new GetGroup({ projectId });
 
@@ -23,7 +23,7 @@ const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
       // const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
-      const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
+      const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // 'neuer user 1'
 
       const getUserData = new GetUserData({ projectId });
 
@@ -77,7 +77,7 @@ const test = async () => {
   };
 */
 
-//testGroup();
-testGetUserData();
+testGroup();
+// testGetUserData();
 //testGetFriends();
 //testGetPosts();
