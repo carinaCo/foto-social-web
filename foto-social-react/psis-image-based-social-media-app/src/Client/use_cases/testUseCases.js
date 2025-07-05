@@ -26,6 +26,8 @@ import { SendFriendRequest } from './FriendsAndBlockSystem/SendFriendRequest.js'
 import { RemoveUserFromGroup } from './GroupManagement/RemoveUserFromGroup.js';
 import { RemoveFriend } from './FriendsAndBlockSystem/RemoveFriend.js';
 import { GeneratePromptByUser } from './PromptGeneration/GeneratePromptByUser.js';
+import { GetPrompt } from './PromptGeneration/GetPrompt.js';
+import { SendGroupInvite } from './GroupManagement/SendGroupInvite.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -423,7 +425,7 @@ const testGeneratePromptByUser = async () => {
     const projectId = 'foto-social-web';
 
     const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
-    const promptText = 'new prompt to start';
+    const promptText = 'Summer';
     
     const generatePrompt = new GeneratePromptByUser({ projectId});
     const result = await generatePrompt.execute({ groupId, promptText });
@@ -431,6 +433,35 @@ const testGeneratePromptByUser = async () => {
     console.log('result:', result);
   } catch (error) {
     console.error('Error in testGeneratePromptByUser:', error);
+  }
+};
+
+const testGetPrompt = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    
+    const getPrompt = new GetPrompt({ projectId});
+    const result = await getPrompt.execute({ groupId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testGetPrompt:', error);
+  }
+};
+
+const testSendGroupInvite = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+    
+    const sendGroupInvite = new SendGroupInvite({ projectId});
+    const result = await sendGroupInvite.execute({ userId, groupId });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testSendGroupInvite:', error);
   }
 };
 
@@ -444,14 +475,14 @@ const testGeneratePromptByUser = async () => {
 //testGetGroupInvites();
 //testGetGroupUserRights();
 //testGetBlockedByUserList();
-
-//testFindMatchingUsers(); //TODO: fix
 //testGetGroupMessages();
 //testGetGroupFeed();
 
 //functionality
 //testLoginUser();
 //testLogoutUser();
+//testFindMatchingUsers(); //TODO: fix
+//testSendGroupInvite();
 
 //Create
 //testCreateGroup();
@@ -472,3 +503,4 @@ const testGeneratePromptByUser = async () => {
 
 //PromptLogic
 //testGeneratePromptByUser();
+//testGetPrompt(); //TODO: fix
