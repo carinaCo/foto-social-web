@@ -83,7 +83,7 @@ const GroupChat: React.FC = () => {
             ) :
                 (
                 <>
-                    <TurnDialog open={openDialog} onClose={() => setOpenDialog(false)} groupName={groupElements[0].groupName}/>
+                    <TurnDialog open={openDialog} onClose={() => setOpenDialog(false)} groupName={groups[0].name}/>
                     <Box sx={{ height: "100%", overflowY: "auto",
                         scrollbarWidth: "none", // Firefox
                         "&::-webkit-scrollbar": {
