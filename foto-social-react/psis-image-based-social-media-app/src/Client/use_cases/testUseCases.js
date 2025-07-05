@@ -496,7 +496,7 @@ const testSendGroupInvites = async () => {
 //functionality
 //testLoginUser();
 //testLogoutUser();
-//testFindMatchingUsers(); //TODO: fix
+//testFindMatchingUsers();
 //testSendGroupInvite();
 //testSendGroupInvites(); //TODO: works but test again once more data!
 
