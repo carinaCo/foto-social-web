@@ -1,4 +1,4 @@
-//Expects register data and a User-ID. Creates the user structure expected in Firestore
+//Expects register data. Creates the user structure expected in Firestore
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
@@ -14,16 +14,12 @@ export class RegisterUser {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const userId = crypto.randomUUID();
-    console.log('Generated userId:', userId);
-
-    //TODO: fix indexing in Firestore for this to work!
-
-    const queryUrl = firestoreHelper.getUsersQueryUrl();
+    const userId = randomUUID();
+    const queryUrl = firestoreHelper.getRunQueryUrl();
 
     const queryBody = {
       structuredQuery: {
-        from: [{ collectionId: 'users' }],
+        from: [{ collectionId: 'Users' }],
         where: {
           compositeFilter: {
             op: 'OR',
@@ -51,36 +47,31 @@ export class RegisterUser {
 
     const queryResults = await httpClient.post(queryUrl, queryBody);
 
-    if (queryResults && queryResults.length && queryResults[0].document) {
+    console.log('Firestore runQuery results:', JSON.stringify(queryResults, null, 2));
+
+    const userExists = Array.isArray(queryResults) && queryResults.some(result => result.document);
+
+    if (userExists) {
       return { success: false, message: 'Email or username already in use' };
     }
 
-    const userDocUrl = firestoreHelper.getUserDoc(userId);
     const userDocBody = {
       fields: {
-        email: { stringValue: email },
         userId: { stringValue: userId },
+        email: { stringValue: email },
         username: { stringValue: username },
         encrPassword: { stringValue: encryptedPassword },
-        createdAt: { timestampValue: new Date().toISOString() }
+        createdAt: { timestampValue: new Date().toISOString() },
+        isLoggedIn: { booleanValue: false }
       }
     };
 
-    try {
-      const result = await httpClient.get(userDocUrl);
-      console.log('getUserDocUrl result: ', result);
-      console.log('User already exists, skipping registration');
-      return { success: false, message: 'User already exists' };
-    } catch (err) {
-      if (err.message.includes('404')) {
-        const usersCollectionUrl = firestoreHelper.registerUserUrl();
-        await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
-        return { success: true };
-      } else {
-        throw err;
-      }
-    }
+    const usersCollectionUrl = firestoreHelper.registerUserUrl();
+    await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
+
+    return { success: true, userId };
   }
 }
+
 
 

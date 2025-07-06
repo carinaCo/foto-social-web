@@ -1,4 +1,4 @@
-//TODO: Expects a group-ID and a date
+//Expects a group-ID and a date
 //Retrieves all post- and message-IDs that have been posted in the group on a day
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
@@ -10,64 +10,65 @@ export class GetGroupFeed {
     this.projectId = projectId;
   }
 
-  //TODO: change w data from DB!
-  async execute({ groupId, date }) {
+  async execute({ groupId }) {
+    if (!groupId) {
+      throw new Error('Missing required parameter: groupId');
+    }
+
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const startOfDay = new Date(date + 'T00:00:00.000Z').toISOString();
-    const endOfDay = new Date(date + 'T23:59:59.999Z').toISOString();
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const today = `${year}-${month}-${day}`;
 
-    const postsUrl = firestoreHelper.getGroupPostsUrl(groupId) + `:runQuery`;
-    const postsQuery = {
+    const startOfDay = new Date(`${today}T00:00:00.000Z`).toISOString();
+    const endOfDay = new Date(`${today}T23:59:59.999Z`).toISOString();
+
+    const runQueryUrl = firestoreHelper.getRunQueryUrl(); 
+
+    const buildQuery = (collectionId) => ({
       structuredQuery: {
+        from: [{ collectionId, allDescendants: true }],
         where: {
           fieldFilter: {
-            field: { fieldPath: 'createdAt' },
-            op: 'GREATER_THAN_OR_EQUAL',
-            value: { timestampValue: startOfDay }
+            field: { fieldPath: 'groupId' },
+            op: 'EQUAL',
+            value: { stringValue: groupId }
           }
         },
-        from: [{ collectionId: 'posts' }]
+        orderBy: [{ field: { fieldPath: 'createdAt' }, direction: 'ASCENDING' }]
       }
-    };
+    });
+    
+    let postsResponse = [];
+    try {
+      postsResponse = await httpClient.post(runQueryUrl, buildQuery('Posts'));
+    } catch (err) {
+      console.error('Failed to fetch posts:', err);
+    }
 
-    const postsResponse = await httpClient.post(postsUrl, postsQuery);
     const postIds = postsResponse
       .filter(res => res.document)
-      .filter(res => {
-        const ts = res.document.fields.createdAt.timestampValue;
-        return ts <= endOfDay;
-      })
       .map(res => res.document.name.split('/').pop());
 
-    const messagesUrl = firestoreHelper.getGroupMessagesUrl(groupId) + `:runQuery`;
-    const messagesQuery = {
-      structuredQuery: {
-        where: {
-          fieldFilter: {
-            field: { fieldPath: 'createdAt' },
-            op: 'GREATER_THAN_OR_EQUAL',
-            value: { timestampValue: startOfDay }
-          }
-        },
-        from: [{ collectionId: 'messages' }]
-      }
-    };
+    let messagesResponse = [];
+    try {
+      messagesResponse = await httpClient.post(runQueryUrl, buildQuery('Messages'));
+    } catch (err) {
+      console.error('Failed to fetch messages:', err);
+    }
 
-    const messagesResponse = await httpClient.post(messagesUrl, messagesQuery);
     const messageIds = messagesResponse
       .filter(res => res.document)
-      .filter(res => {
-        const ts = res.document.fields.createdAt.timestampValue;
-        return ts <= endOfDay;
-      })
       .map(res => res.document.name.split('/').pop());
 
     return {
       groupId,
-      date,
+      date: today,
       posts: postIds,
       messages: messageIds
     };

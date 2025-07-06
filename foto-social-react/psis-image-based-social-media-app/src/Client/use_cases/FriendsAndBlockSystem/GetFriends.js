@@ -11,15 +11,30 @@ export class GetFriends {
   }
 
   async execute({ userId }) {
+    if (!userId) {
+      throw new Error('Missing required parameter: userId');
+    }
+
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const friendsCollectionUrl = firestoreHelper.getUserFriendsUrl(userId); 
-    const friendsResponse = await httpClient.listDocuments(friendsCollectionUrl); 
+    const friendsCollectionUrl = firestoreHelper.getUserFriendsUrl(userId);
+
+    let friendsResponse;
+    try {
+      friendsResponse = await httpClient.listDocuments(friendsCollectionUrl);
+    } catch (err) {
+      console.error('Failed to fetch friends:', err);
+      return {
+        success: false,
+        error: 'Failed to retrieve friends list.'
+      };
+    }
+
     const friendIds = friendsResponse.documents.map(doc => {
-      const fields = doc.fields;
-      return fields.friendId.stringValue;
+      const pathParts = doc.name.split('/');
+      return pathParts[pathParts.length - 1];
     });
 
     return {

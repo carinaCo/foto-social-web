@@ -52,6 +52,10 @@
         return `${this.baseFirestoreUrl}/Groups/${groupId}/Users`;
       }
 
+    getGroupUserDocUrl(groupId, userId) {
+        return `${this.baseFirestoreUrl}/Groups/${groupId}/Users/${userId}`;
+      }
+      
     getGroupPostsUrl(groupId) {
       return `${this.baseFirestoreUrl}/Groups/${groupId}/Posts`;
     }
@@ -99,8 +103,22 @@
       return `${this.baseFirestoreUrl}/Groups/${groupId}/Messages/${messageId}`;
     }
 
-    getUsersQueryUrl() {
+    getRunQueryUrl() {
       return `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/(default)/documents:runQuery`;
+    }
+
+    getGroupPromptsUrl(groupId) {
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/Prompts`;
+    }
+
+    getGroupPostUploadUrl(storagePath) {
+      const storageBucketID = "foto-social-web.firebasestorage.app";
+      const encodedPath = encodeURIComponent(storagePath);
+      return `https://firebasestorage.googleapis.com/v0/b/${storageBucketID}/o/${encodedPath}?uploadType=media`;
+    }
+
+    getGroupPostDocumentUrl(groupId, postId) {
+      return `${this.getGroupPostsUrl(groupId)}/${postId}`;
     }
     
     
