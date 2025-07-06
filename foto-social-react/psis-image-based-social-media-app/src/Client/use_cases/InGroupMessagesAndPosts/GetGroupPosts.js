@@ -11,6 +11,9 @@ export class GetGroupPosts {
   }
 
   async execute({ groupId }) {
+    if(!groupId){
+      throw new Error('Missing required parameter: groupId');
+  }
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);

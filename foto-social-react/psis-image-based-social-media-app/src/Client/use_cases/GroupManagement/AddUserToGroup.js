@@ -1,10 +1,10 @@
-//Removes a user from a group. Expects its user-ID as well as the group-ID
+//Adds a user to a group. Expects its user-ID as well as the group-ID
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
-export class RemoveUserFromGroup {
+export class AddUserToGroup {
   constructor({ projectId }) {
     this.projectId = projectId;
   }
@@ -20,23 +20,26 @@ export class RemoveUserFromGroup {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-  const groupUsersBaseUrl = firestoreHelper.getGroupUsersUrl(groupId);
-  const userDocUrl = `${groupUsersBaseUrl}/${userId}`;
+    const userDocUrl = firestoreHelper.getGroupUserDocUrl(groupId, userId);
 
-  try {
-    await httpClient.delete(userDocUrl);
-  } catch (err) {
-    console.error('Failed to remove user from group:', err);
+    try {
+        await httpClient.patch(userDocUrl, {
+            fields: {
+                joinedAt: { timestampValue: new Date().toISOString() }
+            }
+          }); 
+      } catch (err) {
+        console.error('Failed to add user to group:', err);
+        return {
+          success: false,
+          error: 'Failed to add user to group. Please try again later.'
+        };
+      }     
+
     return {
-      success: false,
-      error: `Failed to remove user ${userId} from group ${groupId}`
-    };
-  }
-
-  return {
-    success: true,
-    message: `User ${userId} has successfully been removed from group ${groupId}`
-  };
+        success: true,
+        message: `User ${userId} has successfully been added to group ${groupId}`
+      };
 
   }
 }

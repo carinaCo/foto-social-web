@@ -4,21 +4,24 @@ export class HttpClient {
     }
   
     async post(url, body) {
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${this.accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body)
-        });
-      
-        if (!res.ok) {
-          throw new Error(`POST failed: ${res.status} ${res.statusText}`);
-        }
-      
-        return await res.json();
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+    
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Firestore error response:", errorText);
+        throw new Error(`POST failed: ${res.status} ${res.statusText} - ${errorText}`);
       }
+    
+      return await res.json();
+    }
+    
       
   
       async get(url) {
@@ -86,7 +89,42 @@ export class HttpClient {
         if (!response.ok) throw new Error(`PATCH failed: ${response.status} ${response.statusText}`);
         return response.json();
       }
+
+      async put(url, body) {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+    
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(`HTTP PUT failed: ${response.status} ${response.statusText} - ${errorBody}`);
+        }
+    
+        return response.json();
+      }
+
+      async putBinary(url, binaryBody, contentType = 'application/octet-stream') {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': contentType
+          },
+          body: binaryBody
+        });
       
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`PUT Binary failed: ${response.status} ${response.statusText} - ${errorText}`);
+        }
       
-  }
+        return await response.text();
+      }
+      
+    }
   
