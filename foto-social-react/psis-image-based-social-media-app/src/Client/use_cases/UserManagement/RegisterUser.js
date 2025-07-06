@@ -18,10 +18,9 @@ export class RegisterUser {
     const userId = randomUUID();
     const queryUrl = firestoreHelper.getRunQueryUrl();
 
-    // TODO: Fix Check for existing email or username since atm possible to save another user with same username and email!
     const queryBody = {
       structuredQuery: {
-        from: [{ collectionId: 'users' }],
+        from: [{ collectionId: 'Users' }],
         where: {
           compositeFilter: {
             op: 'OR',
@@ -49,7 +48,11 @@ export class RegisterUser {
 
     const queryResults = await httpClient.post(queryUrl, queryBody);
 
-    if (queryResults && queryResults.length && queryResults[0].document) {
+    console.log('Firestore runQuery results:', JSON.stringify(queryResults, null, 2));
+
+    const userExists = Array.isArray(queryResults) && queryResults.some(result => result.document);
+
+    if (userExists) {
       return { success: false, message: 'Email or username already in use' };
     }
 
