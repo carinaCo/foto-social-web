@@ -5,7 +5,7 @@ import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicat
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
-export class SendGroupInvites {
+export class SendGroupInvites { //TODO: Rename?
   constructor({ projectId }) {
     this.projectId = projectId;
   }
