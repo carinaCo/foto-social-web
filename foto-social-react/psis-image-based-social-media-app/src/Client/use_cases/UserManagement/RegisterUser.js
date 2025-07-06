@@ -63,7 +63,7 @@ export class RegisterUser {
         username: { stringValue: username },
         encrPassword: { stringValue: encryptedPassword },
         createdAt: { timestampValue: new Date().toISOString() },
-        isLoggedIn: { booleanValue: true }
+        isLoggedIn: { booleanValue: false }
       }
     };
 
