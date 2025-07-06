@@ -10,10 +10,11 @@ import { GetGroupUserRights } from './GroupManagement/GetGroupUserRights.js';
 import { FindMatchingUsers } from './UserSearch/FindMatchingUsers.js';
 import { GetBlockedByUserList } from './FriendsAndBlockSystem/GetBlockedByUserList.js';
 import { BlockUser } from './FriendsAndBlockSystem/BlockUser.js';
-
 import { CreateGroup } from './GroupManagement/CreateGroup.js';
 
 import { randomUUID } from 'crypto';
+import fs from 'fs';
+
 import { RegisterUser } from './UserManagement/RegisterUser.js';
 import { LoginUser } from './UserManagement/LoginUser.js';
 import { LogoutUser } from './UserManagement/LogoutUser.js';
@@ -29,6 +30,7 @@ import { GeneratePromptByUser } from './PromptGeneration/GeneratePromptByUser.js
 import { GetPrompt } from './PromptGeneration/GetPrompt.js';
 import { SendGroupInvite } from './GroupManagement/SendGroupInvite.js';
 import { SendGroupInvites } from './GroupManagement/SendGroupInvites.js';
+import { SendGroupPost } from './InGroupMessagesAndPosts/SendGroupPost.js';
 
 //GET Test Cases
 const testGetGroup = async () => {
@@ -315,18 +317,16 @@ const testCreateGroup = async () => {
 const testRegisterUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const userId = randomUUID();
-    const email = 'email@zahoo12.com'
-    const username = 'Test User2512';
+    const email = 'newEmail@yahoo.com567782025'
+    const username = 'usernameToTest25';
     const encryptedPassword = 'encryptedPassword202513'
 
     const registerUser = new RegisterUser({ projectId});
-    const result = await registerUser.execute({ userId, email, username, encryptedPassword });
+    const result = await registerUser.execute({ email, username, encryptedPassword });
 
-    console.log('CreateGroup result:', result);
-    console.log('User ID:', userId);
+    console.log('RegisterUser result:', result);
   } catch (error) {
-    console.error('Error in testCreateGroup:', error);
+    console.error('Error in testRegisterUser:', error);
   }
 };
 
@@ -480,6 +480,24 @@ const testSendGroupInvites = async () => {
   }
 };
 
+const testSendGroupPost = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+    const postId = randomUUID();
+    
+    const imageBase64 = fs.readFileSync('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/base64_encoded_image.txt', 'utf-8');
+
+    const sendGroupPost = new SendGroupPost({ projectId});
+    const result = await sendGroupPost.execute({ userId, groupId, postId, imageBase64 });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testSendGroupPost:', error);
+  }
+};
+
 
 //GET
 //testGetGroup(); //TODO: FIX!
@@ -502,7 +520,7 @@ const testSendGroupInvites = async () => {
 
 //Create
 //testCreateGroup();
-//testRegisterUser();
+testRegisterUser(); //TODO: FIX LOGIC!
 
 //POST
 //testSendFriendRequest();
@@ -510,6 +528,7 @@ const testSendGroupInvites = async () => {
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
+//testSendGroupPost();
 
 //PATCH
 //testBlockUser();

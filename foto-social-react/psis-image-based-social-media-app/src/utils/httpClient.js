@@ -107,5 +107,24 @@ export class HttpClient {
     
         return response.json();
       }
+
+      async putBinary(url, binaryBody, contentType = 'application/octet-stream') {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': contentType
+          },
+          body: binaryBody
+        });
+      
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`PUT Binary failed: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+      
+        return await response.text();
+      }
+      
     }
   

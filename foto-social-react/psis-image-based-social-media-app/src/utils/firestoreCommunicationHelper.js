@@ -110,6 +110,16 @@
     getGroupPromptsUrl(groupId) {
       return `${this.baseFirestoreUrl}/Groups/${groupId}/Prompts`;
     }
+
+    getGroupPostUploadUrl(storagePath) {
+      const storageBucketID = "foto-social-web.firebasestorage.app";
+      const encodedPath = encodeURIComponent(storagePath);
+      return `https://firebasestorage.googleapis.com/v0/b/${storageBucketID}/o/${encodedPath}?uploadType=media`;
+    }
+
+    getGroupPostDocumentUrl(groupId, postId) {
+      return `${this.getGroupPostsUrl(groupId)}/${postId}`;
+    }
     
     
   }
