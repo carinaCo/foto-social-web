@@ -30,6 +30,6 @@ export class LoginUser {
 
     await httpClient.patch(patchUrl, patchBody);
 
-    return { success: true };
+    return { success: true, userId: userId };
   }
 }

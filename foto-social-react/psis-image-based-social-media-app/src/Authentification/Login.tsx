@@ -59,6 +59,7 @@ const Login = () => {
                     <Typography variant="h5">Login</Typography>
                     <Box sx={{ mt: 1 }}>
                         <TextField
+                            sx={{ backdropFilter: 'blur(5px) contrast(98%)', }}
                             margin="normal"
                             required
                             fullWidth
@@ -71,6 +72,7 @@ const Login = () => {
                         />
 
                         <TextField
+                            sx={{ backdropFilter: 'blur(5px) contrast(98%)', }}
                             margin="normal"
                             required
                             fullWidth

@@ -4,7 +4,7 @@ import {Typography, Popover, Tooltip, Box} from '@mui/material';
 interface UserInfoPopperProps {
     open: boolean;
     anchorEl: HTMLElement | null;
-    userId: string;
+    userId: string | null;
     onClose: () => void;
     onCopy: () => void;
 }

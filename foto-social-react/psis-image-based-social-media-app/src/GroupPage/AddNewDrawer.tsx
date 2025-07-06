@@ -21,9 +21,9 @@ const styles = {
         height: '95vh',
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
-        bgcolor: 'rgba(110, 80, 150, 0.08)',
+        bgcolor: 'rgba(36,17,86,0.2)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(12px)',
+        backdropFilter: 'blur(6px)',
         color: '#fff',
         px: 3,
         py: 2
@@ -341,6 +341,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                         <Typography variant="h5" align="center">New Group</Typography>
                         <Box sx={{ px: 2, pb: 2, pt: 2 }}>
                             <TextField
+                                autoFocus
                                 variant="outlined"
                                 fullWidth
                                 placeholder="Group name"

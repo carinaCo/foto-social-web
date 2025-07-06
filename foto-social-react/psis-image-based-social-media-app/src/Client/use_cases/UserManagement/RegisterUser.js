@@ -14,7 +14,7 @@ export class RegisterUser {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const userId = randomUUID();
+    const userId = crypto.randomUUID();
     const queryUrl = firestoreHelper.getRunQueryUrl();
 
     const queryBody = {
@@ -69,7 +69,7 @@ export class RegisterUser {
     const usersCollectionUrl = firestoreHelper.registerUserUrl();
     await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
 
-    return { success: true, userId };
+    return { success: true, userId: userId };
   }
 }
 
