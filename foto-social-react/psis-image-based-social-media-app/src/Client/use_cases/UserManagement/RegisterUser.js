@@ -1,4 +1,4 @@
-//Expects register data and a User-ID. Creates the user structure expected in Firestore
+//Expects register data. Creates the user structure expected in Firestore
 
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
@@ -16,13 +16,9 @@ export class RegisterUser {
     const httpClient = new HttpClient(accessToken);
 
     const userId = randomUUID();
-    console.log('Generated userId:', userId);
-
-    //TODO: fix indexing in Firestore for this to work!
-    //TODO: fix post such that the user created has a Friends & Blocked collection
-
     const queryUrl = firestoreHelper.getRunQueryUrl();
 
+    // TODO: Fix Check for existing email or username since atm possible to save another user with same username and email!
     const queryBody = {
       structuredQuery: {
         from: [{ collectionId: 'users' }],
@@ -57,31 +53,23 @@ export class RegisterUser {
       return { success: false, message: 'Email or username already in use' };
     }
 
-    const userDocUrl = firestoreHelper.getUserDoc(userId);
     const userDocBody = {
       fields: {
-        email: { stringValue: email },
         userId: { stringValue: userId },
+        email: { stringValue: email },
         username: { stringValue: username },
         encrPassword: { stringValue: encryptedPassword },
-        createdAt: { timestampValue: new Date().toISOString() }
+        createdAt: { timestampValue: new Date().toISOString() },
+        isLoggedIn: { booleanValue: true }
       }
     };
 
-    try {
-      await httpClient.get(userDocUrl);
-      console.log('User already exists, skipping registration');
-      return { success: false, message: 'User already exists' };
-    } catch (err) {
-      if (err.message.includes('404')) {
-        const usersCollectionUrl = firestoreHelper.registerUserUrl();
-        await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
-        return { success: true };
-      } else {
-        throw err;
-      }
-    }
+    const usersCollectionUrl = firestoreHelper.registerUserUrl();
+    await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
+
+    return { success: true, userId };
   }
 }
+
 
 
