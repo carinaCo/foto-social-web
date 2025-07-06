@@ -75,7 +75,7 @@ export class RegisterUser {
       if (err.message.includes('404')) {
         const usersCollectionUrl = firestoreHelper.registerUserUrl();
         await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
-        return { success: true };
+        return { success: true, userId: userId };
       } else {
         throw err;
       }

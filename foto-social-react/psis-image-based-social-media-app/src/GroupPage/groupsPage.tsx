@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    AppBar, CssBaseline
+    AppBar, Box, CssBaseline
 } from "@mui/material";
 import GroupChat from "./groupChat.tsx";
 import AppToolbar from "./AppToolbar.tsx";
@@ -18,7 +18,14 @@ const GroupsPage: React.FC = () => {
                     <AppBar>
                         <AppToolbar onAddClick={toggleDrawer(true)}/>
                     </AppBar>
-            <GroupChat />
+            <Box sx={{
+                width: '95vw',
+                marginLeft: '-32px',
+                marginRight: '-32px',
+                boxSizing: 'border-box',
+            }}>
+                <GroupChat />
+            </Box>
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>

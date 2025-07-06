@@ -25,6 +25,14 @@ const ChatPageContent: React.FC = () => {
         const index = userId.charCodeAt(userId.length - 1) % colors.length;
         return colors[index];
         };
+
+    React.useEffect(() => {
+        // fetch the messages in this chat
+        // render them, like the sampleChats
+
+
+    }, []);
+
     
 
     return (
@@ -39,6 +47,7 @@ const ChatPageContent: React.FC = () => {
                     (
                         <React.Fragment key={element.id || index}>
                         <ListItem alignItems="center" key={index} sx={{
+                            width: '100%',
                             background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
                             backdropFilter: 'blur(10px) saturate(180%)',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -63,20 +72,22 @@ const ChatPageContent: React.FC = () => {
                             </ListItemAvatar>
                             
                             
-                            <Box ml={2}>
+                            <Box ml={2} width={'70%'}>
                             <Typography fontWeight="bold">{element.userName}</Typography>
                             <Box
                               display="flex"
                               justifyContent="center"
                               alignItems="center"
-                              width={200}
-                              height={150}
-                              bgcolor="grey.300"
-                              borderRadius={2}
+                              sx={{
+                                  width: '100%',
+                                  height: '150px',
+                                  bgcolor: 'grey.300',
+                                  borderRadius: 2
+                            }}
                             >
                               
                 
-                               <HideImageIcon sx={{ fontSize: 64, color: 'grey.600' }} />
+                               <HideImageIcon sx={{ width: '80%', fontSize: 64, color: 'grey.600' }} />
                             </Box>
                             </Box>        
                             {/* </Box> */}

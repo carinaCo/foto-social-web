@@ -26,6 +26,7 @@ const ChatPage: React.FC = () => {
                              marginRight: '-32px',
                             //  paddingLeft: '16px',
                             //  paddingRight: '16px',
+                                width: '95vw',
                              boxSizing: 'border-box',
                              }} >
                 <ChatPageContent />
