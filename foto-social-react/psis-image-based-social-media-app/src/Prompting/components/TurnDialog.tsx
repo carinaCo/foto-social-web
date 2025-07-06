@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(
 interface TurnDialogProps {
     open: boolean;
     onClose: () => void;
-    groupName: string;
+    groupName: string | null;
 }
 
 const TurnDialog: React.FC<TurnDialogProps> = ({ open, onClose, groupName }) => {

@@ -11,6 +11,7 @@ import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import FriendsPage from "./FriendsPage/friendsPage.tsx";
 import { useLocation } from 'react-router-dom';
 import ChatPageWithImage from "./ChatPage/ChatPageWithImage.tsx";
+import {Toaster} from "react-hot-toast";
 
 const darkTheme = createTheme({
   
@@ -43,6 +44,7 @@ const App = () => {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
+          <Toaster position="top-center" />
         <Routes>
             <Route path="/global" element={<GlobalPromptPage />} />
             <Route path="/groups" element={<GroupsPage />} />

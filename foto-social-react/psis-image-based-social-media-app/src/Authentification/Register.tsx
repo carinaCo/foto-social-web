@@ -12,56 +12,30 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
-
-const styles = {
-    lockWrapper: {
-        animation: 'bounceGlow 2.5s infinite',
-        '@keyframes bounceGlow': {
-            '0%, 100%': {
-                transform: 'translateY(0)'
-            },
-            '50%': {
-                transform: 'translateY(-6px)'
-            }
-        }
-    },
-    lockIcon: {
-        m: 1,
-        bgcolor: "primary.light",
-        animation: 'flashGlow 6s infinite',
-        boxShadow: '0 0 8px rgba(108, 100, 225, 0.4)',
-        '@keyframes flashGlow': {
-            '0%, 95%, 100%': {
-                filter: 'brightness(1)',
-                transform: 'scale(1) rotate(0deg)',
-            },
-            '96%': {
-                filter: 'brightness(1.6)',
-                transform: 'scale(1.1) rotate(-10deg)',
-            },
-            '97%': {
-                filter: 'brightness(2)',
-                transform: 'scale(1.2) rotate(10deg)',
-            },
-            '98%': {
-                filter: 'brightness(1.6)',
-                transform: 'scale(1.1) rotate(-5deg)',
-            },
-            '99%': {
-                filter: 'brightness(1.2)',
-                transform: 'scale(1.05) rotate(0deg)',
-            },
-        }
-
-    }
-};
+import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
+import toast from 'react-hot-toast';
+import {authStyles} from "./helpers/authenticationStyles.ts";
 
 const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleRegister = async () => {};
+    const handleRegister = async () => {
+        try {
+            const result = await registerUser(email, name, password);
+
+            if (result?.success) {
+                toast.success('Registrierung erfolgreich!');
+            } else {
+                toast.error(result?.message || 'Registrierung fehlgeschlagen.');
+            }
+        } catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+        }
+
+    };
 
     return (
         <>
@@ -76,8 +50,8 @@ const Register = () => {
                         alignItems: "center",
                     }}
                 >
-                    <Box sx={styles.lockWrapper}>
-                        <Avatar sx={styles.lockIcon}>
+                    <Box sx={authStyles.lockWrapper}>
+                        <Avatar sx={authStyles.lockIcon}>
                             <LockOutlined />
                         </Avatar>
                     </Box>
@@ -120,11 +94,12 @@ const Register = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleRegister}
+                            disabled={isRegisterOrLoginDisabled(email, password, name)}
                         >
                             Register
                         </Button>
                         <Grid container justifyContent="flex-end">
-                            <Grid item>
+                            <Grid>
                                 <Link to="/login">Already have an account? Login</Link>
                             </Grid>
                         </Grid>

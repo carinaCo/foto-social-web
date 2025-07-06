@@ -3,7 +3,6 @@
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
-import { randomUUID } from 'crypto';
 
 export class RegisterUser {
   constructor({ projectId }) {

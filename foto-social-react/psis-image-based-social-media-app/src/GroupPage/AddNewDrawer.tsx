@@ -13,9 +13,8 @@ import { Slide } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import {handleCreateGroup} from "./helpers/groupHelper.tsx";
-
-const MY_FOUNDER_ID = '1119876_test_andi';
+import {createGroup} from "./helpers/groupHelper.tsx";
+import toast from "react-hot-toast";
 
 const styles = {
     drawerPaper: {
@@ -152,6 +151,23 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                 : [...prev, id]
         );
     };
+
+    const handleCreateGroup = async () => {
+        try {
+            // TODO: for now hardcoded founder id für name: 'neuer user 1', should be fetched before
+            const founderId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+            const result = await createGroup(founderId, groupName);
+            if (result?.success) {
+                toast.success('Gruppe wurde erstellt!');
+            } else {
+                toast.error('Erstellen fehlgeschlagen');
+            }
+        }
+        catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+        }
+    }
 
     const isEmptyStringOrOnlySpaces = (passedString: string) => {
         return passedString.trim() === ''
@@ -403,17 +419,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 </Typography>
                             )}
                             <ButtonBase
-                                onClick={() => {
+                                onClick={ async () => {
                                     console.log("Gruppe erstellt mit: " + selectedContacts + " und Name: ", groupName);
                                     handleClose();
-                                    // handleCreateGroup('testId_string', MY_FOUNDER_ID, groupName )
-                                    //     .then((result) => {
-                                    //         console.log("Erstellt result:", result);
-                                    //         // groupCreateHandler({ name: groupName, members: selectedContacts });
-                                    //     })
-                                    //     .catch((error) => {
-                                    //         console.error("Fehler beim Erstellen der Gruppe:", error);
-                                    //     });
+                                    await handleCreateGroup();
                                 }}
                                 disabled={isEmptyStringOrOnlySpaces(groupName)}
                                 sx={{...styles.addGroupButton,
@@ -433,7 +442,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                     },
                                 }}
                             >
-                                Add Group
+                                Create Group
                             </ButtonBase>
                         </Box>
                     </Box>
