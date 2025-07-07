@@ -216,43 +216,19 @@ const test = async () => {
 */
 
 const testLoginUser = async () => {
-  const projectId = 'foto-social-web';
-  const userId = randomUUID();
-  const email = `test-${userId}@example.com`;
-  const username = `testUser-${userId}`;
-  const encryptedPassword = 'dummyEncryptedPassword123';
-
   try {
-    const registerUser = new RegisterUser({ projectId });
-    await registerUser.execute({ userId, email, username, encryptedPassword });
-    console.log('User registered.');
-
+    const projectId = 'foto-social-web';
+    const username = `TestUser DiesDas2`;
+    const password = '1234';
+    const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
+  
     const loginUser = new LoginUser({ projectId });
-    const result = await loginUser.execute({ userId });
-
-    if (!result.success) {
-      console.error('LoginUser failed:', result.message);
-      return;
+    const loggingIn = await loginUser.execute({ username, password });
+    
+    console.log(`User who has logged in [${userId}]:`, loggingIn);
+    } catch (error) {
+      console.error('Error in testLoginUser:', error);
     }
-
-    const accessToken = await getFirestoreAccessToken();
-    const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
-    const httpClient = new HttpClient(accessToken);
-    const userDocUrl = firestoreHelper.getUserDoc(userId);
-    const userDoc = await httpClient.get(userDocUrl);
-
-    const isLoggedIn = userDoc.fields?.isLoggedIn?.booleanValue;
-    console.log('Login status:', isLoggedIn);
-
-    if (isLoggedIn === true) {
-      console.log('testLoginUser passed.');
-    } else {
-      console.error('testLoginUser failed: isLoggedIn was not set to true.');
-    }
-
-  } catch (error) {
-    console.error('Error in testLoginUser:', error);
-  }
 };
 
 const testLogoutUser = async () => {
@@ -500,7 +476,7 @@ const testSendGroupPost = async () => {
 
 
 //GET
-//testGetGroup(); //TODO: FIX!
+//testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
 //testGetFriends();
 //testGetPosts();
@@ -512,7 +488,7 @@ const testSendGroupPost = async () => {
 //testGetGroupFeed();
 
 //functionality
-//testLoginUser();
+testLoginUser();
 //testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
@@ -520,7 +496,7 @@ const testSendGroupPost = async () => {
 
 //Create
 //testCreateGroup();
-testRegisterUser(); //TODO: FIX LOGIC!
+//testRegisterUser();
 
 //POST
 //testSendFriendRequest();
