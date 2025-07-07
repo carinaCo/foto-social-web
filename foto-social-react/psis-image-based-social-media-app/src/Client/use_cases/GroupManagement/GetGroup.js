@@ -10,6 +10,8 @@ export class GetGroup {
     this.projectId = projectId;
   }
 
+  //TODO: return prompts as well (see like users)
+
   async execute({ groupId }) {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });

@@ -10,6 +10,8 @@ export class GetGroupPosts {
     this.projectId = projectId;
   }
 
+  //TODO: see that there is a connection with users (something like: which user posted what)
+
   async execute({ groupId }) {
     if(!groupId){
       throw new Error('Missing required parameter: groupId');
