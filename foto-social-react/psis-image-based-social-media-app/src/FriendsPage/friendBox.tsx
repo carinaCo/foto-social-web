@@ -1,8 +1,9 @@
 import * as React from "react";
 import {
     Avatar, Box, List, ListItem, ListItemAvatar,
-    ListItemText, Snackbar, Alert
+    ListItemText, Snackbar, Alert, Grid, Paper, Typography
 } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import type {User} from "../Models/User.tsx";
 
@@ -25,7 +26,9 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
         <>
             <Box sx={{
                 height: "100%",
-                width: '350px',
+                width: '100%',
+                margin: '0 auto',
+                p: 2,
                 overflowY: "auto",
                 scrollbarWidth: "none",
                 msOverflowStyle: "none", // IE 10+
@@ -34,18 +37,24 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                     height: 0,
                 },
             }}>
-                <List sx={{ width: '100%'}}>
+                <Grid container spacing={1}>
                     {friends.map((friend, index) => (
                         <React.Fragment key={index}>
-                            <ListItem
+                            <Grid
+                                friend
                                 key={friend.firstName + friend.userId}
-                                alignItems="center"
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={3}
                                 onClick={() => handleItemClick(friend.userId)}
                                 sx={{
                                     background: 'rgba(255, 255, 255, 0.01)',
                                     // backdropFilter: 'blur(10px)',
                                     filter: 'drop-shadow(0 0px 10px rgba(140, 100, 225, 0.7))',
-                                    height: '90px',
+                                    height: '80px',
+                                    width: '250px',
+                                    overflow: 'hidden',
                                     borderRadius: 3,
                                     marginBottom: 3,
                                     borderBottom: '1px solid rgba(90, 130, 130, 0.5)',
@@ -60,18 +69,17 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                                     },
                                 }}
                             >
-                                <ListItemAvatar>
-                                    <Avatar alt="Profile Picture" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={friend.firstName + ' ' + friend.lastName}
-                                    secondary={'ID: ' + friend.userId}
-                                />
-                            </ListItem>
+                                <Box display="flex" alignItems="center" gap={1} mb={1}>
+                                    <Avatar color="primary" />
+                                    <Typography variant="h6">{friend.firstName + ' ' + friend.lastName}</Typography>
+                                </Box>
+                                <Typography variant="body2" color="text.secondary">
+                                    ID: {friend.userId}
+                                </Typography>
+                            </Grid>
                         </React.Fragment>
-
                     ))}
-                </List>
+                </Grid>
             </Box>
 
             <Snackbar

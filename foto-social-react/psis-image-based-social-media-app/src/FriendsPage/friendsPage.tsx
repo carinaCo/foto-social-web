@@ -3,10 +3,16 @@ import {
     AppBar,
     Box,
     CssBaseline,
+    Paper,
+    Typography,
     Tabs,
     Tab,
     List,
+    Badge,
+    IconButton,
+    Toolbar, Container, Grid
 } from "@mui/material";
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FriendBox from "./friendBox.tsx";
 import FriendRequestBox from "./friendRequestBox.tsx";
 import type {User} from "../Models/User.tsx";
@@ -27,6 +33,16 @@ const FriendsPage: React.FC = () => {
         { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
         { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
         { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
+        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
+        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
+        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
+        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
+        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
+        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
+        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
+        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
+        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
+
     ]);
     const [friendRequests, setFriendRequests] = useState<User[]>([
         { id: 2, firstName: 'Tick', lastName: 'Duck', userId: '123456799' },
@@ -48,31 +64,36 @@ const FriendsPage: React.FC = () => {
         setFriendRequests((prev) => prev.filter((r) => r.id !== id));
     };
 
+    const [showRequests, setShowRequests] = useState(false);
+
+    const toggleRequests = () => setShowRequests((prev) => !prev);
+
+    const pendingCount = friendRequests.length;
+
     return (
         <>
             <CssBaseline enableColorScheme />
-                    <AppBar>
-                        <AppToolbar onAddClick={toggleDrawer(true)}/>
-                    </AppBar>
-            <Box sx={{ paddingTop: '1rem', paddingBottom: '4rem' /* leave space for nav bars */ }}>
-                <Tabs
-                    value={activeTab === 'friends' ? 0 : 1}
-                    onChange={handleTabChange}
-                    centered
-                    variant="fullWidth"
-                    textColor="primary"
-                    indicatorColor="primary"
-                >
-                    <Tab label="Friends" />
-                    <Tab label="Friend Requests" />
-                </Tabs>
+            <AppBar>
+                <AppToolbar onAddClick={toggleDrawer(true)}/>
+                {pendingCount>0 && (
+                    <IconButton color="inherit" onClick={toggleRequests}>
+                        <Badge badgeContent={pendingCount} color="error">
+                            <PeopleAltIcon />
+                        </Badge>
+                    </IconButton>
+                )}
 
-                <Box sx={{ marginTop: 2 }}>
-                    {activeTab === 'friends' && (
-                        <FriendBox friends={friends} />
-                    )}
+            </AppBar>
 
-                    {activeTab === 'requests' && (
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Grid container spacing={3}>
+            {/* Friend Requests - Conditionally Rendered */}
+            {showRequests && pendingCount > 0 && (
+                <Grid item>
+                    <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none'}}>
+                        <Typography variant="h6" gutterBottom>
+                            Friend Requests
+                        </Typography>
                         <List>
                             <FriendRequestBox
                                 requests={friendRequests}
@@ -80,9 +101,22 @@ const FriendsPage: React.FC = () => {
                                 onReject={handleReject}
                             />
                         </List>
-                    )}
-                </Box>
-            </Box>
+                    </Paper>
+                </Grid>
+            )}
+
+            {/* Friends - Adjust width based on requests panel */}
+            <Grid item>
+                <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none', p: 0 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Your Friends
+                    </Typography>
+                    <FriendBox friends={friends} />
+                </Paper>
+            </Grid>
+        </Grid>
+    </Container>
+
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
