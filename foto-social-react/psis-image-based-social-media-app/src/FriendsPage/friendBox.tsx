@@ -6,9 +6,10 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import type {User} from "../Models/User.tsx";
+import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 
 interface friendsBoxProps {
-    friends: User[]
+    friends: UserDataResult[]
 }
 
 const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
@@ -42,7 +43,7 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                         <React.Fragment key={index}>
                             <Grid
                                 friend
-                                key={friend.firstName + friend.userId}
+                                key={friend.username + friend.userId}
                                 xs={12}
                                 sm={6}
                                 md={4}
@@ -71,7 +72,7 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                             >
                                 <Box display="flex" alignItems="center" gap={1} mb={1}>
                                     <Avatar color="primary" />
-                                    <Typography variant="h6">{friend.firstName + ' ' + friend.lastName}</Typography>
+                                    <Typography variant="h6">{friend.username}</Typography>
                                 </Box>
                                 <Typography variant="body2" color="text.secondary">
                                     ID: {friend.userId}

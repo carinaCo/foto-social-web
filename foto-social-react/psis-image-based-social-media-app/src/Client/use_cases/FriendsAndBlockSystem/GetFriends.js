@@ -38,6 +38,7 @@ export class GetFriends {
     });
 
     return {
+      success: true,
       userId,
       friends: friendIds
     };
