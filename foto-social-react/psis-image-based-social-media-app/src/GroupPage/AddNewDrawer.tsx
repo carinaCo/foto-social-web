@@ -15,83 +15,8 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import {createGroup} from "./helpers/groupHelper.tsx";
 import toast from "react-hot-toast";
-
-const styles = {
-    drawerPaper: {
-        height: '95vh',
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        bgcolor: 'rgba(36,17,86,0.2)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(6px)',
-        color: '#fff',
-        px: 3,
-        py: 2
-    },
-    continueButton: {
-        position: 'absolute',
-        top: 12,
-        right: 8,
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 0.75,
-        px: 1,
-        py: 0.5,
-        borderRadius: 1,
-        fontWeight: 500,
-        fontSize: '0.95rem'
-    },
-    newGroupButton: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        px: 2,
-        py: 1.5,
-        borderRadius: 1,
-        '&:hover': {
-            backgroundColor: 'action.hover',
-        }
-    },
-    newContactButton: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        px: 2,
-        py: 1.5,
-        borderRadius: 1,
-        '&:hover': {
-            backgroundColor: 'action.hover',
-        }
-    },
-    contactSummary: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1.5,
-        py: 1,
-        px: 2,
-        borderRadius: 2,
-        backgroundColor: 'rgba(255, 255, 255, 0.04)',
-        mb: 1,
-    },
-    addGroupButton: {
-        mt: 4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        mx: 'auto',
-        px: 4,
-        py: 1.6,
-        borderRadius: '12px',
-        fontSize: '1rem',
-        textTransform: 'none',
-        backdropFilter: 'blur(14px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        transition: 'all 0.2s ease-in-out',
-    }
-};
+import { groupPageStyles as styles } from "./groupPageStyles.ts";
+import {addFriend} from "../FriendsPage/helpers/friendHelper.ts";
 
 interface AddNewDrawerProps {
     open: boolean;
@@ -169,6 +94,21 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         }
     }
 
+    const handleAddContact = async () => {
+        try {
+            const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: get active user id
+            const result = await addFriend(activeUserId, userId);
+            if (result?.success) {
+                toast.success('Der Bre wurde geadded!');
+            } else {
+                toast.error('Hinzufügen fehlgeschlagen');
+            }
+        } catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+        }
+    };
+
     const isEmptyStringOrOnlySpaces = (passedString: string) => {
         return passedString.trim() === ''
     }
@@ -178,6 +118,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         lastName,
         userId
     ].some(isEmptyStringOrOnlySpaces);
+
 
     const hardCodedContacts = [
         { id: 1, firstName: 'Peter', lastName: 'Mayer' },
@@ -544,10 +485,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 />
                             </Box>
                             <ButtonBase
-                                onClick={() => {
+                                onClick={ async () => {
                                     console.log("Added " + firstName + ' ' + lastName + ' with the userId ' + userId + ' to your contacts!');
+                                    await handleAddContact();
                                     handleClose();
-                                    // hier dann iwi einen contactCreatedHandler({ name: groupName, members: selectedContacts });
                                 }}
                                 disabled={isContactAddFormInvalid}
                                 sx={{...styles.addGroupButton,
