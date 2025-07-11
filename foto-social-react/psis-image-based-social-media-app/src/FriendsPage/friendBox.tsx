@@ -1,11 +1,10 @@
-import * as React from "react";
+import React from "react";
 import {
-    Avatar, Box, List, ListItem, ListItemAvatar,
-    ListItemText, Snackbar, Alert, Grid, Paper, Typography
+    Avatar, Box,
+    Snackbar, Alert,
+    Grid, Typography
 } from "@mui/material";
-import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import type {User} from "../Models/User.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 
 interface friendsBoxProps {
@@ -25,60 +24,59 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
 
     return (
         <>
-            <Box sx={{
-                height: "100%",
-                width: '100%',
-                margin: '0 auto',
-                p: 2,
-                overflowY: "auto",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none", // IE 10+
-                "&::-webkit-scrollbar": {
-                    width: 0, // Safari + Chrome
-                    height: 0,
-                },
-            }}>
-                <Grid container spacing={1}>
-                    {friends.map((friend, index) => (
-                        <React.Fragment key={index}>
+            <Box
+            >
+                <Grid container rowSpacing={0.5} columnSpacing={1}>
+                    {friends.map((friend) => (
                             <Grid
-                                friend
                                 key={friend.username + friend.userId}
-                                xs={12}
-                                sm={6}
-                                md={4}
-                                lg={3}
+                                size={{
+                                    xs: 12,
+                                    sm: 6,
+                                    md: 4,
+                                    lg: 6
+                            }}
                                 onClick={() => handleItemClick(friend.userId)}
                                 sx={{
-                                    background: 'rgba(255, 255, 255, 0.01)',
-                                    // backdropFilter: 'blur(10px)',
-                                    filter: 'drop-shadow(0 0px 10px rgba(140, 100, 225, 0.7))',
-                                    height: '80px',
-                                    width: '250px',
-                                    overflow: 'hidden',
-                                    borderRadius: 3,
-                                    marginBottom: 3,
-                                    borderBottom: '1px solid rgba(90, 130, 130, 0.5)',
-                                    px: 2,   // Innenabstand x
-                                    py: 1.5,  // Innenabstand y
-                                    transition: 'all 0.3s ease-in-out',
+                                    backdropFilter: 'blur(12px) saturate(180%)',
+                                    background: 'rgba(255,255,255,0.1)',
+                                    borderRadius: 4,
+                                    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)',
+                                    border: '1px solid rgba(255,255,255,0.18)',
+                                    p: 2,
+                                    pt: 3,
+                                    pb: 3,
+                                    transition: '0.3s',
                                     '&:hover': {
-                                        filter: 'brightness(1.1)', // leicht heller
-                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
-                                        transform: 'scale(1.01)', // minimal größer
-                                        background: 'rgba(108, 100, 225, 0.3)'
-                                    },
+                                        background: 'rgba(180, 100, 255, 0.18)',
+                                        boxShadow: '0 12px 32px 0 rgba(31, 38, 135, 0.28)',
+                                        transform: 'scale(1.03)'
+                                    }
                                 }}
                             >
-                                <Box display="flex" alignItems="center" gap={1} mb={1}>
-                                    <Avatar color="primary" />
-                                    <Typography variant="h6">{friend.username}</Typography>
+                                <Avatar color="primary" sx={{
+                                    position: 'absolute',
+                                    top: -32, // Hälfte der Avatar-Größe (z.B. 64px) nach oben verschieben
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                    width: 64,
+                                    height: 64,
+                                    boxShadow: 3,
+                                    border: '1px solid white'
+                                }}/>
+                                <Box display="flex" alignItems="center" gap={2} mb={1}>
+                                    {/*<Avatar color="primary" />*/}
+                                    <Typography variant="h6" sx={{ justifyContent: 'center' }}>
+                                        {friend.username}
+                                    </Typography>
                                 </Box>
-                                <Typography variant="body2" color="text.secondary">
-                                    ID: {friend.userId}
+                                {/*<Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>*/}
+                                {/*    UserID:*/}
+                                {/*</Typography>*/}
+                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', textAlign: 'left' }}>
+                                    {friend.userId}
                                 </Typography>
                             </Grid>
-                        </React.Fragment>
                     ))}
                 </Grid>
             </Box>
@@ -95,7 +93,6 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                     sx={{
                         backdropFilter: 'blur(12px) saturate(180%)',
                         backgroundColor: 'rgba(180, 100, 255, 0.2)',
-                        // backgroundColor: 'rgba(180, 100, 255, 0.2)', // die farbe war auch lit
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                         borderRadius: 2,
                         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',

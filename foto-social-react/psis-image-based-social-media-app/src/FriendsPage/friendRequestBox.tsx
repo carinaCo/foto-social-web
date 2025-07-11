@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import type {User} from "../Models/User.tsx";
+import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 
 // export interface FriendRequest {
 //     id: number;
@@ -14,9 +14,9 @@ import type {User} from "../Models/User.tsx";
 // }
 
 interface Props {
-    requests: User[];
-    onAccept: (id: number | undefined) => void;
-    onReject: (id: number | undefined) => void;
+    requests: UserDataResult[];
+    onAccept: (id: string | undefined) => void;
+    onReject: (id: string | undefined) => void;
 }
 
 /**
@@ -40,63 +40,54 @@ const FriendRequestBox: React.FC<Props> = ({
                 height: 0,
             },
         }}>
-            <Grid container spacing={1} sx={{ width: '100%' }}>
+            <Grid container rowSpacing={0.5} columnSpacing={1}>
                 {requests.map((req) => (
                     <Grid
-                        req
                         key={req.userId}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        onClick={() => handleItemClick(friend.userId)}
+                        size={{
+                            xs: 12,
+                            sm: 6,
+                            md: 4,
+                            lg: 6
+                        }}
                         sx={{
-                            background: 'rgba(255, 255, 255, 0.01)',
-                            // backdropFilter: 'blur(10px)',
-                            filter: 'drop-shadow(0 0px 10px rgba(140, 100, 225, 0.7))',
-                            overflow: 'hidden',
-                            borderRadius: 3,
-                            marginBottom: 3,
-                            borderBottom: '1px solid rgba(90, 130, 130, 0.5)',
-                            px: 2,   // Innenabstand x
-                            py: 1.5,  // Innenabstand y
-                            transition: 'all 0.3s ease-in-out',
+                            backdropFilter: 'blur(12px) saturate(180%)',
+                            background: 'rgba(255,255,255,0.1)',
+                            borderRadius: 4,
+                            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)',
+                            border: '1px solid rgba(255,255,255,0.18)',
+                            p: 2,
+                            transition: '0.3s',
                             '&:hover': {
-                                filter: 'brightness(1.1)', // leicht heller
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
-                                transform: 'scale(1.01)', // mixnimal größer
-                                background: 'rgba(108, 100, 225, 0.3)'
-                            },
+                                background: 'rgba(180, 100, 255, 0.18)',
+                                boxShadow: '0 12px 32px 0 rgba(31, 38, 135, 0.28)',
+                                transform: 'scale(1.03)'
+                            }
                         }}
                     >
-                        <Grid item key={req.id} divider sx={{ width: '100%' }}>
+                        <Grid key={req.username} sx={{ width: '100%' }}>
                             <Grid
                                 container
                                 alignItems="center"
                                 spacing={2}
-                                sx={{
-                                    borderBottom: '1px solid',
-                                    borderColor: 'divider',
-                                    pb: 1,
-                                }}
                             >
-                                <Grid item>
+                                <Grid>
                                     <Avatar alt="Profile Picture" />
                                 </Grid>
 
-                                <Grid item xs>
+                                <Grid>
                                     <Typography variant="subtitle1">
-                                        {req.firstName} {req.lastName}
+                                        {req.username}
                                     </Typography>
                                 </Grid>
 
-                                <Grid item>
+                                <Grid>
                                     <Box sx={{ display: 'flex', gap: 1 }}>
                                         <Button
                                             size="small"
                                             variant="contained"
                                             color="primary"
-                                            onClick={() => onAccept(req.id)}
+                                            onClick={() => onAccept(req.userId)}
                                         >
                                             <CheckIcon />
                                         </Button>
@@ -104,7 +95,7 @@ const FriendRequestBox: React.FC<Props> = ({
                                             size="small"
                                             variant="outlined"
                                             color="secondary"
-                                            onClick={() => onReject(req.id)}
+                                            onClick={() => onReject(req.userId)}
                                         >
                                             <CloseIcon />
                                         </Button>

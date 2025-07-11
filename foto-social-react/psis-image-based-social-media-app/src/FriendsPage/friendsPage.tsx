@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import {
     AppBar,
-    Box,
     CssBaseline,
     Paper,
     Typography,
-    Tabs,
-    Tab,
     List,
     Badge,
     IconButton,
-    Toolbar, Container, Grid
+    Container, Grid,
+    Box
 } from "@mui/material";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FriendBox from "./friendBox.tsx";
 import FriendRequestBox from "./friendRequestBox.tsx";
-import type {User} from "../Models/User.tsx";
 import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
 import {getFriends} from "./helpers/friendHelper.ts";
@@ -107,21 +104,28 @@ const FriendsPage: React.FC = () => {
             <CssBaseline enableColorScheme />
             <AppBar>
                 <AppToolbar onAddClick={toggleDrawer(true)}/>
-                {pendingCount>0 && (
-                    <IconButton color="inherit" onClick={toggleRequests}>
-                        <Badge badgeContent={pendingCount} color="error">
-                            <PeopleAltIcon />
-                        </Badge>
-                    </IconButton>
+                {pendingCount > 0 && (
+                    <Box>
+                        <IconButton color="inherit" onClick={toggleRequests} sx={{
+                            width: 40,
+                            height: 40,
+                            background: 'rgba(255,255,255,0.08)',
+                            '&:hover': {
+                                background: 'rgba(180, 100, 255, 0.18)'
+                            }
+                        }}>
+                            <Badge badgeContent={pendingCount} color="error">
+                                <PeopleAltIcon />
+                            </Badge>
+                        </IconButton>
+                    </Box>
                 )}
-
             </AppBar>
 
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid container spacing={3}>
-            {/* Friend Requests - Conditionally Rendered */}
-            {showRequests && pendingCount > 0 && (
-                <Grid>
+        <Grid container spacing={1}>
+            {showRequests && pendingCount > 0 ? (
+                <Grid size={{xs: 12, md: 12, lg: 6}}>
                     <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none'}}>
                         <Typography variant="h6" gutterBottom>
                             Friend Requests
@@ -135,17 +139,14 @@ const FriendsPage: React.FC = () => {
                         </List>
                     </Paper>
                 </Grid>
-            )}
+            ) : (
 
-            {/* Friends - Adjust width based on requests panel */}
-            <Grid>
-                <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none', p: 0 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Your Friends
-                    </Typography>
-                    <FriendBox friends={friends} />
-                </Paper>
-            </Grid>
+                <Grid size={{xs: 12}}>
+                    <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
+                        <FriendBox friends={friends} />
+                    </Paper>
+                </Grid>
+                )}
         </Grid>
     </Container>
 

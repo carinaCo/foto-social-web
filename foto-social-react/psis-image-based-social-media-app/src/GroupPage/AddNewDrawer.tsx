@@ -33,6 +33,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [userId, setUserId] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
 
 
     const handleClose = () => {
@@ -42,8 +43,9 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         setWasInGroupCreate(false);
         setSelectedContacts([]);
         setGroupName('');
-        setFirstName('');
-        setLastName('');
+        // setFirstName('');
+        // setLastName('');
+        setUsername('');
         setUserId('');
         onClose();
     };
@@ -58,8 +60,9 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             setView('main');
         }
         else if (view === 'contactAdd') {
-            setFirstName('');
-            setLastName('');
+            // setFirstName('');
+            // setLastName('');
+            setUsername('');
             setUserId('');
             setView('main');
         }
@@ -114,8 +117,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     }
 
     const isContactAddFormInvalid = [
-        firstName,
-        lastName,
+        username,
         userId
     ].some(isEmptyStringOrOnlySpaces);
 
@@ -398,9 +400,9 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 <TextField
                                     variant="outlined"
                                     fullWidth
-                                    placeholder="First name"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
+                                    placeholder="Username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                     InputProps={{
                                         sx: {
                                             bgcolor: 'rgba(255, 255, 255, 0.04)',
@@ -424,36 +426,36 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                     }}
                                 />
                             </Box>
-                            <Box sx={{ px: 2, pb: 2, pt: 0 }}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    placeholder="Last name"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    InputProps={{
-                                        sx: {
-                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
-                                            borderRadius: 2,
-                                            color: 'white',
-                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                            },
-                                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        sx: {
-                                            color: 'rgba(255, 255, 255, 0.6)',
-                                        },
-                                    }}
-                                />
-                            </Box>
+                            {/*<Box sx={{ px: 2, pb: 2, pt: 0 }}>*/}
+                            {/*    <TextField*/}
+                            {/*        variant="outlined"*/}
+                            {/*        fullWidth*/}
+                            {/*        placeholder="Last name"*/}
+                            {/*        value={lastName}*/}
+                            {/*        onChange={(e) => setLastName(e.target.value)}*/}
+                            {/*        InputProps={{*/}
+                            {/*            sx: {*/}
+                            {/*                bgcolor: 'rgba(255, 255, 255, 0.04)',*/}
+                            {/*                borderRadius: 2,*/}
+                            {/*                color: 'white',*/}
+                            {/*                '& .MuiOutlinedInput-notchedOutline': {*/}
+                            {/*                    borderColor: 'rgba(255, 255, 255, 0.1)',*/}
+                            {/*                },*/}
+                            {/*                '&:hover .MuiOutlinedInput-notchedOutline': {*/}
+                            {/*                    borderColor: '#3B82F6',*/}
+                            {/*                },*/}
+                            {/*                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {*/}
+                            {/*                    borderColor: '#3B82F6',*/}
+                            {/*                },*/}
+                            {/*            },*/}
+                            {/*        }}*/}
+                            {/*        InputLabelProps={{*/}
+                            {/*            sx: {*/}
+                            {/*                color: 'rgba(255, 255, 255, 0.6)',*/}
+                            {/*            },*/}
+                            {/*        }}*/}
+                            {/*    />*/}
+                            {/*</Box>*/}
                             <Box sx={{ px: 2, pb: 2, pt: 4 }}>
                                 <TextField
                                     variant="outlined"
@@ -486,7 +488,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             </Box>
                             <ButtonBase
                                 onClick={ async () => {
-                                    console.log("Added " + firstName + ' ' + lastName + ' with the userId ' + userId + ' to your contacts!');
+                                    console.log("Added " + username + ' with the userId ' + userId + ' to your contacts!');
                                     await handleAddContact();
                                     handleClose();
                                 }}

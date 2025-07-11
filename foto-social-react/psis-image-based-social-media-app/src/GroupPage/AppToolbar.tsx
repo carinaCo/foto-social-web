@@ -21,6 +21,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
         navigator.clipboard.writeText(userId).then(() => {
             setCopiedId(userId);
             setSnackbarOpen(true);
+            handleClose();
         });
     };
 
@@ -103,7 +104,6 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
                         sx={{
                             backdropFilter: 'blur(12px) saturate(180%)',
                             backgroundColor: 'rgba(180, 100, 255, 0.2)',
-                            // backgroundColor: 'rgba(180, 100, 255, 0.2)', // die farbe war auch lit
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                             borderRadius: 2,
                             boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
