@@ -488,7 +488,7 @@ const testSendGroupPost = async () => {
 //testGetGroupFeed();
 
 //functionality
-testLoginUser();
+//testLoginUser();
 //testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
