@@ -12,7 +12,7 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
-import {isRegisterOrLoginDisabled, loginUser, registerUser} from "./helpers/authenticationHelper.tsx";
+import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
 import toast from 'react-hot-toast';
 import {authStyles} from "./helpers/authenticationStyles.ts";
 
@@ -29,12 +29,8 @@ const Register = () => {
 
             if (result?.success && result?.userId) {
                 toast.success('Registrierung erfolgreich!');
-                const loginResult = await loginUser(result.userId);
-                if (loginResult?.success) {
-                    navigate('/groups');
-                } else {
-                    toast.error('Automatischer Login fehlgeschlagen.');
-                }
+                navigate('/login');
+                toast.success('Du kannst dich nun einloggen.');
             } else {
                 toast.error(result?.message || 'Registrierung fehlgeschlagen.');
             }
