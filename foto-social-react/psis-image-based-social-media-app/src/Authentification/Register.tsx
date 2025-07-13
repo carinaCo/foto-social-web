@@ -10,13 +10,15 @@ import {
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
-import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
+import {isRegisterOrLoginDisabled, loginUser, registerUser} from "./helpers/authenticationHelper.tsx";
 import toast from 'react-hot-toast';
 import {authStyles} from "./helpers/authenticationStyles.ts";
 
 const Register = () => {
+    const navigate = useNavigate();
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -25,8 +27,14 @@ const Register = () => {
         try {
             const result = await registerUser(email, name, password);
 
-            if (result?.success) {
+            if (result?.success && result?.userId) {
                 toast.success('Registrierung erfolgreich!');
+                const loginResult = await loginUser(result.userId);
+                if (loginResult?.success) {
+                    navigate('/groups');
+                } else {
+                    toast.error('Automatischer Login fehlgeschlagen.');
+                }
             } else {
                 toast.error(result?.message || 'Registrierung fehlgeschlagen.');
             }
@@ -61,7 +69,7 @@ const Register = () => {
                             name="name"
                             required
                             fullWidth
-                            sx={{ mt: 1, mb: 1 }}
+                            sx={{ mt: 1, mb: 1, backdropFilter: 'blur(5px) contrast(98%)' }}
                             id="name"
                             label="Name"
                             autoFocus
@@ -71,7 +79,7 @@ const Register = () => {
                         <TextField
                             required
                             fullWidth
-                            sx={{ mt: 1, mb: 1 }}
+                            sx={{ mt: 1, mb: 1, backdropFilter: 'blur(5px) contrast(98%)'}}
                             id="email"
                             label="Email Address"
                             name="email"
@@ -81,7 +89,7 @@ const Register = () => {
                         <TextField
                             required
                             fullWidth
-                            sx={{ mt: 1, mb: 1 }}
+                            sx={{ mt: 1, mb: 1, backdropFilter: 'blur(5px) contrast(98%)'}}
                             name="password"
                             label="Password"
                             type="password"

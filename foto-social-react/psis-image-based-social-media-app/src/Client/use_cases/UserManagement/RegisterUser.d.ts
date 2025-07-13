@@ -11,5 +11,5 @@ export interface RegisterUserInput {
 
 export declare class RegisterUser {
     constructor(options: RegisterUserOptions);
-    execute(input: RegisterUserInput): Promise<{ success: boolean; message?: string }>;
+    execute(input: RegisterUserInput): Promise<{ success: boolean; userId: string, message?: string }>;
 }

@@ -47,7 +47,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
         }
     };
 
-    const userId = "0916843";
+    // TODO atm noch hardcoded
+    const userId = "0a60fb39-d985-4543-8b3f-69aa79eb3839";
 
     return (
             <>

@@ -69,7 +69,7 @@ export class RegisterUser {
     const usersCollectionUrl = firestoreHelper.registerUserUrl();
     await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
 
-    return { success: true, userId };
+    return { success: true, userId: userId };
   }
 }
 
