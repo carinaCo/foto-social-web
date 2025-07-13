@@ -10,8 +10,6 @@ export class GetGroupPosts {
     this.projectId = projectId;
   }
 
-  //TODO: see that there is a connection with users (something like: which user posted what)
-
   async execute({ groupId }) {
     if(!groupId){
       throw new Error('Missing required parameter: groupId');
@@ -29,14 +27,18 @@ export class GetGroupPosts {
     const postsCollectionUrl = firestoreHelper.getGroupPostsUrl(groupId);
     const postsResponse = await httpClient.listDocuments(postsCollectionUrl);
 
-    const postIds = postsResponse.documents.map(doc => {
+    const posts = postsResponse.documents.map(doc => {
       const fields = doc.fields;
-      return fields.postId?.stringValue || null;
-    }).filter(Boolean);
+      return {
+        postId: fields.postId?.stringValue || null,
+        userId: fields.userId?.stringValue || null
+      };
+    }).filter(post => post.postId); // filter out null postIds
+    
 
     return {
       groupId,
-      posts: postIds
+      posts
     };
 
   }
