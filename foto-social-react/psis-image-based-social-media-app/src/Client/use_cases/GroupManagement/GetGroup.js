@@ -10,6 +10,8 @@ export class GetGroup {
     this.projectId = projectId;
   }
 
+  //TODO: return prompts as well (see like users)
+
   async execute({ groupId }) {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
@@ -27,12 +29,21 @@ export class GetGroup {
     console.log('usersResponse:', usersResponse);
   
     const users = usersResponse.documents.map(doc => {
-      const fields = doc.fields;
-      return {
-        userId: fields.userId.stringValue,
-        role: fields.role.stringValue
-      };
-    });
+    const fields = doc.fields || {};
+    
+    const userId = fields.userId?.stringValue;
+    const role = fields.role?.stringValue;
+    
+    if (!userId || !role) {
+      console.warn('Missing userId or role in user document:', doc);
+    }
+    
+    return {
+      userId: userId || null,
+      role: role || null,
+    };
+  });
+    
     console.log('users:', users);
   
     return {

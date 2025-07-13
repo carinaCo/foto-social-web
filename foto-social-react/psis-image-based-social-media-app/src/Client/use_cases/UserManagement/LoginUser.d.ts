@@ -3,11 +3,13 @@ export interface LoginUserOptions {
 }
 
 export interface ExecuteParams {
-    userId: string;
+    username: string;
+    password: string;
 }
 
 export interface ExecuteResult {
     success: boolean;
+    userId: string;
 }
 
 export class LoginUser {

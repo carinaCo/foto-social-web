@@ -51,7 +51,7 @@ const testGetGroup = async () => {
 const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
   
       const getUserData = new GetUserData({ projectId });
   
@@ -216,76 +216,26 @@ const test = async () => {
 */
 
 const testLoginUser = async () => {
-  const projectId = 'foto-social-web';
-  const userId = randomUUID();
-  const email = `test-${userId}@example.com`;
-  const username = `testUser-${userId}`;
-  const encryptedPassword = 'dummyEncryptedPassword123';
-
   try {
-    const registerUser = new RegisterUser({ projectId });
-    await registerUser.execute({ userId, email, username, encryptedPassword });
-    console.log('User registered.');
-
+    const projectId = 'foto-social-web';
+    const username = `TestUser DiesDas2`;
+    const password = '1234';
+    const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
+  
     const loginUser = new LoginUser({ projectId });
-    const result = await loginUser.execute({ userId });
-
-    if (!result.success) {
-      console.error('LoginUser failed:', result.message);
-      return;
+    const loggingIn = await loginUser.execute({ username, password });
+    
+    console.log(`User who has logged in [${userId}]:`, loggingIn);
+    } catch (error) {
+      console.error('Error in testLoginUser:', error);
     }
-
-    const accessToken = await getFirestoreAccessToken();
-    const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
-    const httpClient = new HttpClient(accessToken);
-    const userDocUrl = firestoreHelper.getUserDoc(userId);
-    const userDoc = await httpClient.get(userDocUrl);
-
-    const isLoggedIn = userDoc.fields?.isLoggedIn?.booleanValue;
-    console.log('Login status:', isLoggedIn);
-
-    if (isLoggedIn === true) {
-      console.log('testLoginUser passed.');
-    } else {
-      console.error('testLoginUser failed: isLoggedIn was not set to true.');
-    }
-
-  } catch (error) {
-    console.error('Error in testLoginUser:', error);
-  }
 };
 
 const testLogoutUser = async () => {
   const projectId = 'foto-social-web';
-  const userId = randomUUID();
-
-  const createUser = async () => {
-    const { getFirestoreAccessToken } = await import('../../utils/getFirestoreAccessToken.js');
-    const { FirestoreCommunicationHelper } = await import('../../utils/firestoreCommunicationHelper.js');
-    const { HttpClient } = await import('../../utils/httpClient.js');
-
-    const accessToken = await getFirestoreAccessToken();
-    const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
-    const httpClient = new HttpClient(accessToken);
-
-    const userDocUrl = firestoreHelper.registerUserUrl();
-    const userDocBody = {
-      fields: {
-        email: { stringValue: 'test@example.com' },
-        username: { stringValue: 'testuser' },
-        encrPassword: { stringValue: 'hashedPassword123' },
-        isLoggedIn: { booleanValue: true },
-        createdAt: { timestampValue: new Date().toISOString() }
-      }
-    };
-
-    await httpClient.post(`${userDocUrl}?documentId=${userId}`, userDocBody);
-  };
+  const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
 
   try {
-    console.log(`Creating user with ID: ${userId}`);
-    await createUser();
-
     const logoutUser = new LogoutUser({ projectId });
     const result = await logoutUser.execute({ userId });
 
@@ -480,7 +430,7 @@ const testSendGroupInvites = async () => {
   }
 };
 
-const testSendGroupPost = async () => {
+/*const testSendGroupPost = async () => {
   try {
     const projectId = 'foto-social-web';
     const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
@@ -496,11 +446,35 @@ const testSendGroupPost = async () => {
   } catch (error) {
     console.error('Error in testSendGroupPost:', error);
   }
+};*/
+
+import path from 'path';
+
+const testSendGroupPost = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
+    const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
+    const postId = randomUUID();
+
+    const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
+
+    const imageBuffer = fs.readFileSync(imagePath);
+    const imageBase64 = imageBuffer.toString('base64');
+
+    const sendGroupPost = new SendGroupPost({ projectId });
+    const result = await sendGroupPost.execute({ userId, groupId, postId, imageBase64 });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testSendGroupPost:', error);
+  }
 };
 
 
+
 //GET
-//testGetGroup(); //TODO: FIX!
+//testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
 //testGetFriends();
 //testGetPosts();
@@ -520,7 +494,7 @@ const testSendGroupPost = async () => {
 
 //Create
 //testCreateGroup();
-testRegisterUser(); //TODO: FIX LOGIC!
+//testRegisterUser();
 
 //POST
 //testSendFriendRequest();

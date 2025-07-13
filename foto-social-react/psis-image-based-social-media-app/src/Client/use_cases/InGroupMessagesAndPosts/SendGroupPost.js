@@ -1,10 +1,9 @@
-//TODO: Expects the user-ID of the person who posted, the group ID, post ID (GUID), 
+//Expects the user-ID of the person who posted, the group ID, post ID (GUID), 
 //picture data (as Base 64-String) and a caption
 //Stores the image reference in Firestore and the picture itself in the Firebase Storage
 
-//TODO: modify url & body (upload of picture to storage --> 1 body, post to storage 
+//modify url & body (upload of picture to storage --> 1 body, post to storage 
     //- answer: reference that has to be saved in firestore) - from response body take reference out
-
     /*
      image will be private, accessible only to authenticated users via authorized requests
     */
@@ -14,7 +13,7 @@
      import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
      
      export class SendGroupPost {
-       constructor({ projectId, databaseId = '(default)', storageBucket }) {
+       constructor({ projectId, databaseId = '(default)', storageBucket = "foto-social-web.firebasestorage.app" }) {
          this.projectId = projectId;
          this.databaseId = databaseId;
          this.storageBucket = storageBucket;
@@ -32,13 +31,12 @@
          });
          const httpClient = new HttpClient(accessToken);
      
-         const storagePath = `Posts/${postId}.jpeg`;
+         const storagePath = `Posts/${postId}.jpg`;
          const uploadUrl = firestoreHelper.getGroupPostUploadUrl(storagePath);
          const imageBuffer = Buffer.from(imageBase64, 'base64');
+         const downloadToken = await httpClient.putBinary(uploadUrl, imageBuffer, 'image/jpeg');
      
-         await httpClient.putBinary(uploadUrl, imageBuffer, 'image/jpeg');
-     
-         const imageReference = `https://firebasestorage.googleapis.com/v0/b/${this.storageBucket}/o/Posts%2F${postId}.jpeg?alt=media`;
+         const imageReference = `https://firebasestorage.googleapis.com/v0/b/${this.storageBucket}/o/Posts%2F${postId}.jpg?alt=media&token=${downloadToken}`;
      
          const firestorePostUrl = `${firestoreHelper.getGroupPostsUrl(groupId)}/${postId}`;
          const timestamp = new Date().toISOString();
@@ -52,7 +50,7 @@
            }
          };
      
-         await httpClient.putBinary(firestorePostUrl, postBody);
+         await httpClient.putJson(firestorePostUrl, postBody);
      
          return {
            success: true,

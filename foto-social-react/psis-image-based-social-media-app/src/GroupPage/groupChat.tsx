@@ -22,14 +22,14 @@ const styles = {
             backdropFilter: 'blur(10px) saturate(180%)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: 3,
-            marginBottom: 3,
+            marginBottom: 1.5,
             px: 2,   // Innenabstand x
             py: 1.5,  // Innenabstand y
             transition: 'all 0.3s ease-in-out',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
 
             '&:hover': {
-            filter: 'brightness(1.1)', // leicht heller
+            filter: 'brightness(1.2)', // leicht heller
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
                 transform: 'scale(1.01)', // minimal größer
         }

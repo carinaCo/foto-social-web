@@ -23,15 +23,14 @@ export const registerUser = async (
     }
 }
 
-export const loginUser = async (userId: string) => {
+export const loginUser = async (username: string, password: string) => {
     try {
         const projectId = 'foto-social-web';
         const loginUser = new LoginUser({ projectId });
 
-        const result = await loginUser.execute({ userId });
+        const result = await loginUser.execute({ username, password });
 
         console.log('loginUser result:', result);
-        console.log('Logged in userId:', userId);
 
         return result;
     } catch (error) {
