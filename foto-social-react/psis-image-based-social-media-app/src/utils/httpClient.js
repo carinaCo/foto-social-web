@@ -110,7 +110,7 @@ export class HttpClient {
 
       async putBinary(url, binaryBody, contentType = 'application/octet-stream') {
         const response = await fetch(url, {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Authorization': `Bearer ${this.accessToken}`,
             'Content-Type': contentType
@@ -126,5 +126,25 @@ export class HttpClient {
         return await response.text();
       }
       
+      async putJson(url, jsonBody) {
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(jsonBody),
+        });
+      
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`PUT JSON failed: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+      
+        return await response.json();
+      }
+      
     }
+
+    
   

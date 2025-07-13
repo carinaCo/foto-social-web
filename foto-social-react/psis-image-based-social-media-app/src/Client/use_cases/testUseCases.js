@@ -456,7 +456,7 @@ const testSendGroupInvites = async () => {
   }
 };
 
-const testSendGroupPost = async () => {
+/*const testSendGroupPost = async () => {
   try {
     const projectId = 'foto-social-web';
     const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
@@ -472,7 +472,33 @@ const testSendGroupPost = async () => {
   } catch (error) {
     console.error('Error in testSendGroupPost:', error);
   }
+};*/
+
+import path from 'path';
+
+const testSendGroupPost = async () => {
+  try {
+    const projectId = 'foto-social-web';
+    const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
+    const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
+    const postId = randomUUID();
+
+    // Path to the image file
+    const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
+
+    // Read image and convert to base64
+    const imageBuffer = fs.readFileSync(imagePath);
+    const imageBase64 = imageBuffer.toString('base64');
+
+    const sendGroupPost = new SendGroupPost({ projectId });
+    const result = await sendGroupPost.execute({ userId, groupId, postId, imageBase64 });
+
+    console.log('result:', result);
+  } catch (error) {
+    console.error('Error in testSendGroupPost:', error);
+  }
 };
+
 
 
 //GET
@@ -504,7 +530,7 @@ const testSendGroupPost = async () => {
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
-//testSendGroupPost();
+testSendGroupPost();
 
 //PATCH
 //testBlockUser();
