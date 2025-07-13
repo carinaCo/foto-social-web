@@ -51,7 +51,7 @@ const testGetGroup = async () => {
 const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
   
       const getUserData = new GetUserData({ projectId });
   
@@ -233,35 +233,9 @@ const testLoginUser = async () => {
 
 const testLogoutUser = async () => {
   const projectId = 'foto-social-web';
-  const userId = randomUUID();
-
-  const createUser = async () => {
-    const { getFirestoreAccessToken } = await import('../../utils/getFirestoreAccessToken.js');
-    const { FirestoreCommunicationHelper } = await import('../../utils/firestoreCommunicationHelper.js');
-    const { HttpClient } = await import('../../utils/httpClient.js');
-
-    const accessToken = await getFirestoreAccessToken();
-    const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
-    const httpClient = new HttpClient(accessToken);
-
-    const userDocUrl = firestoreHelper.registerUserUrl();
-    const userDocBody = {
-      fields: {
-        email: { stringValue: 'test@example.com' },
-        username: { stringValue: 'testuser' },
-        encrPassword: { stringValue: 'hashedPassword123' },
-        isLoggedIn: { booleanValue: true },
-        createdAt: { timestampValue: new Date().toISOString() }
-      }
-    };
-
-    await httpClient.post(`${userDocUrl}?documentId=${userId}`, userDocBody);
-  };
+  const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
 
   try {
-    console.log(`Creating user with ID: ${userId}`);
-    await createUser();
-
     const logoutUser = new LogoutUser({ projectId });
     const result = await logoutUser.execute({ userId });
 
@@ -528,7 +502,7 @@ const testSendGroupPost = async () => {
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
-testSendGroupPost();
+//testSendGroupPost();
 
 //PATCH
 //testBlockUser();
