@@ -14,6 +14,7 @@ import {getGroupData, getUserData} from "./helpers/groupHelper.tsx";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const styles = {
     listItem: {
@@ -41,13 +42,17 @@ const GroupChat: React.FC = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<UserDataResult | null>(null);
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
+    const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
         const fetchUserData = async () => {
+            setIsLoading(true);
             try {
                 // TODO: user id nicht mehr hardcoden
-                const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+                // const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+                const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
+
                 const data = await getUserData(userId);
                 console.log('await getuserdata called');
                 setUserData(data);
@@ -66,9 +71,10 @@ const GroupChat: React.FC = () => {
                 }
             } catch (error) {
                 console.error("Fehler beim Laden der Userdaten:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
-
         // damit nicht wegen promise gemeckert wird
         void fetchUserData();
     }, []);
@@ -95,14 +101,26 @@ const GroupChat: React.FC = () => {
 
     const isPromptFieldDisabled = false;
 
+    if (isLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
+                    Chill bro, im loading atm...
+                    <CircularProgress />
+                </Box>
+            </Box>
+        );
+    }
+
     return (
         <>
             <ParticleLayer />
             {!groups || groups?.length === 0 ?
                 (
-                <Box>
-                    Seems a bit empty in here...
-                </Box>
+                    <Box>
+                        No groups found.<br />
+                        Please create a group or join an existing one.
+                    </Box>
             ) :
                 (
                 <>
