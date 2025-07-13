@@ -1,6 +1,6 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
-import {GetGroup} from "../../Client/use_cases/GroupManagement/GetGroup";
+import {GetGroup, GroupData} from "../../Client/use_cases/GroupManagement/GetGroup";
 
 export const createGroup = async (
     founderId: string,
@@ -55,3 +55,16 @@ export const getGroupData = async (groupId: string) => {
 
     return groupData;
 };
+
+const startDate = new Date('2024-01-01T00:00:00Z');
+
+export const isCurrentPrompter = async (UserID: string, groupData: GroupData) => {
+    const now = Date.now(); // current time in ms
+    const start = startDate.getTime(); // start time in ms
+
+    const msPerDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+    const daysElapsed = Math.floor((now - start) / msPerDay);
+
+    const index = daysElapsed % groupData.members.length;
+    return groupData.members[index].userId === UserID
+}

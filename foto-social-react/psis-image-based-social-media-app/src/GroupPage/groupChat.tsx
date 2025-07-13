@@ -10,7 +10,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
 import {useNavigate} from "react-router-dom";
-import {getGroupData, getUserData} from "./helpers/groupHelper.tsx";
+import {getGroupData, getUserData, isCurrentPrompter} from "./helpers/groupHelper.tsx";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
@@ -93,7 +93,6 @@ const GroupChat: React.FC = () => {
             {id: 5, groupName: 'Die fünfte Gruppe', promptToday: 'Dies Das', promptTomorrow: 'Ananas' },
         ];
 
-    const isPromptFieldDisabled = false;
 
     return (
         <>
@@ -155,7 +154,7 @@ const GroupChat: React.FC = () => {
                                                         <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" slotProps=
                                                             {{
                                                                 input: {
-                                                                    disabled: isPromptFieldDisabled,
+                                                                    disabled: isCurrentPrompter(userId, element),
                                                                     endAdornment: (
                                                                         <InputAdornment position="end">
                                                                             <EditIcon fontSize={'small'} />
