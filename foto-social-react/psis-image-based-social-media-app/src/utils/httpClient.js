@@ -123,8 +123,11 @@ export class HttpClient {
           throw new Error(`PUT Binary failed: ${response.status} ${response.statusText} - ${errorText}`);
         }
       
-        return await response.text();
+        const json = await response.json();
+
+        return json.downloadTokens;
       }
+      
       
       async putJson(url, jsonBody) {
         const response = await fetch(url, {

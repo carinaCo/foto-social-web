@@ -13,7 +13,7 @@
      import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
      
      export class SendGroupPost {
-       constructor({ projectId, databaseId = '(default)', storageBucket }) {
+       constructor({ projectId, databaseId = '(default)', storageBucket = "foto-social-web.firebasestorage.app" }) {
          this.projectId = projectId;
          this.databaseId = databaseId;
          this.storageBucket = storageBucket;
@@ -34,9 +34,9 @@
          const storagePath = `Posts/${postId}.jpg`;
          const uploadUrl = firestoreHelper.getGroupPostUploadUrl(storagePath);
          const imageBuffer = Buffer.from(imageBase64, 'base64');
-         await httpClient.putBinary(uploadUrl, imageBuffer, 'image/jpeg');
+         const downloadToken = await httpClient.putBinary(uploadUrl, imageBuffer, 'image/jpeg');
      
-         const imageReference = `https://firebasestorage.googleapis.com/v0/b/${this.storageBucket}/o/Posts%2F${postId}.jpg?alt=media`;
+         const imageReference = `https://firebasestorage.googleapis.com/v0/b/${this.storageBucket}/o/Posts%2F${postId}.jpg?alt=media&token=${downloadToken}`;
      
          const firestorePostUrl = `${firestoreHelper.getGroupPostsUrl(groupId)}/${postId}`;
          const timestamp = new Date().toISOString();

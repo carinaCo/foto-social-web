@@ -51,9 +51,8 @@ const testGetGroup = async () => {
 const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
-      // const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
       const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
-
+  
       const getUserData = new GetUserData({ projectId });
   
       const result = await getUserData.execute({ userId });
@@ -219,15 +218,14 @@ const test = async () => {
 const testLoginUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const username = `Mr Bro`;
-    const password = 'swagswag';
-    // const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
+    const username = `TestUser DiesDas2`;
+    const password = '1234';
+    const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
   
     const loginUser = new LoginUser({ projectId });
     const loggingIn = await loginUser.execute({ username, password });
     
-    // console.log(`User who has logged in [${userId}]:`, loggingIn);
-    console.log(`User who has logged in:`, loggingIn);
+    console.log(`User who has logged in [${userId}]:`, loggingIn);
     } catch (error) {
       console.error('Error in testLoginUser:', error);
     }
@@ -235,35 +233,9 @@ const testLoginUser = async () => {
 
 const testLogoutUser = async () => {
   const projectId = 'foto-social-web';
-  const userId = randomUUID();
-
-  const createUser = async () => {
-    const { getFirestoreAccessToken } = await import('../../utils/getFirestoreAccessToken.js');
-    const { FirestoreCommunicationHelper } = await import('../../utils/firestoreCommunicationHelper.js');
-    const { HttpClient } = await import('../../utils/httpClient.js');
-
-    const accessToken = await getFirestoreAccessToken();
-    const firestoreHelper = new FirestoreCommunicationHelper({ projectId });
-    const httpClient = new HttpClient(accessToken);
-
-    const userDocUrl = firestoreHelper.registerUserUrl();
-    const userDocBody = {
-      fields: {
-        email: { stringValue: 'test@example.com' },
-        username: { stringValue: 'testuser' },
-        encrPassword: { stringValue: 'hashedPassword123' },
-        isLoggedIn: { booleanValue: true },
-        createdAt: { timestampValue: new Date().toISOString() }
-      }
-    };
-
-    await httpClient.post(`${userDocUrl}?documentId=${userId}`, userDocBody);
-  };
+  const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
 
   try {
-    console.log(`Creating user with ID: ${userId}`);
-    await createUser();
-
     const logoutUser = new LogoutUser({ projectId });
     const result = await logoutUser.execute({ userId });
 
@@ -485,10 +457,8 @@ const testSendGroupPost = async () => {
     const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
     const postId = randomUUID();
 
-    // Path to the image file
     const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
 
-    // Read image and convert to base64
     const imageBuffer = fs.readFileSync(imagePath);
     const imageBase64 = imageBuffer.toString('base64');
 
@@ -505,7 +475,7 @@ const testSendGroupPost = async () => {
 
 //GET
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
-testGetUserData();
+//testGetUserData();
 //testGetFriends();
 //testGetPosts();
 //testGetPendingFriendRequests();
@@ -516,7 +486,7 @@ testGetUserData();
 //testGetGroupFeed();
 
 //functionality
-// testLoginUser();
+//testLoginUser();
 //testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
@@ -532,7 +502,7 @@ testGetUserData();
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
-// testSendGroupPost();
+//testSendGroupPost();
 
 //PATCH
 //testBlockUser();
