@@ -18,6 +18,8 @@ import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
 import {getFriends} from "./helpers/friendHelper.ts";
 import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
+import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const FriendsPage: React.FC = () => {
@@ -26,6 +28,7 @@ const FriendsPage: React.FC = () => {
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
     };
+    const [isLoading, setIsLoading] = React.useState(true);
 
     //for friends/friendrequests
     const [activeTab, setActiveTab] = useState<'friends' | 'requests'>('friends');
@@ -53,8 +56,10 @@ const FriendsPage: React.FC = () => {
     const [friendIds, setFriendIds] = useState<string[]>([]);
 
     React.useEffect(() => {
+        setIsLoading(true);
         console.log('triggered useEffect in FriendsPage');
-        const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: replace with actual user ID
+        // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: replace with actual user ID
+        const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: replace with actual user ID
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {
@@ -73,6 +78,8 @@ const FriendsPage: React.FC = () => {
                 }
             } catch (error) {
                 console.error('Error fetching friends:', error);
+            } finally {
+                setIsLoading(false);
             }
         }
         void fetchFriends();
@@ -102,8 +109,9 @@ const FriendsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
+            <ParticleLayer />
             <AppBar>
-                <AppToolbar onAddClick={toggleDrawer(true)}/>
+                <AppToolbar onAddClick={toggleDrawer(true)} />
                 {pendingCount > 0 && (
                     <Box>
                         <IconButton color="inherit" onClick={toggleRequests} sx={{
@@ -122,34 +130,49 @@ const FriendsPage: React.FC = () => {
                 )}
             </AppBar>
 
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid container spacing={1}>
-            {showRequests && pendingCount > 0 ? (
-                <Grid size={{xs: 12, md: 12, lg: 6}}>
-                    <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none'}}>
-                        <Typography variant="h6" gutterBottom>
-                            Friend Requests
-                        </Typography>
-                        <List>
-                            <FriendRequestBox
-                                requests={friendRequests}
-                                onAccept={handleAccept}
-                                onReject={handleReject}
-                            />
-                        </List>
-                    </Paper>
-                </Grid>
-            ) : (
-
-                <Grid size={{xs: 12}}>
-                    <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
-                        <FriendBox friends={friends} />
-                    </Paper>
-                </Grid>
+            {/* Content-Bereich */}
+            <Box>
+                {isLoading ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2, mt: 8 }}>
+                        Assembling the homies, give me a sec...
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    !friends || friends.length === 0 ? (
+                        <Box>
+                            No friends found.<br />
+                            Please add some friends or wait for friend requests.
+                        </Box>
+                    ) : (
+                        <Container maxWidth="lg" sx={{ mt: 4 }}>
+                            <Grid container spacing={1}>
+                                {showRequests && pendingCount > 0 ? (
+                                    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
+                                        <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
+                                            <Typography variant="h6" gutterBottom>
+                                                Friend Requests
+                                            </Typography>
+                                            <List>
+                                                <FriendRequestBox
+                                                    requests={friendRequests}
+                                                    onAccept={handleAccept}
+                                                    onReject={handleReject}
+                                                />
+                                            </List>
+                                        </Paper>
+                                    </Grid>
+                                ) : (
+                                    <Grid size={{ xs: 12 }}>
+                                        <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
+                                            <FriendBox friends={friends} />
+                                        </Paper>
+                                    </Grid>
+                                )}
+                            </Grid>
+                        </Container>
+                    )
                 )}
-        </Grid>
-    </Container>
-
+            </Box>
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
