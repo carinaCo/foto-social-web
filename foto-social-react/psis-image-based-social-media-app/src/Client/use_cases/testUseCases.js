@@ -483,10 +483,8 @@ const testSendGroupPost = async () => {
     const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
     const postId = randomUUID();
 
-    // Path to the image file
     const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
 
-    // Read image and convert to base64
     const imageBuffer = fs.readFileSync(imagePath);
     const imageBase64 = imageBuffer.toString('base64');
 
