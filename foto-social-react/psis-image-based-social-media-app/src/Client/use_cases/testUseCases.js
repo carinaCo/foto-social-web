@@ -51,8 +51,9 @@ const testGetGroup = async () => {
 const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
-  
+      // const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const userId = '7c71b52c-5454-4e7e-9b0d-34ee3d681d4f';
+
       const getUserData = new GetUserData({ projectId });
   
       const result = await getUserData.execute({ userId });
@@ -218,14 +219,15 @@ const test = async () => {
 const testLoginUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const username = `TestUser DiesDas2`;
-    const password = '1234';
-    const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
+    const username = `Mr Bro`;
+    const password = 'swagswag';
+    // const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
   
     const loginUser = new LoginUser({ projectId });
     const loggingIn = await loginUser.execute({ username, password });
     
-    console.log(`User who has logged in [${userId}]:`, loggingIn);
+    // console.log(`User who has logged in [${userId}]:`, loggingIn);
+    console.log(`User who has logged in:`, loggingIn);
     } catch (error) {
       console.error('Error in testLoginUser:', error);
     }
@@ -503,7 +505,7 @@ const testSendGroupPost = async () => {
 
 //GET
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
-//testGetUserData();
+testGetUserData();
 //testGetFriends();
 //testGetPosts();
 //testGetPendingFriendRequests();
@@ -514,7 +516,7 @@ const testSendGroupPost = async () => {
 //testGetGroupFeed();
 
 //functionality
-//testLoginUser();
+// testLoginUser();
 //testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
@@ -530,7 +532,7 @@ const testSendGroupPost = async () => {
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
-testSendGroupPost();
+// testSendGroupPost();
 
 //PATCH
 //testBlockUser();

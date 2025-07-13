@@ -14,7 +14,7 @@ export class RegisterUser {
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
 
-    const userId = randomUUID();
+    const userId = crypto.randomUUID();
     const queryUrl = firestoreHelper.getRunQueryUrl();
 
     const queryBody = {

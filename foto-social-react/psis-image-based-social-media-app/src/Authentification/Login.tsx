@@ -17,13 +17,13 @@ import toast from "react-hot-toast";
 import {authStyles} from "./helpers/authenticationStyles.ts";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleLoginUser = async (userId: string) => {
+    const handleLoginUser = async (username: string, password: string) => {
         try {
-            const result = await loginUser(userId);
+            const result = await loginUser(username, password);
             if (result.success) {
                 toast.success('Login erfolgreich!');
                 navigate('/groups');
@@ -62,12 +62,12 @@ const Login = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
+                            id="username"
+                            label="User name"
+                            name="username"
                             autoFocus
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
 
                         <TextField
@@ -89,9 +89,10 @@ const Login = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={ async () => {
-                                await handleLoginUser('0a60fb39-d985-4543-8b3f-69aa79eb3839')
+                                // await handleLoginUser('0a60fb39-d985-4543-8b3f-69aa79eb3839')
+                                await handleLoginUser(username, password);
                             }}
-                            disabled={isRegisterOrLoginDisabled(email, password)}
+                            disabled={isRegisterOrLoginDisabled(username, password)}
                         >
                             Login
                         </Button>
