@@ -2,9 +2,8 @@
 //picture data (as Base 64-String) and a caption
 //Stores the image reference in Firestore and the picture itself in the Firebase Storage
 
-//TODO: modify url & body (upload of picture to storage --> 1 body, post to storage 
+//modify url & body (upload of picture to storage --> 1 body, post to storage 
     //- answer: reference that has to be saved in firestore) - from response body take reference out
-
     /*
      image will be private, accessible only to authenticated users via authorized requests
     */
