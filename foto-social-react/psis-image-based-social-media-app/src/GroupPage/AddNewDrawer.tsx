@@ -148,25 +148,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         userId
     ].some(isEmptyStringOrOnlySpaces);
 
-
-    const hardCodedContacts = [
-        { id: 1, firstName: 'Peter', lastName: 'Mayer' },
-        { id: 2, firstName: 'Anna', lastName: 'Ulrich' },
-        { id: 3, firstName: 'Mister', lastName: 'Bro' },
-        { id: 4, firstName: 'Frederik', lastName: 'Frikadelle' },
-        { id: 5, firstName: 'So-ein', lastName: 'Dude' },
-        { id: 6, firstName: 'Bruno', lastName: 'Bananenbrot' },
-        { id: 7, firstName: 'Lotta', lastName: 'Lachsfilet' },
-        { id: 8, firstName: 'Horst', lastName: 'Hüpfburg' },
-        { id: 9, firstName: 'Gisela', lastName: 'Glitzerstaub' },
-        { id: 10, firstName: 'Kevin', lastName: 'Kaktus' },
-        { id: 11, firstName: 'Chantal', lastName: 'Champignon' },
-        { id: 12, firstName: 'Uwe', lastName: 'Unwetter' },
-        { id: 13, firstName: 'Susi', lastName: 'Sonnenbrand' },
-        { id: 14, firstName: 'Heinz', lastName: 'Hörnchen' },
-        { id: 15, firstName: 'Berta', lastName: 'Besenstiel' },
-    ];
-
     React.useEffect(() => {
         if (view === 'groupAdd') {
             void fetchFriends();
@@ -296,7 +277,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                                         sx={{ color: 'white', py: 2 }}
                                                     />
                                                 }
-                                                label={contact.username || `${contact.firstName ?? ''} ${contact.lastName ?? ''}`}
+                                                label={contact.username}
                                                 sx={{
                                                     display: 'block',
                                                     mx: 2,
@@ -354,13 +335,13 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                         </Box>
 
                         <Box sx={{ mt: 4, px: 2 }}>
-                            {selectedContacts.slice(0,6).map((id) => {
-                                    const contact = hardCodedContacts.find(c => c.id === id);
+                            {selectedContacts.slice(0,6).map((index) => {
+                                    const contact = friends[index];
                                     if (!contact) return null;
 
                                     return (
                                         <Box
-                                            key={contact.id}
+                                            key={contact.userId || index}
                                             sx={styles.contactSummary}
                                         >
                                             <Box
@@ -368,7 +349,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                                     width: 32,
                                                     height: 32,
                                                     borderRadius: '50%',
-                                                    bgcolor: '#3B82F6',
+                                                    bgcolor: '#6C64E1',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -376,10 +357,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                                     fontWeight: 500,
                                                 }}
                                             >
-                                                {contact.firstName[0]}
+                                                {contact.username ? contact.username[0] : '?'}
                                             </Box>
                                             <Typography>
-                                                {contact.firstName} {contact.lastName}
+                                                {contact.username}
                                             </Typography>
                                         </Box>
                                     );

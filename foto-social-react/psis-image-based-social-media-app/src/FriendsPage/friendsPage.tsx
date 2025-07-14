@@ -39,20 +39,7 @@ const FriendsPage: React.FC = () => {
     ]);
     const [showRequests, setShowRequests] = useState(false);
 
-    const [friends, setFriends] = useState<UserDataResult[]>([
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-    ]);
+    const [friends, setFriends] = useState<UserDataResult[]>([]);
     const [friendIds, setFriendIds] = useState<string[]>([]);
 
     React.useEffect(() => {
