@@ -12,6 +12,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CameraCapture from '../GlobalPromptPage/CameraCapture';
 
 
 
@@ -20,39 +21,41 @@ import CancelIcon from '@mui/icons-material/Cancel';
 const BottomBeforeUpload: React.FC = () => {
   
     const [expanded, setExpanded] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null); // 引用隐藏的文件输入框
-    // 点击 upload 切换展开/收回状态
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const [cameraOpen, setCameraOpen] = useState(false);
+
     const handleToggleExpand = () => {
       setExpanded((prev) => !prev);
     };
 
-  // 点击 Cancel 收回扩展栏
+  // 点击 Cancel 收回扩展栏, click cancel button
     const handleCancel = () => {
       setExpanded(false);
     };
 
-    // 处理选择图片后上传
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        const res = await fetch('http://localhost:3001/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await res.json();
-        console.log('上传成功:', data);
-        alert('上传成功！文件名：' + data.filename);
-      } catch (err) {
-        console.error('上传失败:', err);
-        alert('上传失败，请稍后再试');
-      }
+    const handleSelectFromGallery = () => {
+      console.log("用户选择：从图库选择, user select image from gallery");
+      // 这里添加打开文件选择器的逻辑
+      fileInputRef.current?.click(); // 触发 input 打开文件选择, open local folder 
+      handleCancel();
     };
+
+    const handleUseCamera = () => {
+      console.log("用户选择：使用相机, use camera");
+      // 这里添加打开摄像头的逻辑
+      setCameraOpen(true);
+      //handleCancel();
+    };
+
+    const handlePhotoCaptured = (imageData: string) => {
+      console.log('拍到的图片photo in base64:', imageData);
+      // TODO: 上传到服务器、展示预览等, send to backend,server...
+    };
+
+    
+
+    
+    
 
 
 
@@ -110,7 +113,7 @@ const BottomBeforeUpload: React.FC = () => {
                 alignItems: 'center',
                 cursor: 'pointer',
               }}
-              onClick={() => alert('Camera selected')}
+              onClick={handleUseCamera}
             >
               <CameraAltIcon sx={{ fontSize: 40 }} />
               <Typography variant="subtitle2">Camera</Typography>
@@ -123,20 +126,32 @@ const BottomBeforeUpload: React.FC = () => {
                 alignItems: 'center',
                 cursor: 'pointer',
               }}
-              onClick={() => fileInputRef.current?.click()}// onClick={() => alert('Gallery selected')}
+              onClick={handleSelectFromGallery}
             >
               <PhotoLibraryIcon sx={{ fontSize: 40 }} />
               <Typography variant="subtitle2">Gallery</Typography>
             </Box>
 
-            {/*  隐藏的文件选择器 */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
+            <CameraCapture
+             open={cameraOpen}
+             onClose={() => setCameraOpen(false)}
+             onCapture={handlePhotoCaptured}
             />
+
+            {/* 隐藏的文件选择器, folder select */}
+          <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) {
+            console.log('用户选择了 user select file：', file.name);
+            // TODO: 上传逻辑或跳转
+          }
+         }}
+         />
           </Stack>
           
 
