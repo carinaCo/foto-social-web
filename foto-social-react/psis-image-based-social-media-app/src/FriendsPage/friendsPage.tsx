@@ -30,30 +30,13 @@ const FriendsPage: React.FC = () => {
     };
     const [isLoading, setIsLoading] = React.useState(true);
 
-    //for friends/friendrequests
-    const [activeTab, setActiveTab] = useState<'friends' | 'requests'>('friends');
-
     const [friendRequests, setFriendRequests] = useState<UserDataResult[]>([
         { username: 'Tick Duck', userId: '123456799' },
         { username: 'Trick Duck', userId: '123456749' },
     ]);
     const [showRequests, setShowRequests] = useState(false);
 
-    const [friends, setFriends] = useState<UserDataResult[]>([
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        // { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        // { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        // { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-    ]);
-    const [friendIds, setFriendIds] = useState<string[]>([]);
+    const [friends, setFriends] = useState<UserDataResult[]>([]);
 
     React.useEffect(() => {
         setIsLoading(true);
@@ -66,7 +49,6 @@ const FriendsPage: React.FC = () => {
                 const friendsResult = await getFriends(activeUserId);
                 if (friendsResult?.success) {
                     console.log('Friends fetched successfully:', friendsResult.friends);
-                    setFriendIds(friendsResult.friends);
 
                     // Hole für jede friendId die Userdaten
                     const userDataList = await Promise.all(
@@ -84,10 +66,6 @@ const FriendsPage: React.FC = () => {
         }
         void fetchFriends();
     }, []);
-
-    const handleTabChange = (_: React.SyntheticEvent, newValue: number | undefined) => {
-        setActiveTab(newValue === 0 ? 'friends' : 'requests');
-    };
 
     const handleAccept = (id: string | undefined) => {
         const user = friendRequests.find((r) => r.userId === id);

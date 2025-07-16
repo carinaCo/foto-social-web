@@ -14,6 +14,7 @@ export interface GetGroupConstructorParams {
     createdAt: string; // Firestore-Timestamp (ISO)
      founderId: string | null;
      members: GroupMember[];
+     groupId: string;
 }
  export class GetGroup {
     constructor(params: GetGroupConstructorParams);

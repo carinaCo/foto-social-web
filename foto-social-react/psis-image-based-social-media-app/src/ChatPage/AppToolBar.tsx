@@ -8,9 +8,9 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 const AppToolBar: React.FC = () => {
     const navigate = useNavigate();              // 获取跳转函数
     const location = useLocation();
-    const { id } = useParams<{ id: string }>();
+    const { name } = useParams<{ name: string }>();
     // 从 location.state 读取传递的群组名
-  const groupname = location.state?.groupName || `Group ${id}`;
+  const groupname = location.state?.groupName || `Group ${name}`;
   const prompttoday = location.state?.promptToday || 'undefined';
 
     return (

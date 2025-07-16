@@ -81,7 +81,7 @@ const testGetUserData = async () => {
   const testGetPosts = async () => {
     try {
       const projectId = 'foto-social-web';
-      const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+      const groupId = '1e3dbd7f-5d17-49d8-8dae-092685e7f3ff';
   
       const getPosts = new GetGroupPosts({ projectId });
   
@@ -477,7 +477,7 @@ const testSendGroupPost = async () => {
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
 //testGetFriends();
-//testGetPosts();
+testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
 //testGetGroupUserRights();
