@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import HideImageIcon from '@mui/icons-material/HideImage';
+import LockIcon from '@mui/icons-material/Lock';
 import {
     Avatar, Box,
     List,
@@ -34,15 +34,13 @@ const ChatPageContent: React.FC = () => {
         };
 
     React.useEffect(() => {
-        // fetch the messages in this chat
-        // render them, like the sampleChats
-        console.log('useEffect called in ChatPageContent');
         const fetchPosts = async () => {
             setIsLoading(true);
             try {
                 // const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: nicht mehr hardcoden
                 if(groupId) {
                     const fetchedPosts = await getGroupPosts(groupId);
+                    console.log('Fetched posts:', fetchedPosts);
                     setPosts(fetchedPosts?.posts);
                 }
             } catch (error) {
@@ -59,21 +57,21 @@ const ChatPageContent: React.FC = () => {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
-                    Gettings the posts beep boop...
+                    Getting the posts beep boop...
                     <CircularProgress />
                 </Box>
             </Box>
         );
     }
 
-
+    const showContent = true;
+// !posts || posts.length === 0 ?
     return (
         <>
-            {!posts || posts.length === 0 ?
+            {!showContent ?
                 (
                     <Box>
-                        Helloooooo...<br />
-                        Anybody home?
+                        Be the first to post something!
                     </Box>
                 ) : (
             <Box sx={{
@@ -127,7 +125,7 @@ const ChatPageContent: React.FC = () => {
                                         >
 
 
-                                            <HideImageIcon sx={{ width: '80%', fontSize: 64, color: 'grey.600' }} />
+                                            <LockIcon sx={{ width: '80%', fontSize: 64, color: 'grey.600' }} />
                                         </Box>
                                     </Box>
                                     {/* </Box> */}

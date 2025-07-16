@@ -56,7 +56,7 @@ const GroupChat: React.FC = () => {
                 const data = await getUserData(userId);
                 console.log('await getuserdata called');
                 setUserData(data);
-                // console.log("Fetched user data:", data);
+                console.log("Fetched user data:", data);
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));

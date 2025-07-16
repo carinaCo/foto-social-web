@@ -28,10 +28,9 @@ const ChatPage: React.FC = () => {
                              }} >
                 <ChatPageContent/>
             </Box>
-                    
-          
+
            <BottomBeforeUpload />
-           
+
         </>
     )
 }

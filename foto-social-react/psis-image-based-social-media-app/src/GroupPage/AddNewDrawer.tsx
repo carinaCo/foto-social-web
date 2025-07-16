@@ -32,8 +32,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
     const [wasInContactAdd, setWasInContactAdd] = useState<boolean>(false);
     const [groupName, setGroupName] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
     const [userId, setUserId] = useState<string>('');
     const [username, setUsername] = useState<string>('');
 
