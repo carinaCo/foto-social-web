@@ -50,8 +50,7 @@ const App = () => {
             <Route path="/groups" element={<GroupsPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
-            <Route path="/chat/:id" element={<ChatPage />} />
+            <Route path="/chat/:id/:name" element={<ChatPage />} />
             <Route path="/pageImage" element={<ChatPageWithImage />} />
             <Route path="/settings" element={<SettingsPage />} />
 

@@ -7,6 +7,7 @@ import {
 import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {useNavigate} from "react-router-dom";
+import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 
 
 const SettingsPage: React.FC = () => {
@@ -28,6 +29,7 @@ const SettingsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
+            <ParticleLayer />
             <AppBar>
                 <AppToolbar onAddClick={handleLogoutClick}/>
             </AppBar>

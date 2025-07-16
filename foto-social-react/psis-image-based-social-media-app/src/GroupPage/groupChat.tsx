@@ -56,7 +56,7 @@ const GroupChat: React.FC = () => {
                 const data = await getUserData(userId);
                 console.log('await getuserdata called');
                 setUserData(data);
-                // console.log("Fetched user data:", data);
+                console.log("Fetched user data:", data);
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
@@ -79,6 +79,19 @@ const GroupChat: React.FC = () => {
         void fetchUserData();
     }, []);
 
+    const handleClick = (element: GroupData) => {
+        if (!element.groupId) {
+            // Optional: Fehlerbehandlung oder Hinweis
+            return;
+        }
+        navigate(`/chat/${element.groupId}/${(element.name)}`, {
+            state: {
+                groupName: element.name,
+                promptToday: element?.promptToday || 'No prompt found...',
+            },
+        });
+    };
+
     // React.useEffect(() => {
     //     const isUserTurn = true; // Replace with actual logic
     //     if (isUserTurn) {
@@ -89,15 +102,6 @@ const GroupChat: React.FC = () => {
     //         return () => clearTimeout(timer);
     //     }
     // }, []);
-
-    const groupElements =
-        [
-            {id: 1, groupName: 'Die wilden Kerle', promptToday: 'Happy Place', promptTomorrow: 'Tasty Food' },
-            {id: 2, groupName: 'Die zweite Gruppe', promptToday: 'Wetter', promptTomorrow: 'Coole Wolke' },
-            {id: 3, groupName: 'Die dritte Gruppe', promptToday: 'Pflanze', promptTomorrow: 'Litter Baum' },
-            {id: 4, groupName: 'Die vierte Gruppe', promptToday: 'Selfie', promptTomorrow: 'Landschaft' },
-            {id: 5, groupName: 'Die fünfte Gruppe', promptToday: 'Dies Das', promptTomorrow: 'Ananas' },
-        ];
 
     const isPromptFieldDisabled = false;
 
@@ -143,14 +147,7 @@ const GroupChat: React.FC = () => {
                                             <ListItemAvatar>
                                                 <Avatar alt="Group Picture"
                                                         onClick={() =>
-                                                            navigate(`/chat/${element.name}`, {
-                                                                state: {
-                                                                    groupName: element.name,
-                                                                    promptToday: element?.promptToday || 'No prompt found...',
-                                                                },
-                                                            })
-                                                        }
-
+                                                            handleClick(element)}
                                                 />
                                             </ListItemAvatar>
                                             <ListItemText
