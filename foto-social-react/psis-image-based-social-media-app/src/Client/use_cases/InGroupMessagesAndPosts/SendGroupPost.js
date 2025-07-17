@@ -49,6 +49,7 @@
      
          const postBody = {
            fields: {
+             postId: { stringValue: postId },
              createdAt: { timestampValue: timestamp },
              groupId: { stringValue: groupId },
              imageReference: { stringValue: imageReference },

@@ -14,7 +14,7 @@ import {getGroupData, getUserData} from "./helpers/groupHelper.tsx";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
-import CircularProgress from '@mui/material/CircularProgress';
+import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 
 const styles = {
     listItem: {
@@ -107,12 +107,7 @@ const GroupChat: React.FC = () => {
 
     if (isLoading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
-                    Chill bro, im loading atm...
-                    <CircularProgress />
-                </Box>
-            </Box>
+            <LoadingPlaceholder message={'Chill bro, im loading atm...'}/>
         );
     }
 
