@@ -10,7 +10,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
 import {useNavigate} from "react-router-dom";
-import {getGroupData, getUserData, isCurrentPrompter} from "./helpers/groupHelper.tsx";
+import {getGroupData, getUserData, isCurrentPrompter, getCurrentPrompt, setPrompt} from "./helpers/groupHelper.tsx";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
@@ -42,6 +42,7 @@ const GroupChat: React.FC = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<UserDataResult | null>(null);
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
+    const [prompts, setPrompts] = React.useState<String[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
@@ -54,6 +55,7 @@ const GroupChat: React.FC = () => {
                 const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
 
                 const data = await getUserData(userId);
+
                 console.log('await getuserdata called');
                 setUserData(data);
                 console.log("Fetched user data:", data);
@@ -61,13 +63,26 @@ const GroupChat: React.FC = () => {
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
                     const groupResults = await Promise.all(groupPromises);
-                    console.log('promise all await called');
+                    console.log('promise all await called for groups');
 
                     // console.log("Group results:", groupResults);
                     setGroups(groupResults);
+
+                    const setPromptPromises = data.groupId.map((groupId) => setPrompt(groupId, "Happy Place"));
+                    await Promise.all(setPromptPromises);
+                    console.log('promise all await called for set prompts');
+
+                    const promptPromises = data.groupId.map((groupId) => getCurrentPrompt(groupId));
+                    const promptResults = await Promise.all(promptPromises);
+                    console.log('promise all await called for prompts');
+                    if (promptResults.length > 0){
+                        setPrompts(promptResults);
+                    }
+                    else{setPrompts([])}
                 } else {
                     console.log("User ist in keiner Gruppe.");
                     setGroups([]); // leeren, falls keine Gruppen
+                    setPrompts([]);
                 }
             } catch (error) {
                 console.error("Fehler beim Laden der Userdaten:", error);
@@ -159,7 +174,7 @@ const GroupChat: React.FC = () => {
                                                                     readOnly: true,
                                                                     disabled: true,
                                                                 }}}
-                                                                   value={element?.promptToday || 'No prompt found...'}
+                                                                   value={prompts[index] || 'No prompt found...'}
 
                                                         />
                                                         <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" slotProps=

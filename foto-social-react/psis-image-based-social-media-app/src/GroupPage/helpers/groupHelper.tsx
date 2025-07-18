@@ -1,5 +1,7 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
+import {GetPrompt} from "../../Client/use_cases/PromptGeneration/GetPrompt";
+import {GeneratePromptByUser} from "../../Client/use_cases/PromptGeneration/GeneratePromptByUser";
 import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
@@ -114,3 +116,42 @@ export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGrou
     const index = daysElapsed % groupData.members.length;
     return groupData.members[index].userId === UserID
 }
+
+export const getCurrentPrompt = async (groupId: string) => {
+    try {
+        const projectId = 'foto-social-web';
+        const getPromptDataInstance = new GetPrompt({ projectId });
+
+        const prompt = await getPromptDataInstance.execute({ groupId });
+        console.log('getPromptData:', prompt);
+        if (prompt.success){
+            if (prompt.source==="group (random)") {
+                console.log('Fetched random prompt: ');
+                return prompt.prompt;
+            }
+            if (prompt.source==="group (recent)") {
+                console.log('Fetched user generated prompt: ');
+                return prompt.prompt;
+            }
+        }
+
+        console.log('No success fetching the prompt: ', prompt);
+        return prompt.prompt;
+    } catch (error) {
+        console.error('Error in getCurrentPrompt:', error);
+        throw error;
+    }
+}
+
+export const setPrompt = async (groupId : string, promptText : string) => {
+    try {
+        const projectId = 'foto-social-web';
+        const setPromptDataInstance = new GeneratePromptByUser({projectId});
+
+        return await setPromptDataInstance.execute({ groupId, promptText });
+    } catch (error) {
+        console.error('Error in setPrompt:', error);
+        throw error;
+    }
+}
+
