@@ -376,7 +376,7 @@ const testGeneratePromptByUser = async () => {
     const projectId = 'foto-social-web';
 
     const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
-    const promptText = 'Summer';
+    const promptText = 'Never Ending Summer';
     
     const generatePrompt = new GeneratePromptByUser({ projectId});
     const result = await generatePrompt.execute({ groupId, promptText });
@@ -512,4 +512,4 @@ testGetPosts();
 
 //PromptLogic
 //testGeneratePromptByUser();
-//testGetPrompt(); //TODO: fix
+testGetPrompt(); //TODO: fix
