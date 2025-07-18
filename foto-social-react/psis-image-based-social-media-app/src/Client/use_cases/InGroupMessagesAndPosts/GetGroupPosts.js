@@ -27,14 +27,18 @@ export class GetGroupPosts {
     const postsCollectionUrl = firestoreHelper.getGroupPostsUrl(groupId);
     const postsResponse = await httpClient.listDocuments(postsCollectionUrl);
 
-    const postIds = postsResponse.documents.map(doc => {
+    const posts = postsResponse.documents.map(doc => {
       const fields = doc.fields;
-      return fields.postId?.stringValue || null;
-    }).filter(Boolean);
+      return {
+        postId: fields.postId?.stringValue || null,
+        userId: fields.userId?.stringValue || null
+      };
+    }).filter(post => post.postId); // filter out null postIds
+    
 
     return {
       groupId,
-      posts: postIds
+      posts
     };
 
   }

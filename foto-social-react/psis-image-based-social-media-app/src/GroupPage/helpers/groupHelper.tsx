@@ -1,6 +1,9 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
 import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import {IconButton} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export const createGroup = async (
     founderId: string,
@@ -55,6 +58,49 @@ export const getGroupData = async (groupId: string) => {
 
     return groupData;
 };
+
+export const renderAppToolBarIconButton = (
+    pathname: string, onAddClick?: () => void
+) => {
+    if (pathname === '/groups' || pathname === '/friends') {
+        return (
+            <IconButton
+                size="large"
+                edge="end"
+                aria-label="library-add-icon"
+                color="inherit"
+                onClick={onAddClick}
+            >
+                <LibraryAddIcon/>
+            </IconButton>
+        )
+    } else if (pathname === '/settings') {
+        return (
+            <IconButton
+                size="large"
+                edge="end"
+                aria-label="logout"
+                color="inherit"
+                sx={{ ml: 2 }}
+                onClick={onAddClick}
+            >
+                <LogoutIcon sx={{ color: "#d32f2f" }} />
+            </IconButton>
+        )
+    } else {
+        return (
+            <IconButton
+                size="large"
+                edge="end"
+                aria-label="library-add-icon"
+                color="inherit"
+                sx={{ visibility: 'hidden' }}
+            >
+                <LibraryAddIcon/>
+            </IconButton>
+        )
+    }
+}
 
 const startDate = new Date('2024-01-01T00:00:00Z');
 

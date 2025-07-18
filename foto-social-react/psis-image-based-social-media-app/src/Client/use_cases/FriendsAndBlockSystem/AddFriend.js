@@ -16,6 +16,8 @@ export class AddFriend {
         throw new Error('Missing required parameter: toAddUserId');
     }
 
+    //TODO: see that 1 user can only be added once as friend
+
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);

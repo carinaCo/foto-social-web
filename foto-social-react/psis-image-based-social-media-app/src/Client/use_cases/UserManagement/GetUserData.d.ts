@@ -18,9 +18,9 @@ export interface ExecuteParams {
 export interface UserDataResult {
     userId: string;
     username: string | null;
-    friends: string[];
-    blockedUsers: string[];
-    groupId: string[];
+    friends?: string[];
+    blockedUsers?: string[];
+    groupId?: string[];
 }
 
 export class GetUserData {

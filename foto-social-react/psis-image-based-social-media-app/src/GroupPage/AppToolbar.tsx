@@ -1,9 +1,9 @@
 import React from 'react';
 import {Toolbar, Typography, IconButton, Avatar, Box, Alert, Snackbar} from '@mui/material';
-import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { useLocation } from 'react-router-dom';
 import UserInfoPopover from "./UserInfoPopper.tsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {renderAppToolBarIconButton} from "./helpers/groupHelper.tsx";
 
 
 interface AppToolbarProps {
@@ -21,6 +21,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
         navigator.clipboard.writeText(userId).then(() => {
             setCopiedId(userId);
             setSnackbarOpen(true);
+            handleClose();
         });
     };
 
@@ -48,7 +49,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
     };
 
     // TODO atm noch hardcoded
-    const userId = "0a60fb39-d985-4543-8b3f-69aa79eb3839";
+    // const userId = "0a60fb39-d985-4543-8b3f-69aa79eb3839";
+    const userId = "092ce280-8d97-45bc-a1a9-cedf9a95ff47";
 
     return (
             <>
@@ -73,16 +75,9 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
                             {getTitle()}
                         </Typography>
                     </Box>
-                    <IconButton
-                        size="large"
-                        edge="end"
-                        aria-label="library-add-icon"
-                        color="inherit"
-                        onClick={onAddClick}
-                        sx={{visibility: location.pathname === '/groups' || location.pathname === '/friends' ? 'visible' : 'hidden'}}
-                    >
-                        <LibraryAddIcon/>
-                    </IconButton>
+
+                    {renderAppToolBarIconButton(location.pathname, onAddClick)}
+
                 </Toolbar>
                     <UserInfoPopover
                         open={Boolean(anchorEl)}
@@ -103,7 +98,6 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
                         sx={{
                             backdropFilter: 'blur(12px) saturate(180%)',
                             backgroundColor: 'rgba(180, 100, 255, 0.2)',
-                            // backgroundColor: 'rgba(180, 100, 255, 0.2)', // die farbe war auch lit
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                             borderRadius: 2,
                             boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',

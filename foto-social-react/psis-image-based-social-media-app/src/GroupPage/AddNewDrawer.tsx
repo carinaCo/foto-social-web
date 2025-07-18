@@ -13,85 +13,12 @@ import { Slide } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import {createGroup} from "./helpers/groupHelper.tsx";
+import {createGroup, getUserData} from "./helpers/groupHelper.tsx";
 import toast from "react-hot-toast";
-
-const styles = {
-    drawerPaper: {
-        height: '95vh',
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        bgcolor: 'rgba(36,17,86,0.2)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(6px)',
-        color: '#fff',
-        px: 3,
-        py: 2
-    },
-    continueButton: {
-        position: 'absolute',
-        top: 12,
-        right: 8,
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 0.75,
-        px: 1,
-        py: 0.5,
-        borderRadius: 1,
-        fontWeight: 500,
-        fontSize: '0.95rem'
-    },
-    newGroupButton: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        px: 2,
-        py: 1.5,
-        borderRadius: 1,
-        '&:hover': {
-            backgroundColor: 'action.hover',
-        }
-    },
-    newContactButton: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        px: 2,
-        py: 1.5,
-        borderRadius: 1,
-        '&:hover': {
-            backgroundColor: 'action.hover',
-        }
-    },
-    contactSummary: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1.5,
-        py: 1,
-        px: 2,
-        borderRadius: 2,
-        backgroundColor: 'rgba(255, 255, 255, 0.04)',
-        mb: 1,
-    },
-    addGroupButton: {
-        mt: 4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        mx: 'auto',
-        px: 4,
-        py: 1.6,
-        borderRadius: '12px',
-        fontSize: '1rem',
-        textTransform: 'none',
-        backdropFilter: 'blur(14px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        transition: 'all 0.2s ease-in-out',
-    }
-};
+import { groupPageStyles as styles } from "./groupPageStyles.ts";
+import {addFriend, getFriends} from "../FriendsPage/helpers/friendHelper.ts";
+import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface AddNewDrawerProps {
     open: boolean;
@@ -105,10 +32,33 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
     const [wasInContactAdd, setWasInContactAdd] = useState<boolean>(false);
     const [groupName, setGroupName] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
     const [userId, setUserId] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
 
+    // state for friends list
+    const [friends, setFriends] = useState<UserDataResult[]>([]);
+    const [isLoadingFriends, setIsLoadingFriends] = useState(false);
+
+    const fetchFriends = async () => {
+        setIsLoadingFriends(true);
+        try {
+            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: dynamisch holen
+            const friendsResult = await getFriends(activeUserId);
+            if (friendsResult?.success) {
+                const userDataList = await Promise.all(
+                    friendsResult.friends.map((id: string) => getUserData(id))
+                );
+                setFriends(userDataList);
+            } else {
+                setFriends([]);
+            }
+        } catch (_error) {
+            setFriends([]);
+            toast.error('Error fetching friends');
+        } finally {
+            setIsLoadingFriends(false);
+        }
+    };
 
     const handleClose = () => {
         setView('main'); // reset view on close
@@ -117,8 +67,9 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         setWasInGroupCreate(false);
         setSelectedContacts([]);
         setGroupName('');
-        setFirstName('');
-        setLastName('');
+        // setFirstName('');
+        // setLastName('');
+        setUsername('');
         setUserId('');
         onClose();
     };
@@ -133,8 +84,9 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             setView('main');
         }
         else if (view === 'contactAdd') {
-            setFirstName('');
-            setLastName('');
+            // setFirstName('');
+            // setLastName('');
+            setUsername('');
             setUserId('');
             setView('main');
         }
@@ -155,7 +107,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const handleCreateGroup = async () => {
         try {
             // TODO: for now hardcoded founder id für name: 'neuer user 1', should be fetched before
-            const founderId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+            // const founderId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+            const founderId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
             const result = await createGroup(founderId, groupName);
             if (result?.success) {
                 toast.success('Gruppe wurde erstellt!');
@@ -169,34 +122,35 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         }
     }
 
+    const handleAddContact = async () => {
+        try {
+            // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: get active user id
+            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: get active user id
+            const result = await addFriend(activeUserId, userId);
+            if (result?.success) {
+                toast.success('Der Bre wurde geadded!');
+            } else {
+                toast.error('Hinzufügen fehlgeschlagen');
+            }
+        } catch (error) {
+            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+        }
+    };
+
     const isEmptyStringOrOnlySpaces = (passedString: string) => {
         return passedString.trim() === ''
     }
 
     const isContactAddFormInvalid = [
-        firstName,
-        lastName,
         userId
     ].some(isEmptyStringOrOnlySpaces);
 
-    const hardCodedContacts = [
-        { id: 1, firstName: 'Peter', lastName: 'Mayer' },
-        { id: 2, firstName: 'Anna', lastName: 'Ulrich' },
-        { id: 3, firstName: 'Mister', lastName: 'Bro' },
-        { id: 4, firstName: 'Frederik', lastName: 'Frikadelle' },
-        { id: 5, firstName: 'So-ein', lastName: 'Dude' },
-        { id: 6, firstName: 'Bruno', lastName: 'Bananenbrot' },
-        { id: 7, firstName: 'Lotta', lastName: 'Lachsfilet' },
-        { id: 8, firstName: 'Horst', lastName: 'Hüpfburg' },
-        { id: 9, firstName: 'Gisela', lastName: 'Glitzerstaub' },
-        { id: 10, firstName: 'Kevin', lastName: 'Kaktus' },
-        { id: 11, firstName: 'Chantal', lastName: 'Champignon' },
-        { id: 12, firstName: 'Uwe', lastName: 'Unwetter' },
-        { id: 13, firstName: 'Susi', lastName: 'Sonnenbrand' },
-        { id: 14, firstName: 'Heinz', lastName: 'Hörnchen' },
-        { id: 15, firstName: 'Berta', lastName: 'Besenstiel' },
-    ];
-
+    React.useEffect(() => {
+        if (view === 'groupAdd') {
+            void fetchFriends();
+        }
+    }, [view]);
 
     return (
         <Drawer
@@ -293,45 +247,48 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
                 {view === 'groupAdd' && (
                     <Slide direction={wasInGroupAddCreate ? 'right' : 'left'} in={view === 'groupAdd'} mountOnEnter unmountOnExit>
-                    <Box sx={{ pt: 8 }}>
-                        <Typography variant="h5" align="center">Members</Typography>
-                        <Typography variant="body1" align="center" sx={{ pt: 3, pb: 4 }}>
-                            Select group members!
-                        </Typography>
-
-                        <Box
-                            sx={{
-                                maxHeight: '71vh',
-                                overflowY: 'auto',
-                                mr: -1, // optional: negiert Scrollbar-Breite
-                            }}
-                        >
-                        {hardCodedContacts.map((contact) => (
-                            <FormControlLabel
-                                key={contact.id}
-                                control={
-                                        <Checkbox
-                                            checked={selectedContacts.includes(contact.id)}
-                                            onChange={() => handleToggleContact(contact.id)}
-                                            icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
-                                            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#5A54D1', filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))' }} />}
-                                            sx={{ color: 'white', py: 2 }}
-                                        />
-                                }
-                                label={`${contact.firstName} ${contact.lastName}`}
-                                sx={{
-                                    display: 'block',
-                                    mx: 2,
-                                    color: 'white',
-                                    borderRadius: 1,
-                                    '&:hover': {
-                                        backgroundColor: 'action.hover',
-                                    },
-                                }}
-                            />
-                        ))}
+                        <Box sx={{ pt: 8 }}>
+                            <Typography variant="h5" align="center">Members</Typography>
+                            <Typography variant="body1" align="center" sx={{ pt: 3, pb: 4 }}>
+                                Select group members!
+                            </Typography>
+                            <Box sx={{ maxHeight: '71vh', overflowY: 'auto', mr: -1 }}>
+                                {isLoadingFriends ? (
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                                        <CircularProgress />
+                                    </Box>
+                                ) : (
+                                    friends.length === 0 ? (
+                                        <Typography align="center" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                                            No friends found.<br />Add some friends first!
+                                        </Typography>
+                                    ) : (
+                                        friends.map((contact, idx) => (
+                                            <FormControlLabel
+                                                key={contact.userId || idx}
+                                                control={
+                                                    <Checkbox
+                                                        checked={selectedContacts.includes(idx)}
+                                                        onChange={() => handleToggleContact(idx)}
+                                                        icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
+                                                        checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#5A54D1', filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))' }} />}
+                                                        sx={{ color: 'white', py: 2 }}
+                                                    />
+                                                }
+                                                label={contact.username}
+                                                sx={{
+                                                    display: 'block',
+                                                    mx: 2,
+                                                    color: 'white',
+                                                    borderRadius: 1,
+                                                    '&:hover': { backgroundColor: 'action.hover' },
+                                                }}
+                                            />
+                                        ))
+                                    )
+                                )}
+                            </Box>
                         </Box>
-                    </Box>
                     </Slide>
                 )}
 
@@ -376,13 +333,13 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                         </Box>
 
                         <Box sx={{ mt: 4, px: 2 }}>
-                            {selectedContacts.slice(0,6).map((id) => {
-                                    const contact = hardCodedContacts.find(c => c.id === id);
+                            {selectedContacts.slice(0,6).map((index) => {
+                                    const contact = friends[index];
                                     if (!contact) return null;
 
                                     return (
                                         <Box
-                                            key={contact.id}
+                                            key={contact.userId || index}
                                             sx={styles.contactSummary}
                                         >
                                             <Box
@@ -390,7 +347,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                                     width: 32,
                                                     height: 32,
                                                     borderRadius: '50%',
-                                                    bgcolor: '#3B82F6',
+                                                    bgcolor: '#6C64E1',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -398,10 +355,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                                     fontWeight: 500,
                                                 }}
                                             >
-                                                {contact.firstName[0]}
+                                                {contact.username ? contact.username[0] : '?'}
                                             </Box>
                                             <Typography>
-                                                {contact.firstName} {contact.lastName}
+                                                {contact.username}
                                             </Typography>
                                         </Box>
                                     );
@@ -453,66 +410,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                     <Slide direction={'left'} in={view === 'contactAdd'} mountOnEnter unmountOnExit>
                         <Box sx={{ pt: 8 }}>
                             <Typography variant="h5" align="center">New Contact</Typography>
-                            <Box sx={{ px: 2, pb: 1, pt: 4 }}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    placeholder="First name"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    InputProps={{
-                                        sx: {
-                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
-                                            borderRadius: 2,
-                                            color: 'white',
-                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                            },
-                                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        sx: {
-                                            color: 'rgba(255, 255, 255, 0.6)',
-                                        },
-                                    }}
-                                />
-                            </Box>
-                            <Box sx={{ px: 2, pb: 2, pt: 0 }}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    placeholder="Last name"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    InputProps={{
-                                        sx: {
-                                            bgcolor: 'rgba(255, 255, 255, 0.04)',
-                                            borderRadius: 2,
-                                            color: 'white',
-                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                            },
-                                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#3B82F6',
-                                            },
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        sx: {
-                                            color: 'rgba(255, 255, 255, 0.6)',
-                                        },
-                                    }}
-                                />
-                            </Box>
                             <Box sx={{ px: 2, pb: 2, pt: 4 }}>
                                 <TextField
                                     variant="outlined"
@@ -544,10 +441,10 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                 />
                             </Box>
                             <ButtonBase
-                                onClick={() => {
-                                    console.log("Added " + firstName + ' ' + lastName + ' with the userId ' + userId + ' to your contacts!');
+                                onClick={ async () => {
+                                    console.log("Added " + username + ' with the userId ' + userId + ' to your contacts!');
+                                    await handleAddContact();
                                     handleClose();
-                                    // hier dann iwi einen contactCreatedHandler({ name: groupName, members: selectedContacts });
                                 }}
                                 disabled={isContactAddFormInvalid}
                                 sx={{...styles.addGroupButton,

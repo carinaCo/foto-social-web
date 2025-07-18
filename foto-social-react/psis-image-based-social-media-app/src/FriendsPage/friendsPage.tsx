@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import {
     AppBar,
-    Box,
     CssBaseline,
     Paper,
     Typography,
-    Tabs,
-    Tab,
     List,
     Badge,
     IconButton,
-    Toolbar, Container, Grid
+    Container, Grid,
+    Box
 } from "@mui/material";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FriendBox from "./friendBox.tsx";
 import FriendRequestBox from "./friendRequestBox.tsx";
-import type {User} from "../Models/User.tsx";
 import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
+import {getFriends} from "./helpers/friendHelper.ts";
+import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
+import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
+import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const FriendsPage: React.FC = () => {
@@ -26,45 +28,57 @@ const FriendsPage: React.FC = () => {
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
     };
-//for friends/friendrequests
-    const [activeTab, setActiveTab] = useState<'friends' | 'requests'>('friends');
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    const [friends, setFriends] = useState<User[]>([
-        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-        { id: 1, firstName: 'Donald', lastName: 'Duck', userId: '123456789' },
-        { id: 1, firstName: 'Donald2', lastName: 'Duck2', userId: '123451789' },
-        { id: 1, firstName: 'Donald3', lastName: 'Duck3', userId: '123446789' },
-
+    const [friendRequests, setFriendRequests] = useState<UserDataResult[]>([
+        { username: 'Tick Duck', userId: '123456799' },
+        { username: 'Trick Duck', userId: '123456749' },
     ]);
-    const [friendRequests, setFriendRequests] = useState<User[]>([
-        { id: 2, firstName: 'Tick', lastName: 'Duck', userId: '123456799' },
-        { id: 3, firstName: 'Trick', lastName: 'Duck', userId: '123456749' },
-    ]);
+    const [showRequests, setShowRequests] = useState(false);
 
-    const handleTabChange = (_: React.SyntheticEvent, newValue: number | undefined) => {
-        setActiveTab(newValue === 0 ? 'friends' : 'requests');
-    };
+    const [friends, setFriends] = useState<UserDataResult[]>([]);
 
-    const handleAccept = (id: number | undefined) => {
-        const user = friendRequests.find((r) => r.id === id);
+    React.useEffect(() => {
+        setIsLoading(true);
+        console.log('triggered useEffect in FriendsPage');
+        // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: replace with actual user ID
+        const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: replace with actual user ID
+        // Fetch friends for the active user
+        const fetchFriends = async () => {
+            try {
+                const friendsResult = await getFriends(activeUserId);
+                if (friendsResult?.success) {
+                    console.log('Friends fetched successfully:', friendsResult.friends);
+
+                    // Hole für jede friendId die Userdaten
+                    const userDataList = await Promise.all(
+                        friendsResult.friends.map((id: string) => getUserData(id))
+                    );
+                    setFriends(userDataList);
+                } else {
+                    console.error('Failed to fetch friends:', friendsResult?.error);
+                }
+            } catch (error) {
+                console.error('Error fetching friends:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        void fetchFriends();
+    }, []);
+
+    const handleAccept = (id: string | undefined) => {
+        const user = friendRequests.find((r) => r.userId === id);
         if (!user) return;
         setFriends((prev) => [...prev, user]);
-        setFriendRequests((prev) => prev.filter((r) => r.id !== id));
+        setFriendRequests((prev) => prev.filter((r) => r.userId !== id));
     };
 
-    const handleReject = (id: number | undefined) => {
-        setFriendRequests((prev) => prev.filter((r) => r.id !== id));
+    const handleReject = (id: string | undefined) => {
+        setFriendRequests((prev) => prev.filter((r) => r.userId !== id));
     };
 
-    const [showRequests, setShowRequests] = useState(false);
+
 
     const toggleRequests = () => setShowRequests((prev) => !prev);
 
@@ -73,50 +87,70 @@ const FriendsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
+            <ParticleLayer />
             <AppBar>
-                <AppToolbar onAddClick={toggleDrawer(true)}/>
-                {pendingCount>0 && (
-                    <IconButton color="inherit" onClick={toggleRequests}>
-                        <Badge badgeContent={pendingCount} color="error">
-                            <PeopleAltIcon />
-                        </Badge>
-                    </IconButton>
+                <AppToolbar onAddClick={toggleDrawer(true)} />
+                {pendingCount > 0 && (
+                    <Box>
+                        <IconButton color="inherit" onClick={toggleRequests} sx={{
+                            width: 40,
+                            height: 40,
+                            background: 'rgba(255,255,255,0.08)',
+                            '&:hover': {
+                                background: 'rgba(180, 100, 255, 0.18)'
+                            }
+                        }}>
+                            <Badge badgeContent={pendingCount} color="error">
+                                <PeopleAltIcon />
+                            </Badge>
+                        </IconButton>
+                    </Box>
                 )}
-
             </AppBar>
 
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid container spacing={3}>
-            {/* Friend Requests - Conditionally Rendered */}
-            {showRequests && pendingCount > 0 && (
-                <Grid item>
-                    <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none'}}>
-                        <Typography variant="h6" gutterBottom>
-                            Friend Requests
-                        </Typography>
-                        <List>
-                            <FriendRequestBox
-                                requests={friendRequests}
-                                onAccept={handleAccept}
-                                onReject={handleReject}
-                            />
-                        </List>
-                    </Paper>
-                </Grid>
-            )}
-
-            {/* Friends - Adjust width based on requests panel */}
-            <Grid item>
-                <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none', p: 0 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Your Friends
-                    </Typography>
-                    <FriendBox friends={friends} />
-                </Paper>
-            </Grid>
-        </Grid>
-    </Container>
-
+            {/* Content-Bereich */}
+            <Box>
+                {isLoading ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2, mt: 8 }}>
+                        Assembling the homies, give me a sec...
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    !friends || friends.length === 0 ? (
+                        <Box>
+                            No friends found.<br />
+                            Please add some friends or wait for friend requests.
+                        </Box>
+                    ) : (
+                        <Container maxWidth="lg" sx={{ mt: 4 }}>
+                            <Grid container spacing={1}>
+                                {showRequests && pendingCount > 0 ? (
+                                    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
+                                        <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
+                                            <Typography variant="h6" gutterBottom>
+                                                Friend Requests
+                                            </Typography>
+                                            <List>
+                                                <FriendRequestBox
+                                                    requests={friendRequests}
+                                                    onAccept={handleAccept}
+                                                    onReject={handleReject}
+                                                />
+                                            </List>
+                                        </Paper>
+                                    </Grid>
+                                ) : (
+                                    <Grid size={{ xs: 12 }}>
+                                        <Paper elevation={0} sx={{ bgcolor: 'transparent', boxShadow: 'none' }}>
+                                            <FriendBox friends={friends} />
+                                        </Paper>
+                                    </Grid>
+                                )}
+                            </Grid>
+                        </Container>
+                    )
+                )}
+            </Box>
 
             <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </>
