@@ -94,6 +94,8 @@ const GroupChat: React.FC = () => {
         ];
 
 
+
+
     return (
         <>
             <ParticleLayer />
@@ -154,7 +156,7 @@ const GroupChat: React.FC = () => {
                                                         <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" slotProps=
                                                             {{
                                                                 input: {
-                                                                    disabled: isCurrentPrompter(userId, element),
+                                                                    disabled: isCurrentPrompter(userData?.userId, element),
                                                                     endAdornment: (
                                                                         <InputAdornment position="end">
                                                                             <EditIcon fontSize={'small'} />

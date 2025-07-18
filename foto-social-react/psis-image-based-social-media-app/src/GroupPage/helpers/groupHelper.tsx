@@ -1,6 +1,6 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
-import {GetGroup, GroupData} from "../../Client/use_cases/GroupManagement/GetGroup";
+import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 
 export const createGroup = async (
     founderId: string,
@@ -49,7 +49,7 @@ export const getUserData = async (userId: string) => {
 
 export const getGroupData = async (groupId: string) => {
     const projectId = 'foto-social-web';
-    const getGroupInstance = new GetGroup({ projectId });
+    const getGroupInstance = new GetGroup.GetGroup({ projectId });
 
     const groupData = await getGroupInstance.execute({ groupId });
 
@@ -58,7 +58,7 @@ export const getGroupData = async (groupId: string) => {
 
 const startDate = new Date('2024-01-01T00:00:00Z');
 
-export const isCurrentPrompter = async (UserID: string, groupData: GroupData) => {
+export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGroup.GroupData) => {
     const now = Date.now(); // current time in ms
     const start = startDate.getTime(); // start time in ms
 
