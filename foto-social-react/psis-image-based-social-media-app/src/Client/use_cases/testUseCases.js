@@ -512,4 +512,4 @@ testRegisterUser();
 
 //PromptLogic
 //testGeneratePromptByUser();
-//testGetPrompt(); //TODO: fix
+testGetPrompt(); //TODO: fix
