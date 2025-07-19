@@ -81,7 +81,7 @@ const testGetUserData = async () => {
   const testGetPosts = async () => {
     try {
       const projectId = 'foto-social-web';
-      const groupId = '1e3dbd7f-5d17-49d8-8dae-092685e7f3ff';
+      const groupId = '9c6eed5c-4417-42e6-b6aa-f7b6eaa94b19';
   
       const getPosts = new GetGroupPosts({ projectId });
   
@@ -267,8 +267,8 @@ const testCreateGroup = async () => {
 const testRegisterUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const email = 'newEmail@yahoo.com567782025'
-    const username = 'usernameToTest25';
+    const email = 'lappen@yahoo.com567782025'
+    const username = 'lappenToTest25';
     const encryptedPassword = 'encryptedPassword202513'
 
     const registerUser = new RegisterUser({ projectId});
@@ -376,7 +376,7 @@ const testGeneratePromptByUser = async () => {
     const projectId = 'foto-social-web';
 
     const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
-    const promptText = 'Summer';
+    const promptText = 'Never Ending Summer';
     
     const generatePrompt = new GeneratePromptByUser({ projectId});
     const result = await generatePrompt.execute({ groupId, promptText });
@@ -494,7 +494,7 @@ testGetPosts();
 
 //Create
 //testCreateGroup();
-//testRegisterUser();
+testRegisterUser();
 
 //POST
 //testSendFriendRequest();
@@ -512,4 +512,4 @@ testGetPosts();
 
 //PromptLogic
 //testGeneratePromptByUser();
-//testGetPrompt(); //TODO: fix
+testGetPrompt(); //TODO: fix

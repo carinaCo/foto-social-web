@@ -1,6 +1,8 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
-import {GetGroup} from "../../Client/use_cases/GroupManagement/GetGroup";
+import {GetPrompt} from "../../Client/use_cases/PromptGeneration/GetPrompt";
+import {GeneratePromptByUser} from "../../Client/use_cases/PromptGeneration/GeneratePromptByUser";
+import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -52,7 +54,7 @@ export const getUserData = async (userId: string) => {
 
 export const getGroupData = async (groupId: string) => {
     const projectId = 'foto-social-web';
-    const getGroupInstance = new GetGroup({ projectId });
+    const getGroupInstance = new GetGroup.GetGroup({ projectId });
 
     const groupData = await getGroupInstance.execute({ groupId });
 
@@ -101,3 +103,54 @@ export const renderAppToolBarIconButton = (
         )
     }
 }
+
+const startDate = new Date('2024-01-01T00:00:00Z');
+
+export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGroup.GroupData) => {
+    const now = Date.now(); // current time in ms
+    const start = startDate.getTime(); // start time in ms
+
+    const msPerDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+    const daysElapsed = Math.floor((now - start) / msPerDay);
+
+    const index = daysElapsed % groupData.members.length;
+    return groupData.members[index].userId === UserID
+}
+
+export const getPrompts = async (groupId: string) => {
+    try {
+        const projectId = 'foto-social-web';
+        const getPromptDataInstance = new GetPrompt({ projectId });
+
+        const prompts = await getPromptDataInstance.execute({ groupId });
+        console.log('getPromptData:', prompts);
+        if (prompts.success){
+            if (prompts.previousDayPrompt.source==="fallback") {
+                console.log('Fetched random prompt');
+            }
+            if (prompts.previousDayPrompt.source==="yesterday") {
+                console.log('Fetched user generated prompt');
+            }
+            return prompts
+        }
+
+        console.log('No success fetching the prompt: ', prompts);
+        return prompts;
+    } catch (error) {
+        console.error('Error in getCurrentPrompt:', error);
+        throw error;
+    }
+}
+
+export const setPrompt = async (groupId : string, promptText : string) => {
+    try {
+        const projectId = 'foto-social-web';
+        const setPromptDataInstance = new GeneratePromptByUser({projectId});
+
+        return await setPromptDataInstance.execute({ groupId, promptText });
+    } catch (error) {
+        console.error('Error in setPrompt:', error);
+        throw error;
+    }
+}
+

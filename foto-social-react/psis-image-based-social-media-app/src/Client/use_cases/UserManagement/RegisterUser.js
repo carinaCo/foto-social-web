@@ -55,6 +55,7 @@ export class RegisterUser {
       return { success: false, message: 'Email or username already in use' };
     }
 
+
     const userDocBody = {
       fields: {
         userId: { stringValue: userId },
@@ -68,6 +69,11 @@ export class RegisterUser {
 
     const usersCollectionUrl = firestoreHelper.registerUserUrl();
     await httpClient.post(`${usersCollectionUrl}?documentId=${userId}`, userDocBody);
+
+    firestoreHelper.createUsersSubcollection(userId,"Friends",httpClient);
+    firestoreHelper.createUsersSubcollection(userId,"PendingFriendRequests",httpClient);
+    firestoreHelper.createUsersSubcollection(userId,"BlockedUsers",httpClient);
+    firestoreHelper.createUsersSubcollection(userId,"GroupInvites",httpClient);
 
     return { success: true, userId: userId };
   }

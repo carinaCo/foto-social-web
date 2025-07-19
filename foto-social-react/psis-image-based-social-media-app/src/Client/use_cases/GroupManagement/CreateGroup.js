@@ -27,6 +27,14 @@ export class CreateGroup {
     };
     
     await httpClient.patch(groupDocUrl, groupDocBody);
+
+    //TODO: check that it patched without problems
+
+    firestoreHelper.createGroupSubcollection(groupId, "Messages", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "PendingUsers", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Posts", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Prompts", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Users", httpClient);
   
     const membersUrl = firestoreHelper.getGroupUsersUrl(groupId);
     const memberDocBody = {
