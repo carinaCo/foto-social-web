@@ -6,6 +6,7 @@ import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 //TODO: Repurpose to Global Feed
+//TODO: look at error?!
 
 export class GetGroupFeed {
   constructor({ projectId }) {

@@ -5,6 +5,8 @@ import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicat
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
+//TODO: see problem in discord described ( Array []?!)
+
 export class GetGroupPosts {
   constructor({ projectId }) {
     this.projectId = projectId;
