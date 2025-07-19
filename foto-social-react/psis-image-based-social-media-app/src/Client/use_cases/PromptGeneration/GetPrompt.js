@@ -8,10 +8,16 @@ import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicat
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
+const HARDCODED_FALLBACK_PROMPTS = [
+  "Happy Place",
+  "Exam Period"
+];
+
 export class GetPrompt {
   constructor({ projectId }) {
     this.projectId = projectId;
   }
+
 
   /*async execute({ groupId }) {
     if (!groupId) {
@@ -299,10 +305,10 @@ export class GetPrompt {
         prompt: yesterdayDoc.document.fields.promptText?.stringValue ?? '[missing promptText]',
       };
     } else {
-      const fallbackDoc = await getRandomFallbackPrompt();
+      const fallbackPrompt = HARDCODED_FALLBACK_PROMPTS[Math.floor(Math.random() * HARDCODED_FALLBACK_PROMPTS.length)];
       previousDayPrompt = {
         source: 'fallback',
-        prompt: fallbackDoc?.document.fields.promptText?.stringValue ?? '[missing promptText]',
+        prompt: fallbackPrompt,
       };
     }
 

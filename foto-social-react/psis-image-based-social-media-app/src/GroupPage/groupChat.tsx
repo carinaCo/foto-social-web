@@ -69,11 +69,11 @@ const GroupChat: React.FC = () => {
 
                     // console.log("Group results:", groupResults);
                     setGroups(groupResults);
-
+/*
                     const setPromptPromises = data.groupId.map((groupId) => setPrompt(groupId, "Klausurenphase"));
                     await Promise.all(setPromptPromises);
                     console.log('promise all await called for set prompts');
-
+ */
                     const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
                     const promptResults = await Promise.all(promptPromises);
                     console.log('promise all await called for prompts');
@@ -182,28 +182,42 @@ const GroupChat: React.FC = () => {
                                                                    value={prompts[index].previousDayPrompt.prompt || 'No prompt found...'}
 
                                                         />
-                                                        <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={prompts[index].promptToday?.prompt ?? ''} slotProps=
-                                                            {{
-                                                                input: {
-                                                                    disabled: isCurrentPrompter(userData?.userId, element),
-                                                                    endAdornment: prompts[index].promptToday === null ? (
-                                                                        <InputAdornment position="end">
-                                                                            <EditIcon fontSize={'small'} />
-                                                                        </InputAdornment>
-                                                                    ) : undefined,
-                                                                },
-                                                            }}
-                                                            onChange={(e) => {
-                                                                const updated = [...localPrompts];
-                                                                updated[index].tempPrompt = e.target.value;
-                                                                setLocalPrompts(updated);
-                                                            }}
-                                                            onBlur={()=>{
-                                                                if (prompts[index].promptToday === null) {
-                                                                    setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
-                                                                }
-                                                            }}
-                                                        />
+                                                        {
+                                                            prompts[index].todayPrompt != null?(
+                                                                <TextField id={'prompt-field-today' + index} label={'Morgen'} variant="outlined" size="small" slotProps=
+                                                                    {{
+                                                                        input: {
+                                                                            readOnly: true,
+                                                                            disabled: true,
+                                                                        }}}
+                                                                           value={prompts[index].todayPrompt.prompt}
+
+                                                                />
+                                                            ): (
+                                                                <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={prompts[index].todayPrompt.prompt} slotProps=
+                                                                    {{
+                                                                        input: {
+                                                                            disabled: false,//isCurrentPrompter(userData?.userId, element),
+                                                                            endAdornment:
+                                                                                <InputAdornment position="end">
+                                                                                    <EditIcon fontSize={'small'} />
+                                                                                </InputAdornment>
+                                                                        },
+                                                                    }}
+                                                                           onChange={(e) => {
+                                                                               const updated = [...localPrompts];
+                                                                               updated[index].tempPrompt = e.target.value;
+                                                                               setLocalPrompts(updated);
+                                                                           }}
+                                                                           onBlur={()=>{
+                                                                               if (prompts[index].promptToday === null) {
+                                                                                   setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
+                                                                               }
+                                                                           }}
+                                                                />
+                                                            )
+                                                        }
+
                                                     </Stack>}
                                             />
                                         </ListItem>
