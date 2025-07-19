@@ -14,7 +14,7 @@ import {getGroupData, getUserData} from "./helpers/groupHelper.tsx";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
-import CircularProgress from '@mui/material/CircularProgress';
+import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 
 const styles = {
     listItem: {
@@ -56,7 +56,7 @@ const GroupChat: React.FC = () => {
                 const data = await getUserData(userId);
                 console.log('await getuserdata called');
                 setUserData(data);
-                // console.log("Fetched user data:", data);
+                console.log("Fetched user data:", data);
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
@@ -79,6 +79,19 @@ const GroupChat: React.FC = () => {
         void fetchUserData();
     }, []);
 
+    const handleClick = (element: GroupData) => {
+        if (!element.groupId) {
+            // Optional: Fehlerbehandlung oder Hinweis
+            return;
+        }
+        navigate(`/chat/${element.groupId}/${(element.name)}`, {
+            state: {
+                groupName: element.name,
+                promptToday: element?.promptToday || 'No prompt found...',
+            },
+        });
+    };
+
     // React.useEffect(() => {
     //     const isUserTurn = true; // Replace with actual logic
     //     if (isUserTurn) {
@@ -90,25 +103,11 @@ const GroupChat: React.FC = () => {
     //     }
     // }, []);
 
-    const groupElements =
-        [
-            {id: 1, groupName: 'Die wilden Kerle', promptToday: 'Happy Place', promptTomorrow: 'Tasty Food' },
-            {id: 2, groupName: 'Die zweite Gruppe', promptToday: 'Wetter', promptTomorrow: 'Coole Wolke' },
-            {id: 3, groupName: 'Die dritte Gruppe', promptToday: 'Pflanze', promptTomorrow: 'Litter Baum' },
-            {id: 4, groupName: 'Die vierte Gruppe', promptToday: 'Selfie', promptTomorrow: 'Landschaft' },
-            {id: 5, groupName: 'Die fünfte Gruppe', promptToday: 'Dies Das', promptTomorrow: 'Ananas' },
-        ];
-
     const isPromptFieldDisabled = false;
 
     if (isLoading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
-                    Chill bro, im loading atm...
-                    <CircularProgress />
-                </Box>
-            </Box>
+            <LoadingPlaceholder message={'Chill bro, im loading atm...'}/>
         );
     }
 
@@ -143,14 +142,7 @@ const GroupChat: React.FC = () => {
                                             <ListItemAvatar>
                                                 <Avatar alt="Group Picture"
                                                         onClick={() =>
-                                                            navigate(`/chat/${element.name}`, {
-                                                                state: {
-                                                                    groupName: element.name,
-                                                                    promptToday: element?.promptToday || 'No prompt found...',
-                                                                },
-                                                            })
-                                                        }
-
+                                                            handleClick(element)}
                                                 />
                                             </ListItemAvatar>
                                             <ListItemText

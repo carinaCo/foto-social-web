@@ -35,7 +35,13 @@
      
          const storagePath = `Posts/${postId}.jpg`;
          const uploadUrl = firestoreHelper.getGroupPostUploadUrl(storagePath);
-         const imageBuffer = Buffer.from(imageBase64, 'base64');
+         const binaryString = atob(imageBase64);
+         const len = binaryString.length;
+         const imageBuffer = new Uint8Array(len);
+         for (let i = 0; i < len; i++) {
+           imageBuffer[i] = binaryString.charCodeAt(i);
+         }
+
          const downloadToken = await httpClient.putBinary(uploadUrl, imageBuffer, 'image/jpeg');
      
          const imageReference = `https://firebasestorage.googleapis.com/v0/b/${this.storageBucket}/o/Posts%2F${postId}.jpg?alt=media&token=${downloadToken}`;
@@ -45,6 +51,7 @@
      
          const postBody = {
            fields: {
+             postId: { stringValue: postId },
              createdAt: { timestampValue: timestamp },
              groupId: { stringValue: groupId },
              imageReference: { stringValue: imageReference },

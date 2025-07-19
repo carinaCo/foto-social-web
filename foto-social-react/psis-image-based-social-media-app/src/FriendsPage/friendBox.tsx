@@ -24,9 +24,8 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
 
     return (
         <>
-            <Box
-            >
-                <Grid container rowSpacing={0.5} columnSpacing={1}>
+            <Box>
+                <Grid container rowSpacing={1} columnSpacing={1}>
                     {friends.map((friend) => (
                             <Grid
                                 key={friend.username + friend.userId}
@@ -70,9 +69,6 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                                         {friend.username}
                                     </Typography>
                                 </Box>
-                                {/*<Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>*/}
-                                {/*    UserID:*/}
-                                {/*</Typography>*/}
                                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', textAlign: 'left' }}>
                                     {friend.userId}
                                 </Typography>

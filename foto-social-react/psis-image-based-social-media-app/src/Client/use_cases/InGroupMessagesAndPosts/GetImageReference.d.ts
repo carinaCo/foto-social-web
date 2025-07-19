@@ -1,0 +1,1 @@
+export declare function fetchImageReferenceByPostId(postId: string, groupId: string): Promise<string | null>;

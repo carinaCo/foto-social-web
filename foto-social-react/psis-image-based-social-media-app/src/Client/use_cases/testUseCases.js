@@ -477,7 +477,7 @@ const testSendGroupPost = async () => {
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
 //testGetFriends();
-//testGetPosts();
+testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
 //testGetGroupUserRights();
