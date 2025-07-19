@@ -97,7 +97,7 @@ const GroupChat: React.FC = () => {
         void fetchUserData();
     }, []);
 
-    const handleClick = (element: GroupData) => {
+    const handleClick = (element: GroupData, userId: string) => {
         if (!element.groupId) {
             // Optional: Fehlerbehandlung oder Hinweis
             return;
@@ -105,7 +105,7 @@ const GroupChat: React.FC = () => {
         navigate(`/chat/${element.groupId}/${(element.name)}`, {
             state: {
                 groupName: element.name,
-                promptToday: element?.promptToday || 'No prompt found...',
+                promptToday: string || 'No prompt found...',
             },
         });
     };
@@ -163,7 +163,7 @@ const GroupChat: React.FC = () => {
                                             <ListItemAvatar>
                                                 <Avatar alt="Group Picture"
                                                         onClick={() =>
-                                                            handleClick(element)}
+                                                            handleClick(element, prompts[index].todayPrompt.prompt)}
                                                 />
                                             </ListItemAvatar>
                                             <ListItemText
