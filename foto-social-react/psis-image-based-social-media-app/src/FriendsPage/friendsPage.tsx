@@ -20,6 +20,7 @@ import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import CircularProgress from '@mui/material/CircularProgress';
+import {useAuth} from "../context/AuthContext.tsx";
 
 
 const FriendsPage: React.FC = () => {
@@ -38,11 +39,13 @@ const FriendsPage: React.FC = () => {
 
     const [friends, setFriends] = useState<UserDataResult[]>([]);
 
+    const { activeUserId, logout } = useAuth();
+
     React.useEffect(() => {
         setIsLoading(true);
         console.log('triggered useEffect in FriendsPage');
         // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: replace with actual user ID
-        const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: replace with actual user ID
+        //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: replace with actual user ID
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {

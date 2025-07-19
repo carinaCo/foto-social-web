@@ -14,6 +14,7 @@ import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
 import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import CloseIcon from '@mui/icons-material/Close';
+import {useAuth} from "../context/AuthContext.tsx";
 
 
 const ChatPageContent: React.FC = () => {
@@ -27,7 +28,9 @@ const ChatPageContent: React.FC = () => {
     const [hasSentPost, setHasSentPost] = React.useState(false);
 
     const { id: groupId } = useParams<{ id: string; }>();
-    const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
+
+    const { activeUserId, logout } = useAuth();
+    //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
 
     React.useEffect(() => {
         const fetchPosts = async () => {

@@ -45,7 +45,7 @@ const GroupChat: React.FC = () => {
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    //const { userId, logout } = useAuth(); //this is how to access the userId
+    const { userId, logout } = useAuth(); //this is how to access the userId
 
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
@@ -54,7 +54,7 @@ const GroupChat: React.FC = () => {
             try {
                 // TODO: user id nicht mehr hardcoden
                 // const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
-                const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
+                //const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
 
                 const data = await getUserData(userId);
                 console.log('await getuserdata called');
