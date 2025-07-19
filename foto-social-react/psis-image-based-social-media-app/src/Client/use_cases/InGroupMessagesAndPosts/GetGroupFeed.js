@@ -6,6 +6,7 @@ import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
 //TODO: Repurpose to Global Feed
+//TODO: look at error?!
 
 export class GetGroupFeed {
   constructor({ projectId }) {
@@ -20,15 +21,6 @@ export class GetGroupFeed {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
     const httpClient = new HttpClient(accessToken);
-
-    const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const today = `${year}-${month}-${day}`;
-
-    const startOfDay = new Date(`${today}T00:00:00.000Z`).toISOString();
-    const endOfDay = new Date(`${today}T23:59:59.999Z`).toISOString();
 
     const runQueryUrl = firestoreHelper.getRunQueryUrl(); 
 
@@ -68,9 +60,13 @@ export class GetGroupFeed {
       .filter(res => res.document)
       .map(res => res.document.name.split('/').pop());
 
+    const today = new Date();
+
+    const germanToday = new Date(today.toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    
     return {
       groupId,
-      date: today,
+      date: germanToday,
       posts: postIds,
       messages: messageIds
     };
