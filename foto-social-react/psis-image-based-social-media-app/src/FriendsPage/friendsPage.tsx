@@ -49,6 +49,7 @@ const FriendsPage: React.FC = () => {
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {
+                console.log('UserId:', activeUserId);
                 const friendsResult = await getFriends(activeUserId);
                 if (friendsResult?.success) {
                     console.log('Friends fetched successfully:', friendsResult.friends);

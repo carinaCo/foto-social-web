@@ -3,6 +3,7 @@
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
+import { wrapField } from '../../../utils/firestoreHelper.js';
 
 export class LogoutUser {
   constructor({ projectId }) {
@@ -20,7 +21,7 @@ export class LogoutUser {
 
     const patchBody = {
       fields: {
-        isLoggedIn: { booleanValue: false }
+        isLoggedIn: wrapField(false)
       }
     };
 
