@@ -15,6 +15,7 @@ import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
+import { useAuth} from "../context/AuthContext.tsx";
 
 const styles = {
     listItem: {
@@ -43,6 +44,8 @@ const GroupChat: React.FC = () => {
     const [userData, setUserData] = React.useState<UserDataResult | null>(null);
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
+
+    //const { userId, logout } = useAuth(); //this is how to access the userId
 
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
