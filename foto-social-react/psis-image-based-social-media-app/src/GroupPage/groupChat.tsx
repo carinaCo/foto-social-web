@@ -10,7 +10,8 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
 import {useNavigate} from "react-router-dom";
-import {getGroupData, getUserData, isCurrentPrompter, getCurrentPrompt, setPrompt} from "./helpers/groupHelper.tsx";
+import {getGroupData, getUserData, isCurrentPrompter, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
+import type {PromptResult} from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
@@ -42,8 +43,9 @@ const GroupChat: React.FC = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<UserDataResult | null>(null);
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
-    const [prompts, setPrompts] = React.useState<String[] | null>(null);
+    const [prompts, setPrompts] = React.useState<PromptResult[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
+
 
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
@@ -68,11 +70,11 @@ const GroupChat: React.FC = () => {
                     // console.log("Group results:", groupResults);
                     setGroups(groupResults);
 
-                    const setPromptPromises = data.groupId.map((groupId) => setPrompt(groupId, "Happy Place"));
+                    const setPromptPromises = data.groupId.map((groupId) => setPrompt(groupId, "Klausurenphase"));
                     await Promise.all(setPromptPromises);
                     console.log('promise all await called for set prompts');
 
-                    const promptPromises = data.groupId.map((groupId) => getCurrentPrompt(groupId));
+                    const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
                     const promptResults = await Promise.all(promptPromises);
                     console.log('promise all await called for prompts');
                     if (promptResults.length > 0){
@@ -106,6 +108,9 @@ const GroupChat: React.FC = () => {
             },
         });
     };
+    const [localPrompts, setLocalPrompts] = React.useState(
+        (prompts ?? []).map(p => ({ ...p, tempPrompt: p.promptToday?.prompt ?? '' }))
+    );
 
     // React.useEffect(() => {
     //     const isUserTurn = true; // Replace with actual logic
@@ -174,19 +179,30 @@ const GroupChat: React.FC = () => {
                                                                     readOnly: true,
                                                                     disabled: true,
                                                                 }}}
-                                                                   value={prompts[index] || 'No prompt found...'}
+                                                                   value={prompts[index].previousDayPrompt.prompt || 'No prompt found...'}
 
                                                         />
-                                                        <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" slotProps=
+                                                        <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={prompts[index].promptToday?.prompt ?? ''} slotProps=
                                                             {{
                                                                 input: {
                                                                     disabled: isCurrentPrompter(userData?.userId, element),
-                                                                    endAdornment: (
+                                                                    endAdornment: prompts[index].promptToday === null ? (
                                                                         <InputAdornment position="end">
                                                                             <EditIcon fontSize={'small'} />
                                                                         </InputAdornment>
-                                                                    )
-                                                                }}}
+                                                                    ) : undefined,
+                                                                },
+                                                            }}
+                                                            onChange={(e) => {
+                                                                const updated = [...localPrompts];
+                                                                updated[index].tempPrompt = e.target.value;
+                                                                setLocalPrompts(updated);
+                                                            }}
+                                                            onBlur={()=>{
+                                                                if (prompts[index].promptToday === null) {
+                                                                    setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
+                                                                }
+                                                            }}
                                                         />
                                                     </Stack>}
                                             />

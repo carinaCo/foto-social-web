@@ -117,26 +117,25 @@ export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGrou
     return groupData.members[index].userId === UserID
 }
 
-export const getCurrentPrompt = async (groupId: string) => {
+export const getPrompts = async (groupId: string) => {
     try {
         const projectId = 'foto-social-web';
         const getPromptDataInstance = new GetPrompt({ projectId });
 
-        const prompt = await getPromptDataInstance.execute({ groupId });
-        console.log('getPromptData:', prompt);
-        if (prompt.success){
-            if (prompt.source==="group (random)") {
-                console.log('Fetched random prompt: ');
-                return prompt.prompt;
+        const prompts = await getPromptDataInstance.execute({ groupId });
+        console.log('getPromptData:', prompts);
+        if (prompts.success){
+            if (prompts.previousDayPrompt.source==="fallback") {
+                console.log('Fetched random prompt');
             }
-            if (prompt.source==="group (recent)") {
-                console.log('Fetched user generated prompt: ');
-                return prompt.prompt;
+            if (prompts.previousDayPrompt.source==="yesterday") {
+                console.log('Fetched user generated prompt');
             }
+            return prompts
         }
 
-        console.log('No success fetching the prompt: ', prompt);
-        return prompt.prompt;
+        console.log('No success fetching the prompt: ', prompts);
+        return prompts;
     } catch (error) {
         console.error('Error in getCurrentPrompt:', error);
         throw error;

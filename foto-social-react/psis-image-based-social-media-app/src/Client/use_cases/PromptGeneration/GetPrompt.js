@@ -96,7 +96,7 @@ export class GetPrompt {
       prompt: randomDoc.document.fields.promptText.stringValue,
     };
   }
-  */
+
   async execute({ groupId }) {
     if (!groupId) {
       throw new Error('Missing required parameter: groupId');
@@ -197,10 +197,134 @@ export class GetPrompt {
       source: 'group (random)',
       prompt: randomDoc.document.fields.promptText?.stringValue ?? '[missing promptText]',
     };
-  }  
-  
-  
-  
+  }
+
+
+   */
+
+  async execute({ groupId }) {
+    if (!groupId) {
+      throw new Error('Missing required parameter: groupId');
+    }
+
+    const accessToken = await getFirestoreAccessToken();
+    const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
+    const httpClient = new HttpClient(accessToken);
+    const runQueryUrl = firestoreHelper.getRunQueryUrl();
+
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const yesterdayStart = new Date(todayStart);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    const yesterdayEnd = new Date(todayStart);
+    yesterdayEnd.setMilliseconds(-1);
+
+    const formatTimestamp = date => ({
+      timestampValue: date.toISOString(),
+    });
+
+    const queryPromptsInRange = async (start, end) => {
+      const query = {
+        structuredQuery: {
+          from: [{ collectionId: 'Prompts', allDescendants: true }],
+          where: {
+            compositeFilter: {
+              op: 'AND',
+              filters: [
+                {
+                  fieldFilter: {
+                    field: { fieldPath: 'groupId' },
+                    op: 'EQUAL',
+                    value: { stringValue: groupId },
+                  },
+                },
+                {
+                  fieldFilter: {
+                    field: { fieldPath: 'createdAt' },
+                    op: 'GREATER_THAN_OR_EQUAL',
+                    value: formatTimestamp(start),
+                  },
+                },
+                {
+                  fieldFilter: {
+                    field: { fieldPath: 'createdAt' },
+                    op: 'LESS_THAN_OR_EQUAL',
+                    value: formatTimestamp(end),
+                  },
+                },
+              ],
+            },
+          },
+          orderBy: [{ field: { fieldPath: 'createdAt' }, direction: 'DESCENDING' }],
+          limit: 1,
+        },
+        parent: `projects/${this.projectId}/databases/(default)/documents`,
+      };
+
+      const result = await httpClient.post(runQueryUrl, query);
+      return result.find(res => res.document) ?? null;
+    };
+
+    const getRandomFallbackPrompt = async () => {
+      const fallbackQuery = {
+        structuredQuery: {
+          from: [{ collectionId: 'Prompts', allDescendants: true }],
+          where: {
+            fieldFilter: {
+              field: { fieldPath: 'groupId' },
+              op: 'EQUAL',
+              value: { stringValue: groupId },
+            },
+          },
+          limit: 10,
+        },
+        parent: `projects/${this.projectId}/databases/(default)/documents`,
+      };
+
+      const result = await httpClient.post(runQueryUrl, fallbackQuery);
+      const validDocs = result.filter(res => res.document);
+      if (!validDocs.length) return null;
+
+      const randomDoc = validDocs[Math.floor(Math.random() * validDocs.length)];
+      return randomDoc;
+    };
+
+    // 1️⃣ Get yesterday's prompt
+    const yesterdayDoc = await queryPromptsInRange(yesterdayStart, yesterdayEnd);
+    let previousDayPrompt;
+    if (yesterdayDoc) {
+      previousDayPrompt = {
+        source: 'yesterday',
+        prompt: yesterdayDoc.document.fields.promptText?.stringValue ?? '[missing promptText]',
+      };
+    } else {
+      const fallbackDoc = await getRandomFallbackPrompt();
+      previousDayPrompt = {
+        source: 'fallback',
+        prompt: fallbackDoc?.document.fields.promptText?.stringValue ?? '[missing promptText]',
+      };
+    }
+
+    // 2️⃣ Get today's prompt
+    const todayDoc = await queryPromptsInRange(todayStart, now);
+    let todayPrompt = null;
+    if (todayDoc) {
+      todayPrompt = {
+        source: 'today',
+        prompt: todayDoc.document.fields.promptText?.stringValue ?? '[missing promptText]',
+      };
+    }
+
+    return {
+      success: true,
+      previousDayPrompt,
+      todayPrompt,
+    };
+  }
+
+
+
 }
 
 

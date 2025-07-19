@@ -1,33 +1,33 @@
-// src/utils/GetPrompt.ts
+// getPrompt.d.ts
 
-
-// Constructor parameters
-export interface GetPromptConstructorParams {
+export interface GetPromptOptions {
     projectId: string;
 }
 
-// Execution parameters
-export interface GetPromptExecuteParams {
+export interface ExecuteOptions {
     groupId: string;
 }
 
-// Response format
-export interface GetPromptResult {
+export interface PromptResult {
     success: boolean;
-    source: 'group (recent)' | 'group (random)';
-    prompt: string;
+    previousDayPrompt: {
+        source: 'yesterday' | 'fallback';
+        prompt: string;
+    };
+    todayPrompt: {
+        source: 'today';
+        prompt: string;
+    } | null;
 }
 
-// Typed wrapper class
 export class GetPrompt {
-    private instance: any;
+    constructor(options: GetPromptOptions);
 
-    constructor(params: GetPromptConstructorParams) {
-        const { GetPrompt } = require('./GetPrompt.js');
-        this.instance = new GetPrompt(params);
-    }
-
-    execute(params: GetPromptExecuteParams): Promise<GetPromptResult> {
-        return this.instance.execute(params);
-    }
+    /**
+     * Executes the logic to fetch the most recent prompts for a group.
+     *
+     * @param options.groupId - The group identifier to query prompts for.
+     * @returns A promise resolving to the result containing previous and current day prompts.
+     */
+    execute(options: ExecuteOptions): Promise<PromptResult>;
 }
