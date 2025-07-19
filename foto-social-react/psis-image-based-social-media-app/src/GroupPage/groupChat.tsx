@@ -194,7 +194,7 @@ const GroupChat: React.FC = () => {
 
                                                                 />
                                                             ): (
-                                                                <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={prompts[index].todayPrompt.prompt} slotProps=
+                                                                <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={""} slotProps=
                                                                     {{
                                                                         input: {
                                                                             disabled: false,//isCurrentPrompter(userData?.userId, element),
@@ -210,9 +210,9 @@ const GroupChat: React.FC = () => {
                                                                                setLocalPrompts(updated);
                                                                            }}
                                                                            onBlur={()=>{
-                                                                               if (prompts[index].promptToday === null) {
-                                                                                   setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
-                                                                               }
+
+                                                                               setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
+
                                                                            }}
                                                                 />
                                                             )
