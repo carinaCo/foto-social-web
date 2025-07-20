@@ -25,9 +25,11 @@ import CircularProgress from '@mui/material/CircularProgress'
 interface AddNewDrawerProps {
     open: boolean;
     onClose: () => void;
+    onFriendAdded?: () => void;
+    onGroupAdded?: () => void;
 }
 
-const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
+const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdded, onGroupAdded }) => {
     const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate' | 'contactAdd'>('main');
     const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
     const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
@@ -105,6 +107,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const handleCreateGroup = async () => {
         try {
 
+
           const founderId = '06aabba6-1002-4002-9840-2127decb9eea';
 
 
@@ -140,6 +143,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
           }
     
 
+
         }
         catch (error) {
           toast.error('Ein unerwarteter Fehler ist aufgetreten.');
@@ -154,6 +158,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             const result = await addFriend(activeUserId, userId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');
+                onFriendAdded?.();
             } else {
                 toast.error('Hinzufügen fehlgeschlagen');
             }
