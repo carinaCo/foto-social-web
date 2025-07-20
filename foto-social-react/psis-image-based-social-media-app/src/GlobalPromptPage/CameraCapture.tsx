@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, Box } from '@mui/material';
+import {Dialog, DialogTitle, DialogContent, Button, Box, Icon, DialogActions} from '@mui/material';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { chatPageStyles } from '../ChatPage/chatPageStyles.ts';
 
 const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (image: string) => void }> = ({ open, onClose, onCapture }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -35,9 +37,8 @@ const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (
     canvasRef.current.height = height;
 
     ctx.drawImage(videoRef.current, 0, 0, width, height);
-    const imageData = canvasRef.current.toDataURL('image/png'); // base64
-
-    onCapture(imageData); // Bild an Parent-Komponente übergeben
+    const imageData = canvasRef.current.toDataURL('image/png');
+    onCapture(imageData);
     onClose();
     stopCamera();
   };
@@ -52,20 +53,61 @@ const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (
   }, [open]);
 
   return (
-      <Dialog open={open} onClose={() => { stopCamera(); onClose(); }} fullWidth maxWidth="sm"
-              disableEnforceFocus
-              disableRestoreFocus
+      <Dialog
+          open={open}
+          onClose={() => { stopCamera(); onClose(); }}
+          fullWidth
+          maxWidth="xs"
+          slotProps={{ paper: { sx: chatPageStyles.dialogPaper } }}
       >
-        <DialogTitle>Use Camera</DialogTitle>
-        <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <video ref={videoRef} style={{ width: '100%', borderRadius: 8 }} />
-            <Button variant="contained" color="primary" onClick={handleCapture} sx={{ mt: 2 }}>
-              take a photo
-            </Button>
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
+        <DialogTitle
+            sx={{
+              color: '#ffffff',
+              fontSize: '1.2rem',
+              textAlign: 'center',
+              pb: 0,
+            }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', mb: 2 }}>
+            <Icon sx={{ color: '#fff', fontSize: 32, mr: 1 }}>
+              <CameraAltIcon />
+            </Icon>
           </Box>
-        </DialogContent>
+        </DialogTitle>
+        <DialogContent sx={{ ...chatPageStyles.dialogContent, pt: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <video
+              ref={videoRef}
+              style={{
+                width: '100%',
+                maxWidth: 320,
+                borderRadius: 16,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                marginBottom: 16,
+                background: '#22223b'
+              }}
+              autoPlay
+              playsInline
+          />
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
+        </Box>
+      </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+          <Button
+              onClick={() => { stopCamera(); onClose(); }}
+              variant="contained"
+              sx={chatPageStyles.dialogActionsCancelButton}
+          >
+            Abbrechen
+          </Button>
+          <Button
+              onClick={handleCapture}
+              variant="contained"
+              sx={chatPageStyles.dialogActionsSendButton}
+          >
+            Aufnehmen
+          </Button>
+        </DialogActions>
       </Dialog>
   );
 };
