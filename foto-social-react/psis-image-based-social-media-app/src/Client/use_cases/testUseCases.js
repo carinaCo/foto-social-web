@@ -345,7 +345,7 @@ const testAddFriend = async () => {
 const testSendFriendRequest = async () => {
   try {
     const projectId = 'foto-social-web';
-    const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+    const userId = '06aabba6-1002-4002-9840-2127decb9eea';
     const friendId = '57779e68-adff-42c1-8ca4-e70039828c55';
     
     const sendFriendRequest = new SendFriendRequest({ projectId});
@@ -421,7 +421,7 @@ const testSendGroupInvite = async () => {
   try {
     const projectId = 'foto-social-web';
     const groupId = '0c61ae73-c32b-4821-b7d9-bf61a3d32ec4';
-    const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
+    const userId = '06aabba6-1002-4002-9840-2127decb9eea';
     
     const sendGroupInvite = new SendGroupInvite({ projectId});
     const result = await sendGroupInvite.execute({ userId, groupId });

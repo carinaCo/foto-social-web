@@ -1,0 +1,121 @@
+export const chatPageStyles = {
+    paper: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        transition: 'height 0.3s',
+        overflow: 'hidden',
+        // Glow nach oben (y-offset negativ), weich und farbig
+        boxShadow: '0 -8px 32px 0 rgba(140, 100, 225, 0.45), 0 4px 12px rgba(163, 144, 238, 0.2)',
+    },
+    notExpandedBox: {
+        background: '#3B3E5C',
+        height: 64,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
+        filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
+        backdropFilter: 'blur(10px) saturate(180%)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    notExpandedIconButton: {
+        width: 56,
+        height: 56,
+        bgcolor: '#5A54D1',
+        color: '#fff',
+        borderRadius: '50%',
+        '&:hover': { bgcolor: '#6C64E1' },
+    },
+    expandedBox: {
+        height: '100%',
+        px: 2,
+        pt: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        background: '#3B3E5C',
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    cameraInputButton: {
+        bgcolor: '#5A54D1',
+        color: '#fff',
+        width: 56,
+        height: 56,
+        '&:hover': {bgcolor: '#6C64E1'},
+    },
+    libraryInputButton: {
+        bgcolor: '#5A54D1',
+        color: '#fff',
+        width: 56,
+        height: 56,
+        '&:hover': {bgcolor: '#6C64E1'},
+    },
+    cancelIconButton: {
+        color: '#ff4141',
+        width: 48,
+        height: 48
+    },
+    dialogPaper: {
+        bgcolor: 'rgba(36,17,86,0.2)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(6px)',
+        borderRadius: 4,
+        color: '#fff',
+        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    },
+    lockIcon: {
+        color: '#ffffff',
+        display: 'flex',
+        alignItems: 'center',
+        transition: 'transform 0.6s ease, opacity 0.6s ease',
+    },
+    dialogContent: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: 340,
+        minHeight: 200,
+    },
+    previewImage: {
+        maxWidth: 300,
+        maxHeight: 300,
+        borderRadius: 16,
+        boxShadow: '0 0px 12px #6C64E1',
+        border: '1px solid #5A54D1',
+        background: 'rgba(55,55,255,0.08)',
+        backdropFilter: 'blur(4px)',
+    },
+    dialogActionsCancelButton: {
+        minWidth: 140,
+        color: '#fff',
+        fontSize: '1rem',
+        boxShadow: '0 4px 12px #ff4141',
+        textTransform: 'none',
+        backdropFilter: 'blur(14px)',
+        border: '1px solid rgba(255, 65, 65, 0.12)',
+        transition: 'all 0.2s ease-in-out',
+        borderRadius: '12px',
+        bgcolor: '#ff4141',
+        '&:hover': {
+            bgcolor: '#ff6565',
+        }
+    },
+    dialogActionsSendButton: {
+        minWidth: 140,
+        color: '#ffffff',
+        fontSize: '1rem',
+        boxShadow: '0 4px 12px #6C64E1',
+        textTransform: 'none',
+        backdropFilter: 'blur(14px)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        transition: 'all 0.2s ease-in-out',
+        borderRadius: '12px',
+        bgcolor: '#5A54D1',
+        '&:hover': {
+            bgcolor: '#6C64E1',
+        }
+    }
+
+}

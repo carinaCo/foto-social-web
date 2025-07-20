@@ -7,71 +7,22 @@ import {
     List,
     ListItem,
 } from "@mui/material";
-import {fetchImageReferencesForGroup} from "./helpers/chatHelper.tsx";
-import type {GroupPost} from "../Client/use_cases/InGroupMessagesAndPosts/GetGroupPosts";
-import { useParams } from 'react-router-dom';
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
-import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import CloseIcon from '@mui/icons-material/Close';
-import {useAuth} from "../context/AuthContext.tsx";
 
+interface ChatPageContentProps {
+    postData: { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[];
+    isLoading: boolean;
+    activeUserId: string;
+}
 
-const ChatPageContent: React.FC = () => {
-    const [posts, setPosts] = React.useState<GroupPost[]>([]);
-    const [postData, setPostData] = React.useState<
-        { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
-    >([]);
-    const [isLoading, setIsLoading] = React.useState(true);
+const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId }) => {
     const [open, setOpen] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
-    const [hasSentPost, setHasSentPost] = React.useState(false);
 
-    const { id: groupId } = useParams<{ id: string; }>();
-    //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
-
-    const { userId, logout } = useAuth();
-    //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
-
-    React.useEffect(() => {
-        const fetchPosts = async () => {
-            setIsLoading(true);
-            try {
-                if (groupId) {
-                    const imageRefs = await fetchImageReferencesForGroup(groupId);
-                    // Hole für jeden userId den username
-                    const postDataWithUsernames = await Promise.all(
-                        imageRefs.map(async (imgRef) => {
-                            let username = null;
-                            if (imgRef?.userId) {
-                                const userData = await getUserData(imgRef.userId);
-                                username = userData?.username ?? null;
-                                console.log('poster id: ', imgRef.userId, 'username: ', username);
-                                if(imgRef.userId === userId) {
-                                    setHasSentPost(true);
-                                    username = 'You';
-                                }
-                            }
-                            return {
-                                ...imgRef,
-                                username,
-                            };
-                        })
-                    );
-                    setPostData(postDataWithUsernames);
-                    console.log('Fetched image references:', postDataWithUsernames);
-                }
-            } catch (error) {
-                console.error('Error fetching image references:', error);
-                setPostData([]);
-                // sicherheitshalber mal
-                setHasSentPost(false);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        void fetchPosts();
-    }, [groupId]);
+    // Prüfen, ob der aktuelle User heute gepostet hat
+    const hasSentPost = postData.some(post => post.userId === activeUserId);
 
     const handleImageClick = (imgUrl: string) => {
         setSelectedImage(imgUrl);

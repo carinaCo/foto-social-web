@@ -10,6 +10,7 @@ export interface ExecuteParams {
 
 export interface ExecuteResult {
     success: boolean;
+    groupId: string;
 }
 
 export declare class CreateGroup {

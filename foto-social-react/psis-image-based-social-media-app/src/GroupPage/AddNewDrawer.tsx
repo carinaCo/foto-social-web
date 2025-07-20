@@ -14,21 +14,26 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import {createGroup, getUserData} from "./helpers/groupHelper.tsx";
+import { AddUserToGroup } from "../Client/use_cases/GroupManagement/AddUserToGroup";
 import toast from "react-hot-toast";
 import { groupPageStyles as styles } from "./groupPageStyles.ts";
 import {addFriend, getFriends} from "../FriendsPage/helpers/friendHelper.ts";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
+import CircularProgress from '@mui/material/CircularProgress'
+
 import CircularProgress from '@mui/material/CircularProgress';
 import {useAuth} from "../context/AuthContext.tsx";
 
 interface AddNewDrawerProps {
     open: boolean;
     onClose: () => void;
+    onFriendAdded?: () => void;
+    onGroupAdded?: () => void;
 }
 
-const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
+const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdded, onGroupAdded }) => {
     const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate' | 'contactAdd'>('main');
-    const [selectedContacts, setSelectedContacts] = useState<number[]>([]);
+    const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
     const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
     const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
     const [wasInContactAdd, setWasInContactAdd] = useState<boolean>(false);
@@ -94,11 +99,11 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         }
     }
 
-    const handleToggleContact = (id: number) => {
+    const handleToggleContact = (uId: string) => {
         setSelectedContacts((prev) =>
-            prev.includes(id)
-                ? prev.filter((contactId) => contactId !== id)
-                : [...prev, id]
+            prev.includes(uId)
+        ? prev.filter((contactId) => contactId !== uId)
+        : [...prev, uId]
         );
     };
 
@@ -112,12 +117,46 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             } else {
                 toast.error('Erstellen fehlgeschlagen');
             }
+
+
+          const result = await createGroup(userId, groupName);
+
+          if (result?.success && result.groupId) {
+            const groupId = result.groupId;
+            console.log('群组创建成功，ID:group is created successfully, ID:', groupId);
+
+            // 创建 AddUserToGroup 实例, create AddUserToGroup instance
+            const addUserToGroup = new AddUserToGroup({ projectId: 'foto-social-web' });
+
+            // 把 founder 自己也加入群组（可选）, add founder in group member (users)
+            const founderAddResult = await addUserToGroup.execute({ userId: founderId, groupId });
+            console.log(`Founder ${founderId} 添加结果:`, founderAddResult);
+
+            // 遍历选中的联系人 userId，并将他们加入群组, map selected friends and add them to group
+            await Promise.all(
+                selectedContacts.map(async (userId) => {
+                  try {
+                    const res = await addUserToGroup.execute({ userId, groupId });
+                    console.log(`成员member ${userId} 添加成功:is added`, res);
+                  } catch (err) {
+                    console.error(`成员member ${userId} 添加失败:failed in join group`, err);
+                  }
+                })
+              );
+
+            toast.success('Gruppe wurde erstellt und Mitglieder hinzugefügt!');
+            onGroupAdded?.();
+          } else {
+            toast.error('Erstellen fehlgeschlagen');
+          }
+
+
         }
         catch (error) {
-            toast.error('Ein unerwarteter Fehler ist aufgetreten.');
-            console.error('Ein unerwarteter Fehler ist aufgetreten.', error);
+          toast.error('Ein unerwarteter Fehler ist aufgetreten.');
+          console.error('Fehler beim Erstellen der Gruppe:', error);
         }
-    }
+      };
 
     const handleAddContact = async () => {
         try {
@@ -126,6 +165,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             const result = await addFriend(userId, userToAddId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');
+                onFriendAdded?.();
             } else {
                 toast.error('Hinzufügen fehlgeschlagen');
             }
@@ -260,19 +300,22 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                             No friends found.<br />Add some friends first!
                                         </Typography>
                                     ) : (
-                                        friends.map((contact, idx) => (
+                                        friends.map((contact) => (
                                             <FormControlLabel
-                                                key={contact.userToAddId || idx}
+                                                key={contact.userToAddId}
                                                 control={
                                                     <Checkbox
-                                                        checked={selectedContacts.includes(idx)}
-                                                        onChange={() => handleToggleContact(idx)}
+                                                        checked={selectedContacts.includes(contact.userToAddId)}
+                                                        onChange={() => handleToggleContact(contact.userToAddId)}
                                                         icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
                                                         checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#5A54D1', filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))' }} />}
                                                         sx={{ color: 'white', py: 2 }}
                                                     />
                                                 }
+
+
                                                 label={contact.username}
+
                                                 sx={{
                                                     display: 'block',
                                                     mx: 2,
