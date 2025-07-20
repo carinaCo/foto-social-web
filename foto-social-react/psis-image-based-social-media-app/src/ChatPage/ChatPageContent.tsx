@@ -29,7 +29,7 @@ const ChatPageContent: React.FC = () => {
 
     const { id: groupId } = useParams<{ id: string; }>();
 
-    const { activeUserId, logout } = useAuth();
+    const { userId, logout } = useAuth();
     //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
 
     React.useEffect(() => {
@@ -46,7 +46,7 @@ const ChatPageContent: React.FC = () => {
                                 const userData = await getUserData(imgRef.userId);
                                 username = userData?.username ?? null;
                                 console.log('poster id: ', imgRef.userId, 'username: ', username);
-                                if(imgRef.userId === activeUserId) {
+                                if(imgRef.userId === userId) {
                                     setHasSentPost(true);
                                     username = 'You';
                                 }

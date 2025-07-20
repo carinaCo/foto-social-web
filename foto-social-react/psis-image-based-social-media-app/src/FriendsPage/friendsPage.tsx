@@ -39,7 +39,7 @@ const FriendsPage: React.FC = () => {
 
     const [friends, setFriends] = useState<UserDataResult[]>([]);
 
-    const { activeUserId, logout } = useAuth();
+    const { userId, logout } = useAuth();
 
     React.useEffect(() => {
         setIsLoading(true);
@@ -49,11 +49,10 @@ const FriendsPage: React.FC = () => {
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {
-                console.log('UserId:', activeUserId);
-                const friendsResult = await getFriends(activeUserId);
+                console.log('UserId:', userId);
+                const friendsResult = await getFriends(userId);
                 if (friendsResult?.success) {
                     console.log('Friends fetched successfully:', friendsResult.friends);
-
                     // Hole für jede friendId die Userdaten
                     const userDataList = await Promise.all(
                         friendsResult.friends.map((id: string) => getUserData(id))

@@ -19,6 +19,7 @@ import { groupPageStyles as styles } from "./groupPageStyles.ts";
 import {addFriend, getFriends} from "../FriendsPage/helpers/friendHelper.ts";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import CircularProgress from '@mui/material/CircularProgress';
+import {useAuth} from "../context/AuthContext.tsx";
 
 interface AddNewDrawerProps {
     open: boolean;
@@ -32,18 +33,19 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const [wasInGroupAddCreate, setWasInGroupCreate] = useState<boolean>(false);
     const [wasInContactAdd, setWasInContactAdd] = useState<boolean>(false);
     const [groupName, setGroupName] = useState<string>('');
-    const [userId, setUserId] = useState<string>('');
+    const [userToAddId, setUserId] = useState<string>('');
     const [username, setUsername] = useState<string>('');
 
     // state for friends list
     const [friends, setFriends] = useState<UserDataResult[]>([]);
     const [isLoadingFriends, setIsLoadingFriends] = useState(false);
+    const { userId, logout } = useAuth();
 
     const fetchFriends = async () => {
         setIsLoadingFriends(true);
         try {
-            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: dynamisch holen
-            const friendsResult = await getFriends(activeUserId);
+            //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: dynamisch holen
+            const friendsResult = await getFriends(userId);
             if (friendsResult?.success) {
                 const userDataList = await Promise.all(
                     friendsResult.friends.map((id: string) => getUserData(id))
@@ -125,8 +127,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const handleAddContact = async () => {
         try {
             // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: get active user id
-            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: get active user id
-            const result = await addFriend(activeUserId, userId);
+            //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: get active user id
+            const result = await addFriend(userId, userToAddId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');
             } else {
@@ -143,7 +145,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     }
 
     const isContactAddFormInvalid = [
-        userId
+        userToAddId
     ].some(isEmptyStringOrOnlySpaces);
 
     React.useEffect(() => {
@@ -265,7 +267,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                     ) : (
                                         friends.map((contact, idx) => (
                                             <FormControlLabel
-                                                key={contact.userId || idx}
+                                                key={contact.userToAddId || idx}
                                                 control={
                                                     <Checkbox
                                                         checked={selectedContacts.includes(idx)}
@@ -339,7 +341,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
                                     return (
                                         <Box
-                                            key={contact.userId || index}
+                                            key={contact.userToAddId || index}
                                             sx={styles.contactSummary}
                                         >
                                             <Box
@@ -415,7 +417,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                                     variant="outlined"
                                     fullWidth
                                     placeholder="User id"
-                                    value={userId}
+                                    value={userToAddId}
                                     onChange={(e) => setUserId(e.target.value)}
                                     InputProps={{
                                         sx: {
@@ -442,7 +444,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                             </Box>
                             <ButtonBase
                                 onClick={ async () => {
-                                    console.log("Added " + username + ' with the userId ' + userId + ' to your contacts!');
+                                    console.log("Added " + username + ' with the userId ' + userToAddId + ' to your contacts!');
                                     await handleAddContact();
                                     handleClose();
                                 }}

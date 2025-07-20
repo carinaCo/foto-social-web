@@ -15,7 +15,7 @@ import {LogoutUser} from "../Client/use_cases/UserManagement/LogoutUser";
 const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
-    const { activeUserId, logout } = useAuth();
+    const { userId, logout } = useAuth();
 
     const handleLogoutClick = () => {
         setOpen(true);
@@ -23,7 +23,7 @@ const SettingsPage: React.FC = () => {
     const handleConfirmLogout = async () => {
         setOpen(false);
         const out = new LogoutUser({ projectId: 'foto-social-web' });
-        const result = await out.execute({ activeUserId });
+        const result = await out.execute({ userId });
         if (result.success) {
             logout();
             console.log('User logged out successfully');
