@@ -10,11 +10,12 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
 import {useNavigate} from "react-router-dom";
-import {getGroupData, getUserData, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
+import {getGroupData, getUserData, isCurrentPrompter, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
 import type {PromptResult} from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
+import { useAuth} from "../context/AuthContext.tsx";
 import toast from "react-hot-toast";
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -50,14 +51,15 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
     const [prompts, setPrompts] = React.useState<PromptResult[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
+    const { userId, logout } = useAuth(); //this is how to access the userId
+
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
         const fetchUserData = async () => {
             setIsLoading(true);
             try {
                 // TODO: user id nicht mehr hardcoden
-
-                const userId = '06aabba6-1002-4002-9840-2127decb9eea';
+                //const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
                 const data = await getUserData(userId);
 

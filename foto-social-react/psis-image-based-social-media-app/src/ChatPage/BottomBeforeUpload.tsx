@@ -17,6 +17,8 @@ import {sendGroupPost} from "./helpers/chatHelper.tsx";
 import {useParams} from "react-router-dom";
 import {chatPageStyles} from "./chatPageStyles.ts";
 import { hasUserPostedInGroupToday } from "../GroupPage/helpers/groupHelper";
+import {useAuth} from "../context/AuthContext.tsx";
+
 
 interface BottomBeforeUploadProps {
     onPostSent?: () => void;
@@ -36,8 +38,9 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const [unlocking, setUnlocking] = useState(false);
     const [rotating, setRotating] = useState(false);
     const [hasPostedToday, setHasPostedToday] = useState<boolean>(false);
+    const { userId, logout } = useAuth();
 
-    const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht hardcode
+    //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht hardcode
 
     React.useEffect(() => {
         const checkHasPosted = async () => {
@@ -91,6 +94,8 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
         setTimeout(() => {
             setLockOpen(true);
         }, 600);
+        //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
+        // Base64 extrahieren (ohne Data-URL-Präfix)
         const base64 = preview.split(',')[1];
         await sendGroupPost(userId, groupId, base64);
         // callback nach dem Senden um die UI zu aktualisieren

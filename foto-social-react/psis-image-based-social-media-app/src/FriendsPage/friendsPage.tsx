@@ -20,6 +20,7 @@ import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import CircularProgress from '@mui/material/CircularProgress';
+import {useAuth} from "../context/AuthContext.tsx";
 
 
 const FriendsPage: React.FC = () => {
@@ -39,17 +40,18 @@ const FriendsPage: React.FC = () => {
     const [friends, setFriends] = useState<UserDataResult[]>([]);
     const [friendsChanged, setFriendsChanged] = useState<boolean>(false);
 
+    const { userId, logout } = useAuth();
+
     React.useEffect(() => {
         setIsLoading(true);
-
-        const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: replace with actual user ID
+        //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: replace with actual user ID
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {
-                const friendsResult = await getFriends(activeUserId);
+                console.log('UserId:', userId);
+                const friendsResult = await getFriends(userId);
                 if (friendsResult?.success) {
                     console.log('Friends fetched successfully:', friendsResult.friends);
-
                     // Hole für jede friendId die Userdaten
                     const userDataList = await Promise.all(
                         friendsResult.friends.map((id: string) => getUserData(id))

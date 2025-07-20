@@ -8,10 +8,12 @@ import ChatPageContent from './ChatPageContent.tsx';
 import { fetchImageReferencesForGroup } from './helpers/chatHelper.tsx';
 import { getUserData } from '../GroupPage/helpers/groupHelper.tsx';
 import {useParams} from "react-router-dom";
+import {useAuth} from "../context/AuthContext.tsx";
 
 const ChatPage: React.FC = () => {
     const { id: groupId } = useParams<{ id: string; }>();
-    const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
+    const { userId, logout } = useAuth();
+    //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
 
     const [postData, setPostData] = React.useState<
         { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
@@ -29,7 +31,7 @@ const ChatPage: React.FC = () => {
                         if (imgRef?.userId) {
                             const userData = await getUserData(imgRef.userId);
                             username = userData?.username ?? null;
-                            if(imgRef.userId === activeUserId) {
+                            if(imgRef.userId === userId) {
                                 username = 'You';
                             }
                         }
@@ -69,7 +71,7 @@ const ChatPage: React.FC = () => {
                         <ChatPageContent
                             postData={postData}
                             isLoading={isLoading}
-                            activeUserId={activeUserId}
+                            activeUserId={userId}
                         />
             </Box>
 

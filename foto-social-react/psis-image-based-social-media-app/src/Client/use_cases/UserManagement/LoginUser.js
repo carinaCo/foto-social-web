@@ -60,6 +60,8 @@ export class LoginUser {
       return { success: false, error: 'User already logged in' };
     }
 
+
+
     const patchFields = {
       createdAt: existingFields.createdAt || wrapField(new Date()),
       email: wrapField(existingFields.email?.stringValue ?? null),
