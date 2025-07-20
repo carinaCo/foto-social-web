@@ -10,8 +10,6 @@ export class CreateGroup {
     this.projectId = projectId;
   }
 
-  //TODO: fix post such that the group created has a Messages, PendingUsers, Posts & Users  collection
-
   async execute({ groupId, founderId, groupName }) {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
