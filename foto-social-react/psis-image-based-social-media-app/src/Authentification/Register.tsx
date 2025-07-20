@@ -30,7 +30,7 @@ const Register = () => {
             if (result?.success && result?.userId) {
                 toast.success('Registrierung erfolgreich!');
                 const addUserToGroup = new AddUserToGroup({ projectId: 'foto-social-web' });
-                const founderAddResult = await addUserToGroup.execute({ userId: result.userId, groupId: '3d33b9e1-2e9f-4007-81f8-366e2e20feff' });
+                const founderAddResult = await addUserToGroup.execute({ userId: result.userId, groupId: '2a71f0a4-0768-4392-9ad5-f510a99b1d34' });
                 navigate('/login');
                 toast.success('Du kannst dich nun einloggen.');
             } else {

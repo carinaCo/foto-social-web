@@ -23,7 +23,7 @@ import {sendGroupPost} from "../ChatPage/helpers/chatHelper.tsx";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 
-const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
+const globalGroupId = '2a71f0a4-0768-4392-9ad5-f510a99b1d34';
 interface GlobalAppToolBarProps {
     prompt: string;
 }
