@@ -10,19 +10,17 @@ import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import {HasUserPostedInGroupToday} from "../../Client/use_cases/InGroupMessagesAndPosts/HasUserPostedInGroupToday";
 
 export const createGroup = async (
     founderId: string,
     groupName: string
 ) => {
     try {
-        // randomly generated group id when creating new group
         const groupId = crypto.randomUUID();
         const projectId = 'foto-social-web';
         const createGroupInstance = new CreateGroup({ projectId });
 
-        // founder id should be current user id, since the acting user creates the group
-        // how to get current user id?
         const result = await createGroupInstance.execute({
             groupId,
             founderId,
@@ -127,14 +125,14 @@ export const getPrompts = async (groupId: string) => {
         const getPromptDataInstance = new GetPrompt({ projectId });
 
         const prompts = await getPromptDataInstance.execute({ groupId });
-        console.log('getPromptData:', prompts);
+        // console.log('getPromptData:', prompts);
         if (prompts.success){
-            if (prompts.previousDayPrompt.source==="fallback") {
-                console.log('Fetched random prompt');
-            }
-            if (prompts.previousDayPrompt.source==="yesterday") {
-                console.log('Fetched user generated prompt');
-            }
+            // if (prompts.previousDayPrompt.source==="fallback") {
+            //     console.log('Fetched random prompt');
+            // }
+            // if (prompts.previousDayPrompt.source==="yesterday") {
+            //     console.log('Fetched user generated prompt');
+            // }
             return prompts
         }
 
@@ -157,4 +155,20 @@ export const setPrompt = async (groupId : string, promptText : string) => {
         throw error;
     }
 }
+export const hasUserPostedInGroupToday = async (
+    userId: string, groupId: string
+) => {
+    try {
+        const projectId = 'foto-social-web';
+        const hasUserPostedInstance = new HasUserPostedInGroupToday({ projectId });
+
+        const result = await hasUserPostedInstance.execute({ userId, groupId });
+        // console.log('hasUserPostedInGroupToday result:', result);
+        return result;
+    } catch (error) {
+        console.error('Error in hasuserPostedInGroupToday:', error);
+        throw error;
+    }
+}
+
 
