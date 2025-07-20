@@ -21,9 +21,7 @@ const GroupsPage: React.FC = () => {
                         <AppToolbar onAddClick={toggleDrawer(true)}/>
                     </AppBar>
             <Box sx={{
-                width: '95vw',
-                marginLeft: '-32px',
-                marginRight: '-32px',
+                width: '100%',
                 boxSizing: 'border-box',
             }}>
                 <GroupChat groupsChanged={groupsChanged} />

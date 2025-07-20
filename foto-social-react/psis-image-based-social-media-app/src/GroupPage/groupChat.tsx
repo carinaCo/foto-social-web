@@ -5,7 +5,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText, Stack, TextField,
+    ListItemText, Stack, TextField, Grid,
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
@@ -165,7 +165,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                             display: "none", // Chrome/Safari
                         }
                     }}>
-                        <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 6}}>
+                        <Grid container rowSpacing={1} columnSpacing={1}>
                             {groups.map((
                                 element, index) =>
                                 (
@@ -249,7 +249,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                     </React.Fragment>
                                 ))
                             }
-                        </List>
+                        </Grid>
                     </Box>
                 </>
                 )
