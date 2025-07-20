@@ -18,6 +18,7 @@ import {useParams} from "react-router-dom";
 import {chatPageStyles} from "./chatPageStyles.ts";
 import { hasUserPostedInGroupToday } from "../GroupPage/helpers/groupHelper";
 import {useAuth} from "../context/AuthContext.tsx";
+import CameraCapture from "../GlobalPromptPage/CameraCapture.tsx";
 
 
 interface BottomBeforeUploadProps {
@@ -38,6 +39,7 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const [unlocking, setUnlocking] = useState(false);
     const [rotating, setRotating] = useState(false);
     const [hasPostedToday, setHasPostedToday] = useState<boolean>(false);
+    const [cameraOpen, setCameraOpen] = useState(false);
     const { userId } = useAuth();
 
     //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht hardcode
@@ -128,6 +130,12 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
         if (cameraInputRef.current) cameraInputRef.current.value = "";
     };
 
+    const handlePhotoCaptured = (imageData: string) => {
+        setPreview(imageData);
+        setDialogOpen(true);
+        setSelectedFile(null); // Kein File-Objekt, da direkt aus Kamera
+    };
+
     return (
         <Paper
             sx={{...chatPageStyles.paper, height: expanded ? 128 : 64}}
@@ -158,10 +166,17 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
                     <Stack direction="row" spacing={6} justifyContent="center" alignItems="center">
                         <IconButton
                             sx={chatPageStyles.cameraInputButton}
-                            onClick={() => cameraInputRef.current?.click()}
+                            onClick={() => {
+                                setCameraOpen(true);
+                            }}
                         >
                             <CameraAltIcon sx={{fontSize: 32}}/>
                         </IconButton>
+                        <CameraCapture
+                            open={cameraOpen}
+                            onClose={() => setCameraOpen(false)}
+                            onCapture={handlePhotoCaptured}
+                        />
                         <IconButton
                             sx={chatPageStyles.libraryInputButton}
                             onClick={() => fileInputRef.current?.click()}
