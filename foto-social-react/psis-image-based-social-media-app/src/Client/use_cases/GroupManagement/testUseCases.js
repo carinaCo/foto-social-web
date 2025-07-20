@@ -23,7 +23,7 @@ const testGetUserData = async () => {
     try {
       const projectId = 'foto-social-web';
       // const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
-      const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // 'neuer user 1'
+      const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // 'neuer user 1'
 
       const getUserData = new GetUserData({ projectId });
 

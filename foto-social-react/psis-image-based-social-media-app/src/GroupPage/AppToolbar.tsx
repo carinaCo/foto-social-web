@@ -50,7 +50,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
 
     // TODO atm noch hardcoded
     // const userId = "0a60fb39-d985-4543-8b3f-69aa79eb3839";
-    const userId = "092ce280-8d97-45bc-a1a9-cedf9a95ff47";
+    const userId = "06aabba6-1002-4002-9840-2127decb9eea";
 
     return (
             <>

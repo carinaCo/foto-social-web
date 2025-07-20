@@ -42,7 +42,7 @@ const FriendsPage: React.FC = () => {
         setIsLoading(true);
         console.log('triggered useEffect in FriendsPage');
         // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: replace with actual user ID
-        const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: replace with actual user ID
+        const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: replace with actual user ID
         // Fetch friends for the active user
         const fetchFriends = async () => {
             try {
