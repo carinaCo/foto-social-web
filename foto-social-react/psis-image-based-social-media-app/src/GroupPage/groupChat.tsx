@@ -13,7 +13,6 @@ import {useNavigate} from "react-router-dom";
 import {getGroupData, getUserData, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
 import type {PromptResult} from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
-import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import toast from "react-hot-toast";
@@ -42,7 +41,6 @@ const GroupChat: React.FC = () => {
 
     const [openDialog, setOpenDialog] = React.useState(false);
     const navigate = useNavigate();
-    const [userData, setUserData] = React.useState<UserDataResult | null>(null);
     const [groups, setGroups] = React.useState<GroupData[] | null>(null);
     const [prompts, setPrompts] = React.useState<PromptResult[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -57,9 +55,6 @@ const GroupChat: React.FC = () => {
                 const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
                 const data = await getUserData(userId);
-
-                console.log('await getuserdata called');
-                setUserData(data);
                 console.log("Fetched user data:", data);
 
                 if (data.groupId && data.groupId.length > 0) {
@@ -67,23 +62,18 @@ const GroupChat: React.FC = () => {
                     const groupResults = await Promise.all(groupPromises);
                     console.log('promise all await called for groups');
 
-                    // console.log("Group results:", groupResults);
                     setGroups(groupResults);
-/*
-                    const setPromptPromises = data.groupId.map((groupId) => setPrompt(groupId, "Klausurenphase"));
-                    await Promise.all(setPromptPromises);
-                    console.log('promise all await called for set prompts');
- */
+
                     const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
                     const promptResults = await Promise.all(promptPromises);
-                    console.log('promise all await called for prompts');
+
                     if (promptResults.length > 0){
                         setPrompts(promptResults);
                     }
                     else{setPrompts([])}
                 } else {
                     console.log("User ist in keiner Gruppe.");
-                    setGroups([]); // leeren, falls keine Gruppen
+                    setGroups([]);
                     setPrompts([]);
                 }
             } catch (error) {
@@ -92,20 +82,18 @@ const GroupChat: React.FC = () => {
                 setIsLoading(false);
             }
         };
-        // damit nicht wegen promise gemeckert wird
         void fetchUserData();
     }, []);
 
     const handleClick = (element: GroupData, index: number) => {
         if (!element.groupId) {
-            // Optional: Fehlerbehandlung oder Hinweis
             return;
         }
         navigate(`/chat/${element.groupId}/${(element.name)}`, {
             state: {
                 groupName: element.name,
-                promptToday: prompts?.[index].todayPrompt?.prompt || 'No prompt found...',
-            },
+                promptToday: prompts?.[index].previousDayPrompt?.prompt || 'No prompt found...',
+            }
         });
     };
     const handlePromptSave = async (groupId: string, promptText: string, index: number) => {
@@ -207,7 +195,7 @@ const GroupChat: React.FC = () => {
                                                                     label={'Morgen'}
                                                                     variant="outlined"
                                                                     size="small"
-                                                                    value={prompts?.[index].todayPrompt?.prompt ?? tomorrowPrompts[index]}
+                                                                    value={prompts?.[index].todayPrompt?.prompt ?? tomorrowPrompts[index] ?? ''}
                                                                     slotProps={{
                                                                         input: {
                                                                             disabled: !!prompts?.[index].todayPrompt?.prompt,

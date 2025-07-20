@@ -15,12 +15,14 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {sendGroupPost} from "./helpers/chatHelper.tsx";
 import {useParams} from "react-router-dom";
+import {chatPageStyles} from "./chatPageStyles.ts";
+import { hasUserPostedInGroupToday } from "../GroupPage/helpers/groupHelper";
 
+interface BottomBeforeUploadProps {
+    onPostSent?: () => void;
+}
 
-
-
-
-const BottomBeforeUpload: React.FC = () => {
+const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => {
   
     const [expanded, setExpanded] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -33,6 +35,24 @@ const BottomBeforeUpload: React.FC = () => {
     // animation shit, unnötig lol aber cool
     const [unlocking, setUnlocking] = useState(false);
     const [rotating, setRotating] = useState(false);
+    const [hasPostedToday, setHasPostedToday] = useState<boolean>(false);
+
+    const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht hardcode
+
+    React.useEffect(() => {
+        const checkHasPosted = async () => {
+            if (groupId && userId) {
+                try {
+                    const hasUserPosted = await hasUserPostedInGroupToday(userId, groupId);
+                    setHasPostedToday(hasUserPosted ?? false);
+                } catch (error) {
+                    console.error('hasUserPosted error: ', error);
+                    setHasPostedToday(false);
+                }
+            }
+        };
+        void checkHasPosted();
+    }, [groupId, userId]);
 
     const handleToggleExpandWithAnimation = () => {
         setRotating(true);
@@ -71,10 +91,19 @@ const BottomBeforeUpload: React.FC = () => {
         setTimeout(() => {
             setLockOpen(true);
         }, 600);
-        const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
-        // Base64 extrahieren (ohne Data-URL-Präfix)
         const base64 = preview.split(',')[1];
         await sendGroupPost(userId, groupId, base64);
+        // callback nach dem Senden um die UI zu aktualisieren
+        if (onPostSent) onPostSent();
+
+        // Nach dem Senden erneut prüfen, ob gepostet wurde
+        try {
+            const hasUserPosted = await hasUserPostedInGroupToday(userId, groupId);
+            setHasPostedToday(hasUserPosted ?? false);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            setHasPostedToday(false);
+        }
         setDialogOpen(false);
         setPreview(null);
         setSelectedFile(null);
@@ -94,46 +123,18 @@ const BottomBeforeUpload: React.FC = () => {
         if (cameraInputRef.current) cameraInputRef.current.value = "";
     };
 
-
-
     return (
         <Paper
-            sx={{
-                position: 'fixed',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: expanded ? 128 : 64,
-                transition: 'height 0.3s',
-                overflow: 'hidden',
-                // Glow nach oben (y-offset negativ), weich und farbig
-                boxShadow: '0 -8px 32px 0 rgba(140, 100, 225, 0.45), 0 4px 12px rgba(163, 144, 238, 0.2)',
-            }}
+            sx={{...chatPageStyles.paper, height: expanded ? 128 : 64}}
             elevation={10}>
             {!expanded && (
                 <Box
-                    sx={{
-                        background: '#3B3E5C',
-                        height: 64,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
-                        filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
-                        backdropFilter: 'blur(10px) saturate(180%)',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                    }}
+                    sx={chatPageStyles.notExpandedBox}
                 >
                     <IconButton
                         onClick={handleToggleExpandWithAnimation}
-                        sx={{
-                            width: 56,
-                            height: 56,
-                            bgcolor: '#5A54D1',
-                            color: '#fff',
-                            borderRadius: '50%',
-                            '&:hover': { bgcolor: '#6C64E1' },
-                        }}
+                        sx={chatPageStyles.notExpandedIconButton}
+                        disabled={hasPostedToday}
                     >
                         <KeyIcon
                             sx={{
@@ -147,38 +148,17 @@ const BottomBeforeUpload: React.FC = () => {
             )}
             {expanded && (
                 <Box
-                    sx={{
-                        height: '100%',
-                        px: 2,
-                        pt: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        background: '#3B3E5C',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                    }}
+                    sx={chatPageStyles.expandedBox}
                 >
                     <Stack direction="row" spacing={6} justifyContent="center" alignItems="center">
                         <IconButton
-                            sx={{
-                                bgcolor: '#5A54D1',
-                                color: '#fff',
-                                width: 56,
-                                height: 56,
-                                '&:hover': {bgcolor: '#6C64E1'},
-                            }}
+                            sx={chatPageStyles.cameraInputButton}
                             onClick={() => cameraInputRef.current?.click()}
                         >
                             <CameraAltIcon sx={{fontSize: 32}}/>
                         </IconButton>
                         <IconButton
-                            sx={{
-                                bgcolor: '#5A54D1',
-                                color: '#fff',
-                                width: 56,
-                                height: 56,
-                                '&:hover': {bgcolor: '#6C64E1'},
-                            }}
+                            sx={chatPageStyles.libraryInputButton}
                             onClick={() => fileInputRef.current?.click()}
                         >
                             <PhotoLibraryIcon sx={{fontSize: 32}}/>
@@ -200,11 +180,7 @@ const BottomBeforeUpload: React.FC = () => {
                     </Stack>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1}}>
                         <IconButton
-                            sx={{
-                                color: '#ff4141',
-                                width: 48,
-                                height: 48
-                            }}
+                            sx={chatPageStyles.cancelIconButton}
                             onClick={handleCancel}
                         >
                             <CancelIcon sx={{ fontSize: 28 }} />
@@ -218,14 +194,7 @@ const BottomBeforeUpload: React.FC = () => {
                 onClose={handleDialogCancel}
                 slotProps={{
                     paper: {
-                        sx: {
-                            bgcolor: 'rgba(36,17,86,0.2)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            backdropFilter: 'blur(6px)',
-                            borderRadius: 4,
-                            color: '#fff',
-                            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-                        }
+                        sx: chatPageStyles.dialogPaper
                     }
                 }}
             >
@@ -242,10 +211,7 @@ const BottomBeforeUpload: React.FC = () => {
                     }}>
                         <Icon
                             sx={{
-                            color: '#ffffff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            transition: 'transform 0.6s ease, opacity 0.6s ease',
+                            ...chatPageStyles.lockIcon,
                             transform: unlocking ? 'rotate(360deg) scale(1.3)' : 'none',
                             }}
                         >
@@ -254,27 +220,13 @@ const BottomBeforeUpload: React.FC = () => {
                     </Box>
                 </DialogTitle>
                 <DialogContent
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        minWidth: 340,
-                        minHeight: 200,
-                    }}
+                    sx={chatPageStyles.dialogContent}
                 >
                     {preview && (
                         <img
                             src={preview}
                             alt="Preview"
-                            style={{
-                                maxWidth: 300,
-                                maxHeight: 300,
-                                borderRadius: 16,
-                                boxShadow: '0 0px 12px #6C64E1',
-                                border: '1px solid #5A54D1',
-                                background: 'rgba(55,55,255,0.08)',
-                                backdropFilter: 'blur(4px)',
-                            }}
+                            style={chatPageStyles.previewImage}
                         />
                     )}
                 </DialogContent>
@@ -287,23 +239,8 @@ const BottomBeforeUpload: React.FC = () => {
                             </Icon>
                         }
                         variant="contained"
-                        sx={{
-                            minWidth: 140,
-                        color: '#fff',
-                        fontSize: '1rem',
-                        boxShadow: '0 4px 12px #ff4141',
-                        textTransform: 'none',
-                        backdropFilter: 'blur(14px)',
-                        border: '1px solid rgba(255, 65, 65, 0.12)',
-                        transition: 'all 0.2s ease-in-out',
-                        borderRadius: '12px',
-                        bgcolor: '#ff4141',
-                        '&:hover': {
-                            bgcolor: '#ff6565',
-                        }
-                        }}
+                        sx={chatPageStyles.dialogActionsCancelButton}
                     >
-
                         Abbrechen
                     </Button>
                     <Button
@@ -314,21 +251,7 @@ const BottomBeforeUpload: React.FC = () => {
                             </Icon>
                         }
                         variant="contained"
-                        sx={{
-                            minWidth: 140,
-                            color: '#ffffff',
-                            fontSize: '1rem',
-                            boxShadow: '0 4px 12px #6C64E1',
-                            textTransform: 'none',
-                            backdropFilter: 'blur(14px)',
-                            border: '1px solid rgba(255, 255, 255, 0.12)',
-                            transition: 'all 0.2s ease-in-out',
-                            borderRadius: '12px',
-                            bgcolor: '#5A54D1',
-                            '&:hover': {
-                                bgcolor: '#6C64E1',
-                            }
-                        }}
+                        sx={chatPageStyles.dialogActionsSendButton}
                     >
                         Senden
                     </Button>
