@@ -69,8 +69,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         setWasInGroupCreate(false);
         setSelectedContacts([]);
         setGroupName('');
-        // setFirstName('');
-        // setLastName('');
         setUsername('');
         setUserId('');
         onClose();
@@ -86,8 +84,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             setView('main');
         }
         else if (view === 'contactAdd') {
-            // setFirstName('');
-            // setLastName('');
             setUsername('');
             setUserId('');
             setView('main');
@@ -108,7 +104,11 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
     const handleCreateGroup = async () => {
         try {
+
           const founderId = '06aabba6-1002-4002-9840-2127decb9eea';
+
+
+
           const result = await createGroup(founderId, groupName);
       
           if (result?.success && result.groupId) {
@@ -138,6 +138,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
           } else {
             toast.error('Erstellen fehlgeschlagen');
           }
+    
+
         }
         catch (error) {
           toast.error('Ein unerwarteter Fehler ist aufgetreten.');

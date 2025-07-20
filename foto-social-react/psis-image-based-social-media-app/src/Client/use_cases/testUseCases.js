@@ -66,7 +66,7 @@ const testGetUserData = async () => {
   const testGetFriends = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '043d591f-d20d-4777-a154-661d75a447d0';
+      const userId = 'e4c2d8c5-f1b4-41fa-aa25-d56212ae546a';
   
       const getFriends = new GetFriends({ projectId });
   
@@ -81,11 +81,27 @@ const testGetUserData = async () => {
   const testGetPosts = async () => {
     try {
       const projectId = 'foto-social-web';
-      const groupId = '1e3dbd7f-5d17-49d8-8dae-092685e7f3ff';
+      const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
   
       const getPosts = new GetGroupPosts({ projectId });
   
       const result = await getPosts.execute({ groupId });
+  
+      console.log('RESULT:', JSON.stringify(result, null, 2));
+    } catch (error) {
+      console.error('ERROR:', error);
+    }
+  };
+
+  const testHasUserPostedToday = async () => {
+    try {
+      const projectId = 'foto-social-web';
+      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+  
+      const getPosts = new HasUserPostedInGroupToday({ projectId });
+  
+      const result = await getPosts.execute({ userId, groupId });
   
       console.log('RESULT:', JSON.stringify(result, null, 2));
     } catch (error) {
@@ -267,8 +283,8 @@ const testCreateGroup = async () => {
 const testRegisterUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const email = 'newEmail@yahoo.com567782025'
-    const username = 'usernameToTest25';
+    const email = 'User 3 used for testing'
+    const username = 'lappenToTest25012';
     const encryptedPassword = 'encryptedPassword202513'
 
     const registerUser = new RegisterUser({ projectId});
@@ -314,8 +330,8 @@ const testAddUserToGroup = async () => {
 const testAddFriend = async () => {
   try {
     const projectId = 'foto-social-web';
-    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
-    const toAddUserId = 'cd697104-0205-443f-bda4-807ecba100a4';
+    const userId = 'e4c2d8c5-f1b4-41fa-aa25-d56212ae546a';
+    const toAddUserId = '449e373f-b0f1-4466-b405-e61e5abf22e5';
     
     const addFriend = new AddFriend({ projectId});
     const result = await addFriend.execute({ userId, toAddUserId });
@@ -376,7 +392,7 @@ const testGeneratePromptByUser = async () => {
     const projectId = 'foto-social-web';
 
     const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
-    const promptText = 'Summer';
+    const promptText = 'Never Ending Summer';
     
     const generatePrompt = new GeneratePromptByUser({ projectId});
     const result = await generatePrompt.execute({ groupId, promptText });
@@ -449,12 +465,13 @@ const testSendGroupInvites = async () => {
 };*/
 
 import path from 'path';
+import { HasUserPostedInGroupToday } from './InGroupMessagesAndPosts/HasUserPostedInGroupToday.js';
 
 const testSendGroupPost = async () => {
   try {
     const projectId = 'foto-social-web';
     const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
-    const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
     const postId = randomUUID();
 
     const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
@@ -476,8 +493,8 @@ const testSendGroupPost = async () => {
 //GET
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
-//testGetFriends();
-testGetPosts();
+testGetFriends();
+//testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
 //testGetGroupUserRights();
@@ -502,7 +519,10 @@ testGetPosts();
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
+
+//Group Posts
 //testSendGroupPost();
+//testHasUserPostedToday();
 
 //PATCH
 //testBlockUser();
@@ -512,4 +532,4 @@ testGetPosts();
 
 //PromptLogic
 //testGeneratePromptByUser();
-//testGetPrompt(); //TODO: fix
+testGetPrompt(); //TODO: fix

@@ -1,4 +1,4 @@
-  export class FirestoreCommunicationHelper {
+export class FirestoreCommunicationHelper {
     constructor({ projectId, databaseId = '(default)' }) {
       this.projectId = projectId;
       this.databaseId = databaseId;
@@ -121,6 +121,48 @@
       return `${this.getGroupPostsUrl(groupId)}/${postId}`;
     }
     
+    provideSubcollectionGroupDocumentWriteUrl(groupId, subcollectionName, documentId)
+    {
+      return `${this.baseFirestoreUrl}/Groups/${groupId}/${subcollectionName}/${documentId}`;
+    }
+
+    provideSubcollectionUserDocumentWriteUrl(userID,subcollectionName,documentId){
+      return `${this.baseFirestoreUrl}/Users/${userID}/${subcollectionName}/${documentId}`;
+    }
+
+    async createUsersSubcollection (userId, subcollectionName, httpClient) {
+
+      const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
+      
+      const subcollectionCreateURL = firestoreHelper.provideSubcollectionUserDocumentWriteUrl(userId, subcollectionName,"init");
+      
+      try {
+        await httpClient.patch(subcollectionCreateURL, {
+          fields: {
+              initialized : { booleanValue : true }
+          }
+        }); 
+      } catch (error) {
+        console.log("failed creating subcollection : " , error);
+      }
+    }
+
+    async createGroupSubcollection (groupId, subcollectionName, httpClient) {
+
+      const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
+      
+      const subcollectionCreateURL = firestoreHelper.provideSubcollectionGroupDocumentWriteUrl(groupId, subcollectionName,"init");
+      
+      try {
+        await httpClient.patch(subcollectionCreateURL, {
+          fields: {
+              initialized : { booleanValue : true }
+          }
+        }); 
+      } catch (error) {
+        console.log("failed creating subcollection : " , error);
+      }
+    }
     
   }
   

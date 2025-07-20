@@ -10,8 +10,6 @@ export class CreateGroup {
     this.projectId = projectId;
   }
 
-  //TODO: fix post such that the group created has a Messages, PendingUsers, Posts & Users  collection
-
   async execute({ groupId, founderId, groupName }) {
     const accessToken = await getFirestoreAccessToken();
     const firestoreHelper = new FirestoreCommunicationHelper({ projectId: this.projectId });
@@ -27,6 +25,14 @@ export class CreateGroup {
     };
     
     await httpClient.patch(groupDocUrl, groupDocBody);
+
+    //TODO: check that it patched without problems
+
+    firestoreHelper.createGroupSubcollection(groupId, "Messages", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "PendingUsers", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Posts", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Prompts", httpClient);
+    firestoreHelper.createGroupSubcollection(groupId, "Users", httpClient);
   
     const membersUrl = firestoreHelper.getGroupUsersUrl(groupId);
     const memberDocBody = {

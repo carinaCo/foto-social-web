@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
     Paper,
-    BottomNavigation,
-    BottomNavigationAction,
     Box,
     Stack,
     Dialog, DialogTitle, DialogContent,

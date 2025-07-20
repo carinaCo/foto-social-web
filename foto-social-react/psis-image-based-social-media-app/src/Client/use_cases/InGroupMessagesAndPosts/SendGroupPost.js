@@ -8,6 +8,8 @@
      image will be private, accessible only to authenticated users via authorized requests
     */
 
+     //TODO: one user can only send 1 post/day --> could be separate usecase
+
      import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
      import { HttpClient } from '../../../utils/httpClient.js';
      import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
@@ -49,6 +51,7 @@
      
          const postBody = {
            fields: {
+             postId: { stringValue: postId },
              createdAt: { timestampValue: timestamp },
              groupId: { stringValue: groupId },
              imageReference: { stringValue: imageReference },

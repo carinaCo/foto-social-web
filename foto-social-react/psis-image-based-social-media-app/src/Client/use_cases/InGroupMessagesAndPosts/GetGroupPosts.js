@@ -33,7 +33,7 @@ export class GetGroupPosts {
         postId: fields.postId?.stringValue || null,
         userId: fields.userId?.stringValue || null
       };
-    }).filter(post => post.postId); // filter out null postIds
+    }).filter(post => post.postId);
     
 
     return {
