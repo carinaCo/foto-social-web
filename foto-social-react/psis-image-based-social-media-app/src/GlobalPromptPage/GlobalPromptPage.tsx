@@ -6,9 +6,10 @@ import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
 import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
 import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
 import {getPrompts} from "../GroupPage/helpers/groupHelper.tsx";
+import {useAuth} from "../context/AuthContext.tsx";
 
-const globalGroupId = '3d33b9e1-2e9f-4007-81f8-366e2e20feff';
-const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
+const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
+const { userId, logout } = useAuth();
 
 const GlobalPromptPage: React.FC = () => {
 
@@ -20,7 +21,7 @@ const GlobalPromptPage: React.FC = () => {
     const fetchPosts = async () => {
         setIsLoading(true);
         try {
-            const posts = await fetchPostsWithUsernames(globalGroupId, activeUserId);
+            const posts = await fetchPostsWithUsernames(globalGroupId, userId);
             setPostData(posts);
         } catch {
             setPostData([]);
@@ -62,7 +63,7 @@ const GlobalPromptPage: React.FC = () => {
                 <ChatPageContent
                     postData={postData}
                     isLoading={isLoading}
-                    activeUserId={activeUserId}
+                    activeUserId={userId}
                 />
             </Box>
         </>
