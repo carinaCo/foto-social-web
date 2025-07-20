@@ -81,11 +81,27 @@ const testGetUserData = async () => {
   const testGetPosts = async () => {
     try {
       const projectId = 'foto-social-web';
-      const groupId = '9c6eed5c-4417-42e6-b6aa-f7b6eaa94b19';
+      const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
   
       const getPosts = new GetGroupPosts({ projectId });
   
       const result = await getPosts.execute({ groupId });
+  
+      console.log('RESULT:', JSON.stringify(result, null, 2));
+    } catch (error) {
+      console.error('ERROR:', error);
+    }
+  };
+
+  const testHasUserPostedToday = async () => {
+    try {
+      const projectId = 'foto-social-web';
+      const userId = '2f37950b-e32b-45fd-bc31-499dcda3efd4';
+      const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
+  
+      const getPosts = new HasUserPostedInGroupToday({ projectId });
+  
+      const result = await getPosts.execute({ userId, groupId });
   
       console.log('RESULT:', JSON.stringify(result, null, 2));
     } catch (error) {
@@ -449,12 +465,13 @@ const testSendGroupInvites = async () => {
 };*/
 
 import path from 'path';
+import { HasUserPostedInGroupToday } from './InGroupMessagesAndPosts/HasUserPostedInGroupToday.js';
 
 const testSendGroupPost = async () => {
   try {
     const projectId = 'foto-social-web';
     const userId = '1c145387-58c1-49ab-8cf0-0eebe4346564';
-    const groupId = '0b9fa51c-43e7-4c50-bb06-dc1804df2d04';
+    const groupId = '06281c9a-36c3-4087-8e24-eee6515bf9ee';
     const postId = randomUUID();
 
     const imagePath = path.resolve('/Users/carinacocora/Downloads/foto-social-web/foto-social-react/psis-image-based-social-media-app/src/Client/use_cases/test_image.jpg');
@@ -477,7 +494,7 @@ const testSendGroupPost = async () => {
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
 //testGetFriends();
-testGetPosts();
+//testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
 //testGetGroupUserRights();
@@ -494,7 +511,7 @@ testGetPosts();
 
 //Create
 //testCreateGroup();
-testRegisterUser();
+//testRegisterUser();
 
 //POST
 //testSendFriendRequest();
@@ -502,7 +519,10 @@ testRegisterUser();
 //REMOVE
 //testRemoveUserFromGroup();
 //testRemoveFriend();
+
+//Group Posts
 //testSendGroupPost();
+//testHasUserPostedToday();
 
 //PATCH
 //testBlockUser();
