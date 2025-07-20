@@ -249,7 +249,7 @@ const testLoginUser = async () => {
 
 const testLogoutUser = async () => {
   const projectId = 'foto-social-web';
-  const userId = '4e9a82e2-3e9a-422b-b184-fac3594c27a7';
+  const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
   try {
     const logoutUser = new LogoutUser({ projectId });
@@ -493,7 +493,7 @@ const testSendGroupPost = async () => {
 //GET
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
-testGetFriends();
+// testGetFriends();
 //testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
@@ -504,7 +504,7 @@ testGetFriends();
 
 //functionality
 //testLoginUser();
-//testLogoutUser();
+testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
 //testSendGroupInvites(); //TODO: works but test again once more data!
@@ -532,4 +532,4 @@ testGetFriends();
 
 //PromptLogic
 //testGeneratePromptByUser();
-testGetPrompt(); //TODO: fix
+// testGetPrompt(); //TODO: fix

@@ -32,6 +32,7 @@ const Login = () => {
                 toast.success('Login erfolgreich!');
                 login(result.userId);
                 navigate('/groups');
+                // TODO: hier user zu global gruppe hinzufügen
             } else {
                 toast.error('Login fehlgeschlagen.');
             }

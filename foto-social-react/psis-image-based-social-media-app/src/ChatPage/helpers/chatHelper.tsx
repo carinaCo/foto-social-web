@@ -1,5 +1,6 @@
 import {SendGroupPost} from "../../Client/use_cases/InGroupMessagesAndPosts/SendGroupPost";
 import {GetGroupPosts} from "../../Client/use_cases/InGroupMessagesAndPosts/GetGroupPosts";
+import {getUserData} from "../../GroupPage/helpers/groupHelper.tsx";
 
 export const sendGroupPost = async (
     userId: string,
@@ -74,3 +75,23 @@ export const fetchImageReferencesForGroup = async (groupId: string) => {
         throw error;
     }
 };
+
+export async function fetchPostsWithUsernames(groupId: string, activeUserId: string) {
+    const imageRefs = await fetchImageReferencesForGroup(groupId);
+    return Promise.all(
+        imageRefs.map(async (imgRef) => {
+            let username = null;
+            if (imgRef?.userId) {
+                const userData = await getUserData(imgRef.userId);
+                username = userData?.username ?? null;
+                if (imgRef.userId === activeUserId) {
+                    username = 'You';
+                }
+            }
+            return {
+                ...imgRef,
+                username,
+            };
+        })
+    );
+}

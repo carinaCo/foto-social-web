@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 interface ChatPageContentProps {
     postData: { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[];
     isLoading: boolean;
-    activeUserId: string;
+    activeUserId: string | null;
 }
 
 const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId }) => {
@@ -86,15 +86,15 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
                                         backdropFilter: 'blur(12px) saturate(180%)',
                                         border: '1px solid rgba(255,255,255,0.18)'
                                     }}>
-                                        {/* Username über dem Container */}
+                                        {/* Username unter dem Container */}
                                         <Typography
                                             fontWeight="bold"
                                             sx={{
                                                 position: 'absolute',
                                                 bottom: -40,
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
-                                                bgcolor: '#5A54D1',
+                                                left: activeUserId === element.userId ? 'auto' : '0',
+                                                right: activeUserId === element.userId ? 0 : 'auto',
+                                                bgcolor: activeUserId === element.userId ? '#FF6B6B' : '#5A54D1',
                                                 px: 2,
                                                 py: 0.5,
                                                 borderRadius: 2,
@@ -109,11 +109,11 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
                                             sx={{
                                                 position: 'absolute',
                                                 top: -32,
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
+                                                left: activeUserId === element.userId ? 'auto' : '0',
+                                                right: activeUserId === element.userId ? 0 : 'auto',
                                                 width: 56,
                                                 height: 56,
-                                                bgcolor: '#FF6B6B',
+                                                bgcolor: activeUserId === element.userId ? '#FF6B6B' : '#5A54D1',
                                                 zIndex: 2,
                                                 boxShadow: '0 2px 8px rgba(0,0,0,0.18)'
                                             }}

@@ -1,40 +1,55 @@
 import * as React from 'react';
 import {
-    AppBar, CssBaseline
+    AppBar, Box, CssBaseline
 } from "@mui/material";
 import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
-import GlobalPosts from "./GlobalPosts.tsx";
+import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
+import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
 
-class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
-    constructor(props: any) {
-      super(props);
-      this.state = { hasError: false };
-    }
-    static getDerivedStateFromError(error: any) {
-      return { hasError: true };
-    }
-    componentDidCatch(error: any, errorInfo: any) {
-      console.error("捕获错误:", error, errorInfo);
-    }
-    render() {
-      if (this.state.hasError) {
-        return <h2>Error! please retry </h2>;
-      }
-      return this.props.children;
-    }
-  }
-  
+const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
+const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
 
 const GlobalPromptPage: React.FC = () => {
+
+    const [postData, setPostData] = React.useState<
+        { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
+    >([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const fetchPosts = async () => {
+        setIsLoading(true);
+        try {
+            const posts = await fetchPostsWithUsernames(globalGroupId, activeUserId);
+            setPostData(posts);
+        } catch {
+            setPostData([]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        void fetchPosts();
+    }, []);
+
     return (
         <>
             <CssBaseline enableColorScheme />
             <AppBar>
-            <ErrorBoundary>
                 <GlobalAppToolBar/>
-            </ErrorBoundary>
             </AppBar>
-          <GlobalPosts />
+            <Box sx={{marginLeft: '-32px',
+                marginRight: '-32px',
+                //  paddingLeft: '16px',
+                //  paddingRight: '16px',
+                width: '95vw',
+                boxSizing: 'border-box',
+            }} >
+                <ChatPageContent
+                    postData={postData}
+                    isLoading={isLoading}
+                    activeUserId={activeUserId}
+                />
+            </Box>
         </>
     )
 }

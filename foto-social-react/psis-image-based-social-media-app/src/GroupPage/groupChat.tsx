@@ -54,7 +54,6 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
     const { userId, logout } = useAuth(); //this is how to access the userId
 
     React.useEffect(() => {
-        console.log('useEffect called in GroupChat');
         const fetchUserData = async () => {
             setIsLoading(true);
             try {
@@ -65,8 +64,9 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
-                    const groupResults = await Promise.all(groupPromises);
-
+                    // um die global gruppe nur auf der global seite anzuzeigen, muss sie hier und im mapping ausgefiltert werden
+                    const groupResults = (await Promise.all(groupPromises))
+                        .filter(group => group.groupId !== '389b9f6a-ee55-4606-94ad-e26c2a970c84');
                     setGroups(groupResults);
 
                     const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
@@ -166,9 +166,10 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                         }
                     }}>
                         <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 6}}>
-                            {groups.map((
-                                element, index) =>
-                                (
+                            {groups
+                                .filter(element => element.groupId !== '389b9f6a-ee55-4606-94ad-e26c2a970c84')
+                                .map((element, index) =>
+                                    (
                                     <React.Fragment key={element.name || index}>
                                         <ListItem alignItems="center" key={index} sx={ styles.listItem }>
                                             <ListItemAvatar>
