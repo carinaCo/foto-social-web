@@ -66,7 +66,7 @@ const testGetUserData = async () => {
   const testGetFriends = async () => {
     try {
       const projectId = 'foto-social-web';
-      const userId = '043d591f-d20d-4777-a154-661d75a447d0';
+      const userId = 'e4c2d8c5-f1b4-41fa-aa25-d56212ae546a';
   
       const getFriends = new GetFriends({ projectId });
   
@@ -283,8 +283,8 @@ const testCreateGroup = async () => {
 const testRegisterUser = async () => {
   try {
     const projectId = 'foto-social-web';
-    const email = 'lappen@yahoo.com567782025'
-    const username = 'lappenToTest25';
+    const email = 'User 3 used for testing'
+    const username = 'lappenToTest25012';
     const encryptedPassword = 'encryptedPassword202513'
 
     const registerUser = new RegisterUser({ projectId});
@@ -330,8 +330,8 @@ const testAddUserToGroup = async () => {
 const testAddFriend = async () => {
   try {
     const projectId = 'foto-social-web';
-    const userId = '043d591f-d20d-4777-a154-661d75a447d0';
-    const toAddUserId = 'cd697104-0205-443f-bda4-807ecba100a4';
+    const userId = 'e4c2d8c5-f1b4-41fa-aa25-d56212ae546a';
+    const toAddUserId = '449e373f-b0f1-4466-b405-e61e5abf22e5';
     
     const addFriend = new AddFriend({ projectId});
     const result = await addFriend.execute({ userId, toAddUserId });
@@ -493,7 +493,7 @@ const testSendGroupPost = async () => {
 //GET
 //testGetGroup(); //TODO: FIX if logic still not ok - check first!
 //testGetUserData();
-//testGetFriends();
+testGetFriends();
 //testGetPosts();
 //testGetPendingFriendRequests();
 //testGetGroupInvites();
