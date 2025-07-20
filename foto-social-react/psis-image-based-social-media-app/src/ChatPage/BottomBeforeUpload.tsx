@@ -15,6 +15,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {sendGroupPost} from "./helpers/chatHelper.tsx";
 import {useParams} from "react-router-dom";
+import {useAuth} from "../context/AuthContext.tsx";
 
 
 
@@ -33,6 +34,8 @@ const BottomBeforeUpload: React.FC = () => {
     // animation shit, unnötig lol aber cool
     const [unlocking, setUnlocking] = useState(false);
     const [rotating, setRotating] = useState(false);
+
+    const { userId, logout } = useAuth();
 
     const handleToggleExpandWithAnimation = () => {
         setRotating(true);
@@ -71,7 +74,7 @@ const BottomBeforeUpload: React.FC = () => {
         setTimeout(() => {
             setLockOpen(true);
         }, 600);
-        const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
+        //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
         // Base64 extrahieren (ohne Data-URL-Präfix)
         const base64 = preview.split(',')[1];
         await sendGroupPost(userId, groupId, base64);
