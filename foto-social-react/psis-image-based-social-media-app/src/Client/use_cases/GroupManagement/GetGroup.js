@@ -50,7 +50,8 @@ export class GetGroup {
       name: groupData.name?.stringValue || null,
       createdAt: groupResponse.createTime,
       founderId: groupData.founderId?.stringValue || null,
-      members: users
+      members: users,
+      groupId: groupId
     };
   }
   

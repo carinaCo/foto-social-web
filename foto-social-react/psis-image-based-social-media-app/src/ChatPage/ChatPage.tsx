@@ -6,9 +6,6 @@ import AppToolBar from "./AppToolBar.tsx";
 import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
 import ChatPageContent from './ChatPageContent.tsx';
 
-
-
-
 const ChatPage: React.FC = () => {
     // const [drawerOpen, setDrawerOpen] = React.useState(false);
     // const toggleDrawer = (open: boolean) => () => {
@@ -29,12 +26,11 @@ const ChatPage: React.FC = () => {
                                 width: '95vw',
                              boxSizing: 'border-box',
                              }} >
-                <ChatPageContent />
+                <ChatPageContent/>
             </Box>
-                    
-          
+
            <BottomBeforeUpload />
-           
+
         </>
     )
 }

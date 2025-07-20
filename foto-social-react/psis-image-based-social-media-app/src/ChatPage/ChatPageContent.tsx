@@ -1,16 +1,23 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import HideImageIcon from '@mui/icons-material/HideImage';
-//import Toolbar from '@mui/material/Toolbar';
+import LockIcon from '@mui/icons-material/Lock';
 import {
     Avatar, Box,
     List,
     ListItem,
     ListItemAvatar
 } from "@mui/material";
+import {getGroupPosts} from "./helpers/chatHelper.tsx";
+import type {GroupPost} from "../Client/use_cases/InGroupMessagesAndPosts/GetGroupPosts";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useParams } from 'react-router-dom';
 
 
 const ChatPageContent: React.FC = () => {
+    const [posts, setPosts] = React.useState<GroupPost[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    const { id: groupId } = useParams<{ id: string; }>();
 
     const sampleChats =
         [
@@ -27,77 +34,110 @@ const ChatPageContent: React.FC = () => {
         };
 
     React.useEffect(() => {
-        // fetch the messages in this chat
-        // render them, like the sampleChats
-
-
-    }, []);
-
-    
-
-    return (
-        
-        <Box sx={{
-            
-         height: "100%", width: "100%", overflowY: "auto" }}>
-
-        <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
-                {sampleChats.map((
-                    element, index) =>
-                    (
-                        <React.Fragment key={element.id || index}>
-                        <ListItem alignItems="center" key={index} sx={{
-                            width: '100%',
-                            background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
-                            backdropFilter: 'blur(10px) saturate(180%)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            borderRadius: 3,
-                            marginBottom: 3,
-                            px: 2,   // Innenabstand x
-                            py: 1.5,  // Innenabstand y
-                            transition: 'all 0.3s ease-in-out',
-                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-                            
-
-                            '&:hover': {
-                                filter: 'brightness(1.1)', // leicht heller
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
-                                transform: 'scale(1.01)', // minimal größer
-                            },
-                        }}>
-                            <ListItemAvatar>
-                              <Avatar sx={{ bgcolor: getAvatarColor(element.userName) }}>
-                                 {element.userName[0].toUpperCase()}
-                              </Avatar>
-                            </ListItemAvatar>
-                            
-                            
-                            <Box ml={2} width={'70%'}>
-                            <Typography fontWeight="bold">{element.userName}</Typography>
-                            <Box
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                              sx={{
-                                  width: '100%',
-                                  height: '150px',
-                                  bgcolor: 'grey.300',
-                                  borderRadius: 2
-                            }}
-                            >
-                              
-                
-                               <HideImageIcon sx={{ width: '80%', fontSize: 64, color: 'grey.600' }} />
-                            </Box>
-                            </Box>        
-                            {/* </Box> */}
-                        </ListItem>
-                    </React.Fragment>
-                    ))
+        const fetchPosts = async () => {
+            setIsLoading(true);
+            try {
+                // const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: nicht mehr hardcoden
+                if(groupId) {
+                    const fetchedPosts = await getGroupPosts(groupId);
+                    console.log('Fetched posts:', fetchedPosts);
+                    setPosts(fetchedPosts?.posts);
                 }
-        </List>
-        </Box>
-        
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+                setPosts([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        void fetchPosts();
+    }, [groupId]);
+
+    if (isLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
+                    Getting the posts beep boop...
+                    <CircularProgress />
+                </Box>
+            </Box>
+        );
+    }
+
+    const showContent = true;
+// !posts || posts.length === 0 ?
+    return (
+        <>
+            {!showContent ?
+                (
+                    <Box>
+                        Be the first to post something!
+                    </Box>
+                ) : (
+            <Box sx={{
+                height: "100%",
+                width: "100%",
+                overflowY: "auto"
+            }}>
+                <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 9}}>
+                    {sampleChats.map((
+                        element, index) =>
+                        (
+                            <React.Fragment key={element.id || index}>
+                                <ListItem alignItems="center" key={index} sx={{
+                                    width: '100%',
+                                    background: 'rgba(255, 255, 255, 0.05)', // transparenter Hintergrund
+                                    backdropFilter: 'blur(10px) saturate(180%)',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderRadius: 3,
+                                    marginBottom: 3,
+                                    px: 2,   // Innenabstand x
+                                    py: 1.5,  // Innenabstand y
+                                    transition: 'all 0.3s ease-in-out',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+
+
+                                    '&:hover': {
+                                        filter: 'brightness(1.1)', // leicht heller
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // sanfter Shadow
+                                        transform: 'scale(1.01)', // minimal größer
+                                    },
+                                }}>
+                                    <ListItemAvatar>
+                                        <Avatar sx={{ bgcolor: getAvatarColor(element.userName) }}>
+                                            {element.userName[0].toUpperCase()}
+                                        </Avatar>
+                                    </ListItemAvatar>
+
+
+                                    <Box ml={2} width={'70%'}>
+                                        <Typography fontWeight="bold">{element.userName}</Typography>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            sx={{
+                                                width: '100%',
+                                                height: '150px',
+                                                bgcolor: 'grey.300',
+                                                borderRadius: 2
+                                            }}
+                                        >
+
+
+                                            <LockIcon sx={{ width: '80%', fontSize: 64, color: 'grey.600' }} />
+                                        </Box>
+                                    </Box>
+                                    {/* </Box> */}
+                                </ListItem>
+                            </React.Fragment>
+                        ))
+                    }
+                </List>
+            </Box>
+                )
+            }
+        </>
     );
 };
 
