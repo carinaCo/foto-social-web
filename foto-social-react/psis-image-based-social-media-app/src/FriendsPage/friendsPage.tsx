@@ -37,6 +37,7 @@ const FriendsPage: React.FC = () => {
     const [showRequests, setShowRequests] = useState(false);
 
     const [friends, setFriends] = useState<UserDataResult[]>([]);
+    const [friendsChanged, setFriendsChanged] = useState<boolean>(false);
 
     React.useEffect(() => {
         setIsLoading(true);
@@ -63,7 +64,7 @@ const FriendsPage: React.FC = () => {
             }
         }
         void fetchFriends();
-    }, []);
+    }, [friendsChanged]);
 
     const handleAccept = (id: string | undefined) => {
         const user = friendRequests.find((r) => r.userId === id);
@@ -150,7 +151,10 @@ const FriendsPage: React.FC = () => {
                 )}
             </Box>
 
-            <AddNewDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+            <AddNewDrawer
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                onFriendAdded={() => setFriendsChanged(prev => !prev)} />
         </>
     )
 }

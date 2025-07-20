@@ -16,6 +16,7 @@ import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import toast from "react-hot-toast";
+import CheckIcon from '@mui/icons-material/Check';
 
 const styles = {
     listItem: {
@@ -37,7 +38,11 @@ const styles = {
     }
 };
 
-const GroupChat: React.FC = () => {
+interface GroupChatProps {
+    groupsChanged: boolean;
+}
+
+const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
     const [openDialog, setOpenDialog] = React.useState(false);
     const navigate = useNavigate();
@@ -54,12 +59,10 @@ const GroupChat: React.FC = () => {
                 const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
                 const data = await getUserData(userId);
-                console.log("Fetched user data:", data);
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
                     const groupResults = await Promise.all(groupPromises);
-                    console.log('promise all await called for groups');
 
                     setGroups(groupResults);
 
@@ -71,7 +74,6 @@ const GroupChat: React.FC = () => {
                     }
                     else{setPrompts([])}
                 } else {
-                    console.log("User ist in keiner Gruppe.");
                     setGroups([]);
                     setPrompts([]);
                 }
@@ -82,7 +84,7 @@ const GroupChat: React.FC = () => {
             }
         };
         void fetchUserData();
-    }, []);
+    }, [groupsChanged]);
 
     const handleClick = (element: GroupData, index: number) => {
         if (!element.groupId) {
@@ -183,8 +185,7 @@ const GroupChat: React.FC = () => {
                                                         <TextField id={'prompt-field-today' + index} label={'Heute'} variant="outlined" size="small" slotProps=
                                                             {{
                                                                 input: {
-                                                                    readOnly: true,
-                                                                    disabled: true,
+                                                                    readOnly: true
                                                                 }}}
                                                                    value={prompts?.[index].previousDayPrompt.prompt || 'No prompt found...'}
 
@@ -192,27 +193,43 @@ const GroupChat: React.FC = () => {
                                                                 <TextField
                                                                     id={'prompt-field-tomorrow' + index}
                                                                     label={'Morgen'}
+                                                                    placeholder="Setze den Prompt für morgen"
                                                                     variant="outlined"
                                                                     size="small"
+                                                                    InputLabelProps={{ shrink: true }}
                                                                     value={prompts?.[index].todayPrompt?.prompt ?? tomorrowPrompts[index] ?? ''}
                                                                     slotProps={{
                                                                         input: {
-                                                                            disabled: !!prompts?.[index].todayPrompt?.prompt,
+                                                                            readOnly: !!prompts?.[index].todayPrompt?.prompt,
                                                                             endAdornment:
                                                                                 <InputAdornment position="end">
                                                                                     {(tomorrowPrompts[index] || '').trim().length > 0 ? (
                                                                                         <Button
                                                                                             size="small"
                                                                                             variant="contained"
-                                                                                            sx={{backgroundColor: '#5A54D1'}}
+                                                                                            sx={{
+                                                                                                backgroundColor: '#5A54D1',
+                                                                                                boxShadow: '0 4px 12px #6C64E1',
+                                                                                                color: '#ffffff',
+                                                                                        }}
                                                                                             onClick={async () => {
                                                                                                 await handlePromptSave(element.groupId, tomorrowPrompts[index], index);
+                                                                                                // Prompt-Feld nach dem Speichern leeren, damit der Button verschwindet
+                                                                                                setTomorrowPrompts((prev) => {
+                                                                                                    const updated = [...prev];
+                                                                                                    updated[index] = "";
+                                                                                                    return updated;
+                                                                                                });
                                                                                             }}
                                                                                         >
-                                                                                            okay
+                                                                                            Okay
                                                                                         </Button>
                                                                                     ) : (
-                                                                                        <EditIcon fontSize={'small'} />
+                                                                                        prompts?.[index].todayPrompt?.prompt ? (
+                                                                                        <CheckIcon fontSize={"small"}/>
+                                                                                        ) : (
+                                                                                            <EditIcon fontSize={'small'}/>
+                                                                                            )
                                                                                     )}
                                                                                 </InputAdornment>
                                                                         },
