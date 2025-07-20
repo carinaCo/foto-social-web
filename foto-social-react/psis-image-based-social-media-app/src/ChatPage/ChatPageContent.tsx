@@ -28,6 +28,7 @@ const ChatPageContent: React.FC = () => {
     const [hasSentPost, setHasSentPost] = React.useState(false);
 
     const { id: groupId } = useParams<{ id: string; }>();
+    //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
 
     const { userId, logout } = useAuth();
     //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';

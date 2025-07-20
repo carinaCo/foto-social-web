@@ -296,6 +296,18 @@ export class GetPrompt {
       return randomDoc;
     };
 
+    const getDeterministicFallbackPrompt = (groupId, date) => {
+      const seedSource = `${date.toISOString().slice(0, 10)}-${groupId.replace(/[^0-9]/g, '').slice(-4)}`;
+      let hash = 0;
+      for (let i = 0; i < seedSource.length; i++) {
+        const char = seedSource.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash |= 0; // Convert to 32-bit integer
+      }
+      const index = Math.abs(hash) % HARDCODED_FALLBACK_PROMPTS.length;
+      return HARDCODED_FALLBACK_PROMPTS[index];
+    };
+
     // 1️⃣ Get yesterday's prompt
     const yesterdayDoc = await queryPromptsInRange(yesterdayStart, yesterdayEnd);
     let previousDayPrompt;
@@ -305,7 +317,7 @@ export class GetPrompt {
         prompt: yesterdayDoc.document.fields.promptText?.stringValue ?? '[missing promptText]',
       };
     } else {
-      const fallbackPrompt = HARDCODED_FALLBACK_PROMPTS[Math.floor(Math.random() * HARDCODED_FALLBACK_PROMPTS.length)];
+      const fallbackPrompt = getDeterministicFallbackPrompt(groupId, todayStart);
       previousDayPrompt = {
         source: 'fallback',
         prompt: fallbackPrompt,
