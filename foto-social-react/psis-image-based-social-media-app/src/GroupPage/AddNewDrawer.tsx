@@ -43,7 +43,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
     // state for friends list
     const [friends, setFriends] = useState<UserDataResult[]>([]);
     const [isLoadingFriends, setIsLoadingFriends] = useState(false);
-    const { userId, logout } = useAuth();
+    const { userId } = useAuth();
 
     const fetchFriends = async () => {
         setIsLoadingFriends(true);

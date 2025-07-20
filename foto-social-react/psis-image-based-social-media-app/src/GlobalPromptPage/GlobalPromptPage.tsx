@@ -9,10 +9,9 @@ import {getPrompts} from "../GroupPage/helpers/groupHelper.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
 
 const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
-const { userId, logout } = useAuth();
 
 const GlobalPromptPage: React.FC = () => {
-
+    const { userId } = useAuth();
     const [postData, setPostData] = React.useState<
         { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
     >([]);

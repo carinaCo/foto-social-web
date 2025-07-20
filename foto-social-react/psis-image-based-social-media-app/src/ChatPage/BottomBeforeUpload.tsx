@@ -38,7 +38,7 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const [unlocking, setUnlocking] = useState(false);
     const [rotating, setRotating] = useState(false);
     const [hasPostedToday, setHasPostedToday] = useState<boolean>(false);
-    const { userId, logout } = useAuth();
+    const { userId } = useAuth();
 
     //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht hardcode
 
