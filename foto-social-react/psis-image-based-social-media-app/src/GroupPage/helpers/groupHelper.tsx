@@ -1,12 +1,11 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
-
-import {GetGroup} from "../../Client/use_cases/GroupManagement/GetGroup";
+//import {GetGroup} from "../../Client/use_cases/GroupManagement/GetGroup";
 import {AddUserToGroup} from "../../Client/use_cases/GroupManagement/AddUserToGroup.js";
 
 import {GetPrompt} from "../../Client/use_cases/PromptGeneration/GetPrompt";
 import {GeneratePromptByUser} from "../../Client/use_cases/PromptGeneration/GeneratePromptByUser";
-//import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
+import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
