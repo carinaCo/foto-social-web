@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
     Paper,
-    BottomNavigation,
-    BottomNavigationAction,
     Box,
     Stack,
     Dialog, DialogTitle, DialogContent,
@@ -73,7 +71,7 @@ const BottomBeforeUpload: React.FC = () => {
         setTimeout(() => {
             setLockOpen(true);
         }, 600);
-        const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: nicht mehr hardcoden
+        const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
         // Base64 extrahieren (ohne Data-URL-Präfix)
         const base64 = preview.split(',')[1];
         await sendGroupPost(userId, groupId, base64);

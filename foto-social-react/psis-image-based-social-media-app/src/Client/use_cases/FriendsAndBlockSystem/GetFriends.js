@@ -32,10 +32,36 @@ export class GetFriends {
       };
     }
 
-    const friendIds = friendsResponse.documents.map(doc => {
-      const pathParts = doc.name.split('/');
-      return pathParts[pathParts.length - 1];
-    });
+    const documents = friendsResponse.documents || [];
+
+    const friendIds = documents
+  .map(doc => {
+    const pathParts = doc.name.split('/');
+    return pathParts[pathParts.length - 1];
+  })
+  .filter(id => id !== 'init');
+
+
+    const friends = [];
+
+    for (const friendId of friendIds) {
+      try {
+        const friendDocUrl = firestoreHelper.getUserDoc(friendId);
+        const friendDoc = await httpClient.get(friendDocUrl);
+        const username = friendDoc.fields?.username?.stringValue || 'Unknown';
+
+        friends.push({
+          userId: friendId,
+          username
+        });
+      } catch (err) {
+        console.warn(`Could not retrieve user data for friend ${friendId}:`, err.message);
+        friends.push({
+          userId: friendId,
+          username: null
+        });
+      }
+    }
 
     return {
       success: true,

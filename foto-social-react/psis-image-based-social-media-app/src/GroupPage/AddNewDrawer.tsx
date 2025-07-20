@@ -44,7 +44,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const fetchFriends = async () => {
         setIsLoadingFriends(true);
         try {
-            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: dynamisch holen
+            const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: dynamisch holen
             const friendsResult = await getFriends(activeUserId);
             if (friendsResult?.success) {
                 const userDataList = await Promise.all(
@@ -69,8 +69,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
         setWasInGroupCreate(false);
         setSelectedContacts([]);
         setGroupName('');
-        // setFirstName('');
-        // setLastName('');
         setUsername('');
         setUserId('');
         onClose();
@@ -86,8 +84,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             setView('main');
         }
         else if (view === 'contactAdd') {
-            // setFirstName('');
-            // setLastName('');
             setUsername('');
             setUserId('');
             setView('main');
@@ -108,6 +104,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
     const handleCreateGroup = async () => {
         try {
+
           const founderId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
           const result = await createGroup(founderId, groupName);
       
@@ -138,6 +135,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
           } else {
             toast.error('Erstellen fehlgeschlagen');
           }
+    
+
         }
         catch (error) {
           toast.error('Ein unerwarteter Fehler ist aufgetreten.');
@@ -148,7 +147,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const handleAddContact = async () => {
         try {
             // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: get active user id
-            const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: get active user id
+            const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: get active user id
             const result = await addFriend(activeUserId, userId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');

@@ -1,4 +1,4 @@
-import {Route, Routes } from 'react-router-dom';
+import {Route, Routes, Navigate } from 'react-router-dom';
 import './App.css'
 import GroupsPage from "./GroupPage/groupsPage.tsx";
 import {createTheme, ThemeProvider} from "@mui/material";
@@ -46,6 +46,8 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
           <Toaster position="top-center" />
         <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/global" element={<GlobalPromptPage />} />
             <Route path="/groups" element={<GroupsPage />} />
             <Route path="/login" element={<Login />} />
