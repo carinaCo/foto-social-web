@@ -15,7 +15,7 @@ import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
 import toast from 'react-hot-toast';
 import {authStyles} from "./helpers/authenticationStyles.ts";
-
+import { AddUserToGroup } from "../Client/use_cases/GroupManagement/AddUserToGroup";
 const Register = () => {
     const navigate = useNavigate();
 
@@ -29,6 +29,8 @@ const Register = () => {
 
             if (result?.success && result?.userId) {
                 toast.success('Registrierung erfolgreich!');
+                const addUserToGroup = new AddUserToGroup({ projectId: 'foto-social-web' });
+                const founderAddResult = await addUserToGroup.execute({ userId: result.userId, groupId: '3d33b9e1-2e9f-4007-81f8-366e2e20feff' });
                 navigate('/login');
                 toast.success('Du kannst dich nun einloggen.');
             } else {

@@ -24,8 +24,10 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 
 const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
-
-const GlobalAppToolBar: React.FC = () => {
+interface GlobalAppToolBarProps {
+    prompt: string;
+}
+const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
     const { userId, logout } = useAuth();
     const navigate = useNavigate();              // 获取跳转函数
     const location = useLocation();
@@ -93,6 +95,7 @@ const GlobalAppToolBar: React.FC = () => {
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
+
     return (
         <>
             <Toolbar sx={{
@@ -124,7 +127,7 @@ const GlobalAppToolBar: React.FC = () => {
                         {/* {groupname}   */}
                     </Typography>
                     <Typography variant="subtitle2" component="div" sx={{lineHeight: 1}}>
-                        Today's Prompt
+                        {prompt}
                         {/* {prompttoday} */}
                     </Typography>
                 </Box>

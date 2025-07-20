@@ -66,7 +66,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
                     // um die global gruppe nur auf der global seite anzuzeigen, muss sie hier und im mapping ausgefiltert werden
                     const groupResults = (await Promise.all(groupPromises))
-                        .filter(group => group.groupId !== '389b9f6a-ee55-4606-94ad-e26c2a970c84');
+                        .filter(group => group.groupId !== '3d33b9e1-2e9f-4007-81f8-366e2e20feff');
                     setGroups(groupResults);
 
                     const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));

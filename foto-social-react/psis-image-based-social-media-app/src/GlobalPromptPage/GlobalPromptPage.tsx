@@ -5,8 +5,9 @@ import {
 import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
 import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
 import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
+import {getPrompts} from "../GroupPage/helpers/groupHelper.tsx";
 
-const globalGroupId = '389b9f6a-ee55-4606-94ad-e26c2a970c84';
+const globalGroupId = '3d33b9e1-2e9f-4007-81f8-366e2e20feff';
 const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
 
 const GlobalPromptPage: React.FC = () => {
@@ -15,6 +16,7 @@ const GlobalPromptPage: React.FC = () => {
         { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
     >([]);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [prompt, setPrompt] = React.useState('')
     const fetchPosts = async () => {
         setIsLoading(true);
         try {
@@ -26,16 +28,29 @@ const GlobalPromptPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+    const fetchPrompt = async () => {
+        setIsLoading(true);
+        try {
+            const prompt = await getPrompts(globalGroupId);
+            setPrompt(prompt.previousDayPrompt.prompt);
+        } catch{
+            setIsLoading(false);
+        }
+        setIsLoading(false);
+    }
 
     React.useEffect(() => {
         void fetchPosts();
+        void fetchPrompt();
     }, []);
 
     return (
         <>
             <CssBaseline enableColorScheme />
             <AppBar>
-                <GlobalAppToolBar/>
+                <GlobalAppToolBar
+                    prompt={prompt}
+                />
             </AppBar>
             <Box sx={{marginLeft: '-32px',
                 marginRight: '-32px',
