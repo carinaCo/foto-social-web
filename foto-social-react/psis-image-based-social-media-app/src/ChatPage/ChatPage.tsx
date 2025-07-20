@@ -5,14 +5,14 @@ import {
 import AppToolBar from "./AppToolBar.tsx";
 import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
 import ChatPageContent from './ChatPageContent.tsx';
-import { fetchImageReferencesForGroup } from './helpers/chatHelper.tsx';
-import { getUserData } from '../GroupPage/helpers/groupHelper.tsx';
+import {fetchPostsWithUsernames} from './helpers/chatHelper.tsx';
 import {useParams} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.tsx";
+import toast from "react-hot-toast";
 
 const ChatPage: React.FC = () => {
     const { id: groupId } = useParams<{ id: string; }>();
-    const { userId, logout } = useAuth();
+    const { userId } = useAuth();
     //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
 
     const [postData, setPostData] = React.useState<
@@ -23,27 +23,15 @@ const ChatPage: React.FC = () => {
     const fetchPosts = async () => {
         setIsLoading(true);
         try {
-            if (groupId) {
-                const imageRefs = await fetchImageReferencesForGroup(groupId);
-                const postDataWithUsernames = await Promise.all(
-                    imageRefs.map(async (imgRef) => {
-                        let username = null;
-                        if (imgRef?.userId) {
-                            const userData = await getUserData(imgRef.userId);
-                            username = userData?.username ?? null;
-                            if(imgRef.userId === userId) {
-                                username = 'You';
-                            }
-                        }
-                        return {
-                            ...imgRef,
-                            username,
-                        };
-                    })
-                );
-                setPostData(postDataWithUsernames);
+            if (groupId){
+                const posts = await fetchPostsWithUsernames(groupId, userId);
+                setPostData(posts);
+            } else {
+                console.error('Group ID is not defined');
+                toast.error('Group ID is not defined');
+                setPostData([]);
             }
-        } catch (error) {
+        } catch {
             setPostData([]);
         } finally {
             setIsLoading(false);

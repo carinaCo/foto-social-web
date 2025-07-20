@@ -1,40 +1,70 @@
 import * as React from 'react';
 import {
-    AppBar, CssBaseline
+    AppBar, Box, CssBaseline
 } from "@mui/material";
 import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
-import GlobalPosts from "./GlobalPosts.tsx";
+import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
+import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
+import {getPrompts} from "../GroupPage/helpers/groupHelper.tsx";
+import {useAuth} from "../context/AuthContext.tsx";
 
-class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
-    constructor(props: any) {
-      super(props);
-      this.state = { hasError: false };
-    }
-    static getDerivedStateFromError(error: any) {
-      return { hasError: true };
-    }
-    componentDidCatch(error: any, errorInfo: any) {
-      console.error("捕获错误:", error, errorInfo);
-    }
-    render() {
-      if (this.state.hasError) {
-        return <h2>Error! please retry </h2>;
-      }
-      return this.props.children;
-    }
-  }
-  
+const globalGroupId = '2a71f0a4-0768-4392-9ad5-f510a99b1d34';
 
 const GlobalPromptPage: React.FC = () => {
+    const { userId } = useAuth();
+    const [postData, setPostData] = React.useState<
+        { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
+    >([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [prompt, setPrompt] = React.useState('')
+    const fetchPosts = async () => {
+        setIsLoading(true);
+        try {
+            const posts = await fetchPostsWithUsernames(globalGroupId, userId);
+            setPostData(posts);
+        } catch {
+            setPostData([]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const fetchPrompt = async () => {
+        setIsLoading(true);
+        try {
+            const prompt = await getPrompts(globalGroupId);
+            setPrompt(prompt.previousDayPrompt.prompt);
+        } catch{
+            setIsLoading(false);
+        }
+        setIsLoading(false);
+    }
+
+    React.useEffect(() => {
+        void fetchPosts();
+        void fetchPrompt();
+    }, []);
+
     return (
         <>
             <CssBaseline enableColorScheme />
             <AppBar>
-            <ErrorBoundary>
-                <GlobalAppToolBar/>
-            </ErrorBoundary>
+                <GlobalAppToolBar
+                    prompt={prompt}
+                />
             </AppBar>
-          <GlobalPosts />
+            <Box sx={{marginLeft: '-32px',
+                marginRight: '-32px',
+                //  paddingLeft: '16px',
+                //  paddingRight: '16px',
+                width: '95vw',
+                boxSizing: 'border-box',
+            }} >
+                <ChatPageContent
+                    postData={postData}
+                    isLoading={isLoading}
+                    activeUserId={userId}
+                />
+            </Box>
         </>
     )
 }

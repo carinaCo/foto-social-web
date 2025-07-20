@@ -40,7 +40,7 @@ const FriendsPage: React.FC = () => {
     const [friends, setFriends] = useState<UserDataResult[]>([]);
     const [friendsChanged, setFriendsChanged] = useState<boolean>(false);
 
-    const { userId, logout } = useAuth();
+    const { userId } = useAuth();
 
     React.useEffect(() => {
         setIsLoading(true);

@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, Box } from '@mui/material';
+import React, { useRef } from 'react';
+import {Dialog, DialogTitle, DialogContent, Button, Box, Icon, DialogActions} from '@mui/material';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { chatPageStyles } from '../ChatPage/chatPageStyles.ts';
 
 const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (image: string) => void }> = ({ open, onClose, onCapture }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // 启动摄像头,open camera
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -16,16 +17,14 @@ const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (
         videoRef.current.play();
       }
     } catch (err) {
-      console.error('无法访问摄像头:', err);
+      console.error('Kamera konnte nicht gestartet werden:', err);
     }
   };
 
-  // 关闭摄像头,close camera
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach(track => track.stop());
   };
 
-  // 拍照逻辑, the logic of how to take a photo
   const handleCapture = () => {
     if (!canvasRef.current || !videoRef.current) return;
     const ctx = canvasRef.current.getContext('2d');
@@ -38,47 +37,78 @@ const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (
     canvasRef.current.height = height;
 
     ctx.drawImage(videoRef.current, 0, 0, width, height);
-    const imageData = canvasRef.current.toDataURL('image/png'); // base64 image data,图像数据
-
-    // 自动下载图片, download photo automated
-    const link = document.createElement('a');
-    link.href = imageData;
-    link.download = 'photo.png'; // 下载文件名, the file name of downloaded photo
-    document.body.appendChild(link); // 需要添加到DOM才能触发点击
-    link.click();
-    document.body.removeChild(link);
-
-    onCapture(imageData); // 把图像数据传出, send image data
+    const imageData = canvasRef.current.toDataURL('image/png');
+    onCapture(imageData);
     onClose();
     stopCamera();
   };
 
-  // 启动摄像头（在弹窗打开时）, when pop up, start camera
   React.useEffect(() => {
     if (open) {
       startCamera();
     } else {
       stopCamera();
     }
-    return stopCamera; // 组件卸载时也关闭
+    return stopCamera;
   }, [open]);
 
   return (
-    <Dialog open={open} onClose={() => { stopCamera(); onClose(); }} fullWidth maxWidth="sm" 
-    disableEnforceFocus  // 关闭强制焦点锁定，排查焦点管理问题
-    disableRestoreFocus  // 关闭焦点恢复
-    >
-      <DialogTitle>Use Camera</DialogTitle>
-      <DialogContent>
+      <Dialog
+          open={open}
+          onClose={() => { stopCamera(); onClose(); }}
+          fullWidth
+          maxWidth="xs"
+          slotProps={{ paper: { sx: chatPageStyles.dialogPaper } }}
+      >
+        <DialogTitle
+            sx={{
+              color: '#ffffff',
+              fontSize: '1.2rem',
+              textAlign: 'center',
+              pb: 0,
+            }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', mb: 2 }}>
+            <Icon sx={{ color: '#fff', fontSize: 32, mr: 1 }}>
+              <CameraAltIcon />
+            </Icon>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ ...chatPageStyles.dialogContent, pt: 2 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <video ref={videoRef} style={{ width: '100%', borderRadius: 8 }} />
-          <Button variant="contained" color="primary" onClick={handleCapture} sx={{ mt: 2 }}>
-            take a photo
-          </Button>
+          <video
+              ref={videoRef}
+              style={{
+                width: '100%',
+                maxWidth: 320,
+                borderRadius: 16,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                marginBottom: 16,
+                background: '#22223b'
+              }}
+              autoPlay
+              playsInline
+          />
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </Box>
       </DialogContent>
-    </Dialog>
+        <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+          <Button
+              onClick={() => { stopCamera(); onClose(); }}
+              variant="contained"
+              sx={chatPageStyles.dialogActionsCancelButton}
+          >
+            Abbrechen
+          </Button>
+          <Button
+              onClick={handleCapture}
+              variant="contained"
+              sx={chatPageStyles.dialogActionsSendButton}
+          >
+            Aufnehmen
+          </Button>
+        </DialogActions>
+      </Dialog>
   );
 };
 

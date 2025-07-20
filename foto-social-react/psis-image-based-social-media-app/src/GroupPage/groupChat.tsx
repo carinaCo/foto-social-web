@@ -54,7 +54,6 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
     const { userId, logout } = useAuth(); //this is how to access the userId
 
     React.useEffect(() => {
-        console.log('useEffect called in GroupChat');
         const fetchUserData = async () => {
             setIsLoading(true);
             try {
@@ -65,12 +64,14 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
                 if (data.groupId && data.groupId.length > 0) {
                     const groupPromises = data.groupId.map((groupId) => getGroupData(groupId));
-                    const groupResults = await Promise.all(groupPromises);
-
+                    // um die global gruppe nur auf der global seite anzuzeigen, muss sie hier und im mapping ausgefiltert werden
+                    const groupResults = (await Promise.all(groupPromises))
+                        .filter(group => group.groupId !== '2a71f0a4-0768-4392-9ad5-f510a99b1d34');
                     setGroups(groupResults);
 
-                    const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
+                    const promptPromises = groupResults.map((group) => getPrompts(group.groupId));
                     const promptResults = await Promise.all(promptPromises);
+
 
                     if (promptResults.length > 0){
                         setPrompts(promptResults);
@@ -166,9 +167,10 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                         }
                     }}>
                         <List sx={{ width: '100%', height: '100%', maxHeight: 1000, pt: 6}}>
-                            {groups.map((
-                                element, index) =>
-                                (
+                            {groups
+                                .filter(element => element.groupId !== '2a71f0a4-0768-4392-9ad5-f510a99b1d34')
+                                .map((element, index) =>
+                                    (
                                     <React.Fragment key={element.name || index}>
                                         <ListItem alignItems="center" key={index} sx={ styles.listItem }>
                                             <ListItemAvatar>
