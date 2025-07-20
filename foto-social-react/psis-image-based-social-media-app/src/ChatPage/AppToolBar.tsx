@@ -10,8 +10,8 @@ const AppToolBar: React.FC = () => {
     const location = useLocation();
     const { name } = useParams<{ name: string }>();
     // 从 location.state 读取传递的群组名
-  const groupname = location.state?.groupName || `Group ${name}`;
-  const prompttoday = location.state?.promptToday || 'undefined';
+  const groupName = location.state?.groupName || `Group ${name}`;
+  const promptToday = location.state?.promptToday || 'undefined';
 
     return (
         <Toolbar   sx={{
@@ -31,25 +31,20 @@ const AppToolBar: React.FC = () => {
             >
                 <ArrowBackIcon/>
             </IconButton>
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography variant="h6" component="div" sx={{ lineHeight: 1 }}>
-                {groupname}  {/* 这里用变量显示传递过来的群组名 */}
+            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+                <Typography variant="h5" component="div" sx={{ lineHeight: 1 }}>
+                {groupName}  {/* 这里用变量显示传递过来的群组名 */}
                 </Typography>
-                <Typography variant="subtitle2" component="div" sx={{ lineHeight: 1 }}>
-                {prompttoday}
+                <Typography variant="h6" component="div" sx={{ lineHeight: 1 }}>
+                {promptToday}
                 </Typography>
             </Box>
             <IconButton
+                sx={{ visibility: 'hidden' }}
                 size="large"
                 edge="end"
                 aria-label="More-icon"
                 color="inherit"
-                onClick={() => navigate('/pageImage', {
-                    state: {
-                      groupName: groupname, // 传递当前标题
-                      promptToday: prompttoday // 如果你page4也需要这个数据，可以传递
-                    }
-                  })}
             >
                 <LockOpenIcon />
             </IconButton>
