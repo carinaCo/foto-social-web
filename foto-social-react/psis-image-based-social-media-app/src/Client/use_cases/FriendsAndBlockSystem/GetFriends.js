@@ -34,10 +34,13 @@ export class GetFriends {
 
     const documents = friendsResponse.documents || [];
 
-    const friendIds = documents.map(doc => {
-      const pathParts = doc.name.split('/');
-      return pathParts[pathParts.length - 1];
-    });
+    const friendIds = documents
+  .map(doc => {
+    const pathParts = doc.name.split('/');
+    return pathParts[pathParts.length - 1];
+  })
+  .filter(id => id !== 'init');
+
 
     const friends = [];
 
