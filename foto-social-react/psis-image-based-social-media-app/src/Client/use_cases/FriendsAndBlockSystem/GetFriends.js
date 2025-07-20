@@ -66,7 +66,7 @@ export class GetFriends {
     return {
       success: true,
       userId,
-      friends
+      friends: friendIds
     };
   }
 }
