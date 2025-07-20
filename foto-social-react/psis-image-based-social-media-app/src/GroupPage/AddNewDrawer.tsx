@@ -21,7 +21,6 @@ import {addFriend, getFriends} from "../FriendsPage/helpers/friendHelper.ts";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import CircularProgress from '@mui/material/CircularProgress'
 
-import CircularProgress from '@mui/material/CircularProgress';
 import {useAuth} from "../context/AuthContext.tsx";
 
 interface AddNewDrawerProps {
@@ -99,11 +98,11 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
         }
     }
 
-    const handleToggleContact = (uId: string) => {
+    const handleToggleContact = (Id: string) => {
         setSelectedContacts((prev) =>
-            prev.includes(uId)
-        ? prev.filter((contactId) => contactId !== uId)
-        : [...prev, uId]
+            prev.includes(Id)
+        ? prev.filter((contactId) => contactId !== Id)
+        : [...prev, Id]
         );
     };
 
@@ -119,8 +118,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
             }
 
 
-          const result = await createGroup(userId, groupName);
-
           if (result?.success && result.groupId) {
             const groupId = result.groupId;
             console.log('群组创建成功，ID:group is created successfully, ID:', groupId);
@@ -129,8 +126,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
             const addUserToGroup = new AddUserToGroup({ projectId: 'foto-social-web' });
 
             // 把 founder 自己也加入群组（可选）, add founder in group member (users)
-            const founderAddResult = await addUserToGroup.execute({ userId: founderId, groupId });
-            console.log(`Founder ${founderId} 添加结果:`, founderAddResult);
+            const founderAddResult = await addUserToGroup.execute({ userId: userId, groupId });
+            console.log(`Founder ${userId} 添加结果:`, founderAddResult);
 
             // 遍历选中的联系人 userId，并将他们加入群组, map selected friends and add them to group
             await Promise.all(
@@ -302,11 +299,11 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
                                     ) : (
                                         friends.map((contact) => (
                                             <FormControlLabel
-                                                key={contact.userToAddId}
+                                                key={contact.userId}
                                                 control={
                                                     <Checkbox
-                                                        checked={selectedContacts.includes(contact.userToAddId)}
-                                                        onChange={() => handleToggleContact(contact.userToAddId)}
+                                                        checked={selectedContacts.includes(contact.userId)}
+                                                        onChange={() => handleToggleContact(contact.userId)}
                                                         icon={<RadioButtonUncheckedIcon sx={{ color: 'rgba(255,255,255,0.4)' }} />}
                                                         checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#5A54D1', filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))' }} />}
                                                         sx={{ color: 'white', py: 2 }}
