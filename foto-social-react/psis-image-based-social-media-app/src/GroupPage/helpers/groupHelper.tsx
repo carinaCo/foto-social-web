@@ -6,7 +6,7 @@ import {AddUserToGroup} from "../../Client/use_cases/GroupManagement/AddUserToGr
 
 import {GetPrompt} from "../../Client/use_cases/PromptGeneration/GetPrompt";
 import {GeneratePromptByUser} from "../../Client/use_cases/PromptGeneration/GeneratePromptByUser";
-import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
+//import * as GetGroup from "../../Client/use_cases/GroupManagement/GetGroup";
 
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
