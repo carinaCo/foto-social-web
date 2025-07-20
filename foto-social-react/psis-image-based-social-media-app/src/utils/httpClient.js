@@ -34,7 +34,9 @@ export class HttpClient {
         });
       
         if (!res.ok) {
+          console.log('Fetching URL:', url);
           throw new Error(`GET failed: ${res.status} ${res.statusText}`);
+          
         }
       
         return await res.json();

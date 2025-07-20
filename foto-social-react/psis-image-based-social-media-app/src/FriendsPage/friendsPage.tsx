@@ -41,6 +41,7 @@ const FriendsPage: React.FC = () => {
 
     React.useEffect(() => {
         setIsLoading(true);
+
         const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: replace with actual user ID
         // Fetch friends for the active user
         const fetchFriends = async () => {

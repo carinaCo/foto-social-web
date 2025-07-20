@@ -56,6 +56,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
             setIsLoading(true);
             try {
                 // TODO: user id nicht mehr hardcoden
+
                 const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
                 const data = await getUserData(userId);
