@@ -44,7 +44,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
     const fetchFriends = async () => {
         setIsLoadingFriends(true);
         try {
-            //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: dynamisch holen
+            //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
             const friendsResult = await getFriends(userId);
             if (friendsResult?.success) {
                 const userDataList = await Promise.all(
