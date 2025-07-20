@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    Avatar, Box,
+    Avatar, Box, Button,
     InputAdornment,
     List,
     ListItem,
@@ -10,12 +10,13 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import TurnDialog from "../Prompting/components/TurnDialog.tsx";
 import {useNavigate} from "react-router-dom";
-import {getGroupData, getUserData, isCurrentPrompter, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
+import {getGroupData, getUserData, getPrompts, setPrompt} from "./helpers/groupHelper.tsx";
 import type {PromptResult} from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type {GroupData} from "../Client/use_cases/GroupManagement/GetGroup";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
 import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
+import toast from "react-hot-toast";
 
 const styles = {
     listItem: {
@@ -46,15 +47,13 @@ const GroupChat: React.FC = () => {
     const [prompts, setPrompts] = React.useState<PromptResult[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
-
     React.useEffect(() => {
         console.log('useEffect called in GroupChat');
         const fetchUserData = async () => {
             setIsLoading(true);
             try {
                 // TODO: user id nicht mehr hardcoden
-                // const userId = '0a60fb39-d985-4543-8b3f-69aa79eb3839';
-                const userId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
+                const userId = '06aabba6-1002-4002-9840-2127decb9eea';
 
                 const data = await getUserData(userId);
 
@@ -96,7 +95,7 @@ const GroupChat: React.FC = () => {
         void fetchUserData();
     }, []);
 
-    const handleClick = (element: GroupData) => {
+    const handleClick = (element: GroupData, index: number) => {
         if (!element.groupId) {
             // Optional: Fehlerbehandlung oder Hinweis
             return;
@@ -104,13 +103,33 @@ const GroupChat: React.FC = () => {
         navigate(`/chat/${element.groupId}/${(element.name)}`, {
             state: {
                 groupName: element.name,
-                promptToday: element?.promptToday || 'No prompt found...',
+                promptToday: prompts?.[index].todayPrompt?.prompt || 'No prompt found...',
             },
         });
     };
-    const [localPrompts, setLocalPrompts] = React.useState(
-        (prompts ?? []).map(p => ({ ...p, tempPrompt: p.promptToday?.prompt ?? '' }))
-    );
+    const handlePromptSave = async (groupId: string, promptText: string, index: number) => {
+        if (promptText.trim().length === 0) {
+            toast.error('Empty prompts are laaame >:(');
+            return;
+        }
+        try {
+            await setPrompt(groupId, promptText);
+            toast.success('Prompt erfolgreich gespeichert!');
+            // Prompts neu laden
+            const newPrompts = await getPrompts(groupId);
+            setPrompts((prev) => {
+                if (!prev) return prev;
+                const updated = [...prev];
+                updated[index] = newPrompts;
+                return updated;
+            });
+        } catch (error) {
+            toast.error('Fehler beim Speichern des Prompts.');
+            console.error('Error saving prompt:', error);
+        }
+    };
+
+    const [tomorrowPrompts, setTomorrowPrompts] = React.useState<string[]>([]);
 
     // React.useEffect(() => {
     //     const isUserTurn = true; // Replace with actual logic
@@ -162,7 +181,7 @@ const GroupChat: React.FC = () => {
                                             <ListItemAvatar>
                                                 <Avatar alt="Group Picture"
                                                         onClick={() =>
-                                                            handleClick(element)}
+                                                            handleClick(element, index)}
                                                 />
                                             </ListItemAvatar>
                                             <ListItemText
@@ -179,45 +198,43 @@ const GroupChat: React.FC = () => {
                                                                     readOnly: true,
                                                                     disabled: true,
                                                                 }}}
-                                                                   value={prompts[index].previousDayPrompt.prompt || 'No prompt found...'}
+                                                                   value={prompts?.[index].previousDayPrompt.prompt || 'No prompt found...'}
 
                                                         />
-                                                        {
-                                                            prompts[index].todayPrompt != null?(
-                                                                <TextField id={'prompt-field-today' + index} label={'Morgen'} variant="outlined" size="small" slotProps=
-                                                                    {{
+                                                                <TextField
+                                                                    id={'prompt-field-tomorrow' + index}
+                                                                    label={'Morgen'}
+                                                                    variant="outlined"
+                                                                    size="small"
+                                                                    value={prompts?.[index].todayPrompt?.prompt ?? tomorrowPrompts[index]}
+                                                                    slotProps={{
                                                                         input: {
-                                                                            readOnly: true,
-                                                                            disabled: true,
-                                                                        }}}
-                                                                           value={prompts[index].todayPrompt.prompt}
-
-                                                                />
-                                                            ): (
-                                                                <TextField id={'prompt-field-tomorrow' + index} label={'Morgen'} variant="outlined" size="small" value={""} slotProps=
-                                                                    {{
-                                                                        input: {
-                                                                            disabled: false,//isCurrentPrompter(userData?.userId, element),
+                                                                            disabled: !!prompts?.[index].todayPrompt?.prompt,
                                                                             endAdornment:
                                                                                 <InputAdornment position="end">
-                                                                                    <EditIcon fontSize={'small'} />
+                                                                                    {(tomorrowPrompts[index] || '').trim().length > 0 ? (
+                                                                                        <Button
+                                                                                            size="small"
+                                                                                            variant="contained"
+                                                                                            sx={{backgroundColor: '#5A54D1'}}
+                                                                                            onClick={async () => {
+                                                                                                await handlePromptSave(element.groupId, tomorrowPrompts[index], index);
+                                                                                            }}
+                                                                                        >
+                                                                                            okay
+                                                                                        </Button>
+                                                                                    ) : (
+                                                                                        <EditIcon fontSize={'small'} />
+                                                                                    )}
                                                                                 </InputAdornment>
                                                                         },
                                                                     }}
-                                                                           onChange={(e) => {
-                                                                               const updated = [...localPrompts];
-                                                                               updated[index].tempPrompt = e.target.value;
-                                                                               setLocalPrompts(updated);
-                                                                           }}
-                                                                           onBlur={()=>{
-
-                                                                               setPrompt(prompts[index].groupId, localPrompts[index].tempPrompt);
-
-                                                                           }}
+                                                                    onChange={(e) => {
+                                                                        const newPrompts = [...tomorrowPrompts];
+                                                                        newPrompts[index] = e.target.value;
+                                                                        setTomorrowPrompts(newPrompts);
+                                                                    }}
                                                                 />
-                                                            )
-                                                        }
-
                                                     </Stack>}
                                             />
                                         </ListItem>
