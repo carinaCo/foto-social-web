@@ -69,8 +69,9 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                         .filter(group => group.groupId !== '2a71f0a4-0768-4392-9ad5-f510a99b1d34');
                     setGroups(groupResults);
 
-                    const promptPromises = data.groupId.map((groupId) => getPrompts(groupId));
+                    const promptPromises = groupResults.map((group) => getPrompts(group.groupId));
                     const promptResults = await Promise.all(promptPromises);
+
 
                     if (promptResults.length > 0){
                         setPrompts(promptResults);
