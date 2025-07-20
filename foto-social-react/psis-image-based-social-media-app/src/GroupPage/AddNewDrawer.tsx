@@ -23,9 +23,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 interface AddNewDrawerProps {
     open: boolean;
     onClose: () => void;
+    onFriendAdded?: () => void;
+    onGroupAdded?: () => void;
 }
 
-const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
+const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdded, onGroupAdded }) => {
     const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate' | 'contactAdd'>('main');
     const [selectedContacts, setSelectedContacts] = useState<number[]>([]);
     const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
@@ -107,6 +109,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             const result = await createGroup(founderId, groupName);
             if (result?.success) {
                 toast.success('Gruppe wurde erstellt!');
+                onGroupAdded?.();
             } else {
                 toast.error('Erstellen fehlgeschlagen');
             }
@@ -124,6 +127,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             const result = await addFriend(activeUserId, userId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');
+                onFriendAdded?.();
             } else {
                 toast.error('Hinzufügen fehlgeschlagen');
             }
