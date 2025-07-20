@@ -1,6 +1,7 @@
 import { CreateGroup } from "../../Client/use_cases/GroupManagement/CreateGroup.js";
 import {GetUserData} from "../../Client/use_cases/UserManagement/GetUserData";
 import {GetGroup} from "../../Client/use_cases/GroupManagement/GetGroup";
+import {AddUserToGroup} from "../../Client/use_cases/GroupManagement/AddUserToGroup.js";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {IconButton} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";

@@ -38,6 +38,8 @@ export class CreateGroup {
   
     await httpClient.post(membersUrl, memberDocBody);
   
-    return { success: true };
+    return { success: true,
+             groupId
+     };
   }
 }  
