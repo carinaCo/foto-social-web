@@ -25,9 +25,11 @@ import CircularProgress from '@mui/material/CircularProgress'
 interface AddNewDrawerProps {
     open: boolean;
     onClose: () => void;
+    onFriendAdded?: () => void;
+    onGroupAdded?: () => void;
 }
 
-const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
+const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdded, onGroupAdded }) => {
     const [view, setView] = useState<'main' | 'groupAdd' | 'groupCreate' | 'contactAdd'>('main');
     const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
     const [wasInGroupAdd, setWasInGroupAdd] = useState<boolean>(false);
@@ -110,18 +112,18 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
 
 
           const result = await createGroup(founderId, groupName);
-      
+
           if (result?.success && result.groupId) {
             const groupId = result.groupId;
             console.log('群组创建成功，ID:group is created successfully, ID:', groupId);
-      
+
             // 创建 AddUserToGroup 实例, create AddUserToGroup instance
             const addUserToGroup = new AddUserToGroup({ projectId: 'foto-social-web' });
-      
+
             // 把 founder 自己也加入群组（可选）, add founder in group member (users)
             const founderAddResult = await addUserToGroup.execute({ userId: founderId, groupId });
             console.log(`Founder ${founderId} 添加结果:`, founderAddResult);
-      
+
             // 遍历选中的联系人 userId，并将他们加入群组, map selected friends and add them to group
             await Promise.all(
                 selectedContacts.map(async (userId) => {
@@ -133,12 +135,13 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
                   }
                 })
               );
-      
+
             toast.success('Gruppe wurde erstellt und Mitglieder hinzugefügt!');
+            onGroupAdded?.();
           } else {
             toast.error('Erstellen fehlgeschlagen');
           }
-    
+
 
         }
         catch (error) {
@@ -154,6 +157,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose }) => {
             const result = await addFriend(activeUserId, userId);
             if (result?.success) {
                 toast.success('Der Bre wurde geadded!');
+                onFriendAdded?.();
             } else {
                 toast.error('Hinzufügen fehlgeschlagen');
             }
