@@ -1,6 +1,8 @@
 //Expects either the group-ID or also a date
 //Retrieves all post-IDs, that have been generally created or starting with a certain date created in the group
 
+//TODO: modify such that only posts of that day are shown
+
 import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
