@@ -56,9 +56,11 @@ export class LoginUser {
       return { success: false, error: 'Invalid password' };
     }
 
-    if (existingFields.isLoggedIn?.booleanValue) {
+    /*if (existingFields.isLoggedIn?.booleanValue) {
       return { success: false, error: 'User already logged in' };
     }
+
+     */
 
 
 
