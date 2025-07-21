@@ -124,18 +124,19 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
     };
 
     const [tomorrowPrompts, setTomorrowPrompts] = React.useState<string[]>([]);
+/*
+     React.useEffect(() => {
+         if (isCurrentPrompter(userId, )) {
+             const timer = setTimeout(() => {
+                 setOpenDialog(true);
+             }, 3000);
 
-    // React.useEffect(() => {
-    //     const isUserTurn = true; // Replace with actual logic
-    //     if (isUserTurn) {
-    //         const timer = setTimeout(() => {
-    //             setOpenDialog(true);
-    //         }, 2000);
-    //
-    //         return () => clearTimeout(timer);
-    //     }
-    // }, []);
+             return () => clearTimeout(timer);
+         }
+     }, []);
 
+
+ */
 
 
     if (isLoading) {
@@ -198,14 +199,14 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                                                 <TextField
                                                                     id={'prompt-field-tomorrow' + index}
                                                                     label={'Morgen'}
-                                                                    placeholder="Setze den Prompt für morgen"
+                                                                    placeholder= {isCurrentPrompter(userId, element) ? "Set the prompt for tomorrow" : "Its someone elses turn"}
                                                                     variant="outlined"
                                                                     size="small"
                                                                     InputLabelProps={{ shrink: true }}
                                                                     value={prompts?.[index].todayPrompt?.prompt ?? tomorrowPrompts[index] ?? ''}
                                                                     slotProps={{
                                                                         input: {
-                                                                            readOnly: !!prompts?.[index].todayPrompt?.prompt,
+                                                                            readOnly: !!prompts?.[index].todayPrompt?.prompt || !isCurrentPrompter(userId, element),
                                                                             endAdornment:
                                                                                 <InputAdornment position="end">
                                                                                     {(tomorrowPrompts[index] || '').trim().length > 0 ? (
@@ -233,7 +234,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                                                                         prompts?.[index].todayPrompt?.prompt ? (
                                                                                         <CheckIcon fontSize={"small"}/>
                                                                                         ) : (
-                                                                                            <EditIcon fontSize={'small'}/>
+                                                                                            isCurrentPrompter(userId, element) && <EditIcon fontSize={'small'}/>
                                                                                             )
                                                                                     )}
                                                                                 </InputAdornment>
