@@ -39,14 +39,15 @@ const CameraCapture: React.FC<{ open: boolean; onClose: () => void; onCapture: (
 
     ctx.drawImage(videoRef.current, 0, 0, width, height);
     const imageData = canvasRef.current.toDataURL('image/png'); // base64 image data,图像数据
+    console.log('Captured image base64 (preview)', imageData.slice(0, 100)); // 可选打印预览
 
     // 自动下载图片, download photo automated
-    const link = document.createElement('a');
-    link.href = imageData;
-    link.download = 'photo.png'; // 下载文件名, the file name of downloaded photo
-    document.body.appendChild(link); // 需要添加到DOM才能触发点击
-    link.click();
-    document.body.removeChild(link);
+    // const link = document.createElement('a');
+    // link.href = imageData;
+    // link.download = 'photo.png'; // 下载文件名, the file name of downloaded photo
+    // document.body.appendChild(link); // 需要添加到DOM才能触发点击
+    // link.click();
+    // document.body.removeChild(link);
 
     onCapture(imageData); // 把图像数据传出, send image data
     onClose();

@@ -17,6 +17,7 @@ import {sendGroupPost} from "./helpers/chatHelper.tsx";
 import {useParams} from "react-router-dom";
 import {chatPageStyles} from "./chatPageStyles.ts";
 import { hasUserPostedInGroupToday } from "../GroupPage/helpers/groupHelper";
+import CameraCapture from '../GlobalPromptPage/CameraCapture.tsx';
 
 interface BottomBeforeUploadProps {
     onPostSent?: () => void;
@@ -26,6 +27,8 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
   
     const [expanded, setExpanded] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [cameraOpen, setCameraOpen] = useState(false);
     const cameraInputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -66,6 +69,24 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
       setExpanded(false);
     };
 
+    const handleUseCamera = () => {
+        console.log("用户选择：使用相机, use camera");
+        // 这里添加打开摄像头的逻辑
+        setCameraOpen(true);
+        
+    };
+
+    const handlePhotoCaptured = (imageData: string) => {
+        console.log('拍到的图片photo in base64:', imageData);
+        // 将 base64 直接设置为预览图
+        setPreview(imageData);
+        // 清空之前选择的 file（因为现在是 base64）
+        setSelectedFile(new File([], "captured.jpg")); // mock file
+        // 弹出 Dialog
+        setDialogOpen(true);
+        // TODO: 上传到服务器、展示预览等, send to backend,server...
+      };
+
     // Datei auswählen und Preview anzeigen
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -83,6 +104,9 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     // Senden bestätigen
     const handleSend = async () => {
         // early return falls groupId oder preview oder selectedFile nicht gesetzt sind
+        console.log('selectedFile:', selectedFile);
+        console.log('preview:', preview);
+        console.log('groupId:', groupId);
         if (!selectedFile || !preview || !groupId) return;
         console.log('in handle send: ');
         // setLockOpen(true);
@@ -92,7 +116,12 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
             setLockOpen(true);
         }, 600);
         const base64 = preview.split(',')[1];
-        await sendGroupPost(userId, groupId, base64);
+        try{
+         await sendGroupPost(userId, groupId, base64);
+         console.log("图片上传成功");
+        } catch (error) {
+         console.error("图片上传失败:", error);
+        }
         // callback nach dem Senden um die UI zu aktualisieren
         if (onPostSent) onPostSent();
 
@@ -153,10 +182,17 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
                     <Stack direction="row" spacing={6} justifyContent="center" alignItems="center">
                         <IconButton
                             sx={chatPageStyles.cameraInputButton}
-                            onClick={() => cameraInputRef.current?.click()}
+                            onClick={handleUseCamera}
                         >
                             <CameraAltIcon sx={{fontSize: 32}}/>
                         </IconButton>
+
+                        <CameraCapture
+                           open={cameraOpen}
+                           onClose={() => setCameraOpen(false)}
+                           onCapture={handlePhotoCaptured}
+                        />
+
                         <IconButton
                             sx={chatPageStyles.libraryInputButton}
                             onClick={() => fileInputRef.current?.click()}
@@ -258,6 +294,7 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
                 </DialogActions>
             </Dialog>
         </Paper>
+        
     );
 };
 
