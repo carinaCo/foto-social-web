@@ -122,6 +122,7 @@ export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGrou
 export const getPrompts = async (groupId: string) => {
     try {
         const projectId = 'foto-social-web';
+        console.log("Getting PROMPTS FROM GROUP:", groupId);
         const getPromptDataInstance = new GetPrompt({ projectId });
 
         const prompts = await getPromptDataInstance.execute({ groupId });

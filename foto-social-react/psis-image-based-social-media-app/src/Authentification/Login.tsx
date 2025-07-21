@@ -15,10 +15,14 @@ import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, loginUser} from "./helpers/authenticationHelper.tsx";
 import toast from "react-hot-toast";
 import {authStyles} from "./helpers/authenticationStyles.ts";
+import { useAuth} from "../context/AuthContext.tsx";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const { login } = useAuth();
+
     const navigate = useNavigate();
 
     const handleLoginUser = async (username: string, password: string) => {
@@ -26,7 +30,9 @@ const Login = () => {
             const result = await loginUser(username, password);
             if (result.success) {
                 toast.success('Login erfolgreich!');
+                login(result.userId);
                 navigate('/groups');
+                // TODO: hier user zu global gruppe hinzufügen
             } else {
                 toast.error('Login fehlgeschlagen.');
             }

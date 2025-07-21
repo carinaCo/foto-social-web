@@ -8,18 +8,29 @@ import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {useNavigate} from "react-router-dom";
 import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
+import {useAuth} from "../context/AuthContext.tsx";
+import {LogoutUser} from "../Client/use_cases/UserManagement/LogoutUser";
 
 
 const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const { userId, logout } = useAuth();
 
     const handleLogoutClick = () => {
         setOpen(true);
     };
-    const handleConfirmLogout = () => {
+    const handleConfirmLogout = async () => {
         setOpen(false);
-        navigate('/login', { replace: true });
+        const out = new LogoutUser({ projectId: 'foto-social-web' });
+        const result = await out.execute({ userId });
+        if (result.success) {
+            logout();
+            console.log('User logged out successfully');
+            navigate('/login', {replace: true});
+        } else {
+            console.error('Logout failed: ', result.message);
+        }
     };
 
     const handleCancel = () => {
