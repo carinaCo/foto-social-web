@@ -12,7 +12,6 @@ import {
     DialogContent,
     DialogActions, Button
 } from '@mui/material';
-import { useLocation, useParams, useNavigate } from "react-router-dom";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CameraCapture from './CameraCapture';
@@ -28,19 +27,12 @@ interface GlobalAppToolBarProps {
     prompt: string;
 }
 const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
-    const { userId, logout } = useAuth();
-    const navigate = useNavigate();              // 获取跳转函数
-    const location = useLocation();
-    const { id } = useParams<{ id: string }>();
-    // 从 location.state 读取传递的群组名
- // const prompttoday = location.state?.promptToday || 'undefined';
+    const { userId } = useAuth();
 
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [uploadAnchorEl, setUploadAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const [cameraOpen, setCameraOpen] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [lockOpen, setLockOpen] = useState(false);
     const [unlocking, setUnlocking] = useState(false);
@@ -48,11 +40,6 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
     const handlePhotoCaptured = (imageData: string) => {
         setPreview(imageData);
         setDialogOpen(true);
-        setSelectedFile(null); // Kein File-Objekt, da direkt aus Kamera
-    };
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
     };
 
     // Popover öffnen/schließen
@@ -63,7 +50,6 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        setSelectedFile(file);
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreview(reader.result as string);
@@ -81,7 +67,6 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
         await sendGroupPost(userId, globalGroupId, base64);
         setDialogOpen(false);
         setPreview(null);
-        setSelectedFile(null);
         setUnlocking(false);
         setLockOpen(false);
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -91,7 +76,6 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
     const handleDialogCancel = () => {
         setDialogOpen(false);
         setPreview(null);
-        setSelectedFile(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
@@ -111,7 +95,7 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({prompt}) => {
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
                     color="inherit"
-                    onClick={handleClick}
+                    onClick={() => {}}
                 >
                     <Avatar sx={{bgcolor: '#6C63FF'}}/>
                 </IconButton>

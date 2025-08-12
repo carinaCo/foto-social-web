@@ -19,6 +19,7 @@ import {chatPageStyles} from "./chatPageStyles.ts";
 import { hasUserPostedInGroupToday } from "../GroupPage/helpers/groupHelper";
 import {useAuth} from "../context/AuthContext.tsx";
 import CameraCapture from "../GlobalPromptPage/CameraCapture.tsx";
+import toast from "react-hot-toast";
 
 
 interface BottomBeforeUploadProps {
@@ -31,7 +32,6 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const cameraInputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const { id: groupId } = useParams<{ id: string; }>();
     const [lockOpen, setLockOpen] = useState(false);
@@ -75,7 +75,6 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        setSelectedFile(file);
 
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -88,15 +87,14 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     // Senden bestätigen
     const handleSend = async () => {
         // early return falls groupId oder preview oder selectedFile nicht gesetzt sind
-        if (!selectedFile || !preview || !groupId) return;
-        console.log('in handle send: ');
-        // setLockOpen(true);
+        if (!preview || !groupId) {
+            toast.error('Bruhhhh... da ist was schiefgelaufen.');
+            return;
+        }
         setUnlocking(true);
-
         setTimeout(() => {
             setLockOpen(true);
         }, 600);
-        //const userId = '06aabba6-1002-4002-9840-2127decb9eea'; // TODO: nicht mehr hardcoden
         // Base64 extrahieren (ohne Data-URL-Präfix)
         const base64 = preview.split(',')[1];
         await sendGroupPost(userId, groupId, base64);
@@ -113,7 +111,6 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
         }
         setDialogOpen(false);
         setPreview(null);
-        setSelectedFile(null);
         setExpanded(false);
         if (fileInputRef.current) fileInputRef.current.value = "";
         if (cameraInputRef.current) cameraInputRef.current.value = "";
@@ -125,7 +122,6 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const handleDialogCancel = () => {
         setDialogOpen(false);
         setPreview(null);
-        setSelectedFile(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
         if (cameraInputRef.current) cameraInputRef.current.value = "";
     };
@@ -133,7 +129,6 @@ const BottomBeforeUpload: React.FC<BottomBeforeUploadProps> = ({onPostSent}) => 
     const handlePhotoCaptured = (imageData: string) => {
         setPreview(imageData);
         setDialogOpen(true);
-        setSelectedFile(null); // Kein File-Objekt, da direkt aus Kamera
     };
 
     return (

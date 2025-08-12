@@ -51,7 +51,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
     const [prompts, setPrompts] = React.useState<PromptResult[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const { userId, logout } = useAuth(); //this is how to access the userId
+    const { userId } = useAuth(); //this is how to access the userId
 
     React.useEffect(() => {
         const fetchUserData = async () => {
