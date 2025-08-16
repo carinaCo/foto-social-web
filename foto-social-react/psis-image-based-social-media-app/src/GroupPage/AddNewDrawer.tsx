@@ -48,7 +48,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
     const fetchFriends = async () => {
         setIsLoadingFriends(true);
         try {
-            //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47';
             const friendsResult = await getFriends(userId);
             if (friendsResult?.success) {
                 const userDataList = await Promise.all(
@@ -58,6 +57,7 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
             } else {
                 setFriends([]);
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (_error) {
             setFriends([]);
             toast.error('Error fetching friends');
@@ -108,8 +108,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
 
     const handleCreateGroup = async () => {
         try {
-            // TODO: for now hardcoded founder id für name: 'neuer user 1', should be fetched before
-            //const founderId = '06aabba6-1002-4002-9840-2127decb9eea';
             const result = await createGroup(userId, groupName);
             if (result?.success) {
                 toast.success('Gruppe wurde erstellt!');
@@ -140,8 +138,6 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
                   }
                 })
               );
-
-            toast.success('Gruppe wurde erstellt und Mitglieder hinzugefügt!');
             onGroupAdded?.();
           } else {
             toast.error('Erstellen fehlgeschlagen');

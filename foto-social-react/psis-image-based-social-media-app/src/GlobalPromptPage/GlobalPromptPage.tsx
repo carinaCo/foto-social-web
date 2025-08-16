@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {
-    AppBar, Box, CssBaseline
-} from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
 import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
 import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
 import {getPrompts} from "../GroupPage/helpers/groupHelper.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
+import toast from "react-hot-toast";
 
 const globalGroupId = 'a058d8c8-9b5d-4ac7-b630-cbb0378b3368';
 
@@ -29,14 +28,13 @@ const GlobalPromptPage: React.FC = () => {
         }
     };
     const fetchPrompt = async () => {
-        setIsLoading(true);
         try {
             const prompt = await getPrompts(globalGroupId);
             setPrompt(prompt.previousDayPrompt.prompt);
-        } catch{
-            setIsLoading(false);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            toast.error('Fehler beim Laden des Prompts');
         }
-        setIsLoading(false);
     }
 
     React.useEffect(() => {
@@ -47,24 +45,12 @@ const GlobalPromptPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <AppBar>
-                <GlobalAppToolBar
-                    prompt={prompt}
-                />
-            </AppBar>
-            <Box sx={{marginLeft: '-32px',
-                marginRight: '-32px',
-                //  paddingLeft: '16px',
-                //  paddingRight: '16px',
-                width: '95vw',
-                boxSizing: 'border-box',
-            }} >
-                <ChatPageContent
-                    postData={postData}
-                    isLoading={isLoading}
-                    activeUserId={userId}
-                />
-            </Box>
+            <GlobalAppToolBar prompt={prompt} onPostSent={fetchPosts}/>
+            <ChatPageContent
+                postData={postData}
+                isLoading={isLoading}
+                activeUserId={userId}
+            />
         </>
     )
 }

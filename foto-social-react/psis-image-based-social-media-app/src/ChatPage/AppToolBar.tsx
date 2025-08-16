@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, IconButton, Box,} from '@mui/material';
+import {Toolbar, Typography, IconButton, Box, AppBar,} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
@@ -14,12 +14,27 @@ const AppToolBar: React.FC = () => {
   const promptToday = location.state?.promptToday || 'undefined';
 
     return (
-        <Toolbar   sx={{
-            width: '100vw', background: '#3B3E5C',
-            boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
-            backdropFilter: 'blur(10px) saturate(180%)',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-        }}
+        <AppBar>
+        <Toolbar
+            sx={{
+                position: 'fixed',
+                top: 10,
+                right: 0,
+                height: 64,
+                zIndex: 1100,
+                borderRadius: '24px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '95%',
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.18)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                px: 2
+            }}
         >
             <IconButton
                 size="large"
@@ -32,8 +47,12 @@ const AppToolBar: React.FC = () => {
                 <ArrowBackIcon/>
             </IconButton>
             <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
-                <Typography variant="h5" component="div" sx={{ lineHeight: 1 }}>
-                {groupName}  {/* 这里用变量显示传递过来的群组名 */}
+                <Typography variant="h5" component="div" sx={{
+                    color: 'rgba(255,255,255,0.95)',
+                    fontWeight: 600,
+                    textShadow: '0 0 6px rgba(255,255,255,0.4)'
+                }}>
+                {groupName}
                 </Typography>
                 <Typography variant="h6" component="div" sx={{ lineHeight: 1 }}>
                 {promptToday}
@@ -50,6 +69,7 @@ const AppToolBar: React.FC = () => {
             </IconButton>
 
         </Toolbar>
+        </AppBar>
     );
 };
 

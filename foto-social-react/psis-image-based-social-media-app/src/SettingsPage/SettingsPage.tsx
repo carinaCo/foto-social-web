@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    AppBar, Box, Button,
+    Box, Button,
     CssBaseline,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from "@mui/material";
@@ -41,10 +41,7 @@ const SettingsPage: React.FC = () => {
         <>
             <CssBaseline enableColorScheme />
             <ParticleLayer />
-            <AppBar>
-                <AppToolbar onAddClick={handleLogoutClick}/>
-            </AppBar>
-
+            <AppToolbar onAddClick={handleLogoutClick}/>
             <Box
                 sx={{
                     width: '100%',

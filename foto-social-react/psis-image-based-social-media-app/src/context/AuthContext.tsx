@@ -1,5 +1,5 @@
 // src/contexts/AuthContext.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 interface AuthContextType {
     userId: string | null;
@@ -37,5 +37,8 @@ export const useAuth = () => {
     if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");
     }
-    return context;
+    return {
+        ...context,
+        userId: context.userId ?? "" // damit nicht in jedem file gecheckt werden muss, ob userId null ist
+    };
 };

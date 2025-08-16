@@ -39,7 +39,6 @@ const Login = () => {
             console.log('login result: ', result);
         } catch (error) {
             toast.error('Ein unerwarteter Fehler ist aufgetreten lmao.');
-            console.error('Error in LoginUser: ', error);
             throw error;
         }
     };

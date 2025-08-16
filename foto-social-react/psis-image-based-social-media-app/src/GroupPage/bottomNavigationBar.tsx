@@ -29,33 +29,49 @@ const BottomNavigationBar: React.FC = () => {
     };
 
     return (
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0}} elevation={10}>
-                <BottomNavigation
-                    showLabels
-                    value={value}
-                    onChange={handleChange}
-                    sx={{
-                        background: '#3B3E5C',
-                        boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
-                        filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.5))',
-                        backdropFilter: 'blur(10px) saturate(180%)',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                        '& .Mui-selected': {
-                            color: '#6C63FF', // selected color
-                            filter: 'drop-shadow(0 0 4px rgba(108, 100, 225, 0.4))'
-                        },
-                        '& .MuiBottomNavigationAction-root.Mui-selected .MuiSvgIcon-root': {
-                            color: '#6C63FF', // icon color
-                            filter: 'drop-shadow(0 0 3px rgba(108, 100, 225, 0.4))',
-                        },
-                    }}
-                >
-                    <BottomNavigationAction label="Friends" icon={<ContactsIcon />} />
-                    <BottomNavigationAction label="Global" icon={<PublicIcon />} />
-                    <BottomNavigationAction label="Groups" icon={<ChatIcon />} />
-                    <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
-                </BottomNavigation>
-            </Paper>
+        <Paper
+            sx={{
+                position: 'fixed',
+                bottom: 10,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '95%',
+                borderRadius: '24px',
+                background: 'rgba(255, 255, 255, 0.12)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                zIndex: 1200
+            }}
+            elevation={0} // Shadow kommt jetzt aus boxShadow
+        >
+            <BottomNavigation
+                showLabels
+                value={value}
+                onChange={handleChange}
+                sx={{
+                    background: 'transparent',
+                    '& .Mui-selected': {
+                        color: '#ffffff',
+                        textShadow: '0 0 6px rgba(255,255,255,0.6)',
+                    },
+                    '& .MuiBottomNavigationAction-root.Mui-selected .MuiSvgIcon-root': {
+                        color: '#ffffff', //'#FF6B6B',
+                        filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.4))',
+                    },
+                    '& .MuiBottomNavigationAction-label': {
+                        fontWeight: 500
+                    }
+                }}
+            >
+                <BottomNavigationAction label="Friends" icon={<ContactsIcon />} />
+                <BottomNavigationAction label="Global" icon={<PublicIcon />} />
+                <BottomNavigationAction label="Groups" icon={<ChatIcon />} />
+                <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
+            </BottomNavigation>
+        </Paper>
+
     );
 }
 
