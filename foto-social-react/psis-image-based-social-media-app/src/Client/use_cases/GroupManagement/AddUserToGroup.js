@@ -26,7 +26,7 @@ export class AddUserToGroup {
         await httpClient.patch(userDocUrl, {
             fields: {
                 userId: { stringValue: userId },
-                role: { stringValue: 'member' }, // 你也可以传入参数控制不同角色
+                role: { stringValue: 'member' },
                 joinedAt: { timestampValue: new Date().toISOString() }
             }
           }); 

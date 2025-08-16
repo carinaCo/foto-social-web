@@ -1,4 +1,4 @@
-//TODO: Selects a prompt and returns it -->
+// Selects a prompt and returns it -->
 //checks if collection prompts exists for this group, if not --> create prompts collection
 //check if prompts collection of this group has a prompt that was created after 12pm German Time
 //If not, go to general random prompts collection and retrieve a random one
@@ -125,13 +125,12 @@ export class GetPrompt {
       for (let i = 0; i < seedSource.length; i++) {
         const char = seedSource.charCodeAt(i);
         hash = (hash << 5) - hash + char;
-        hash |= 0; // Convert to 32-bit integer
+        hash |= 0;
       }
       const index = Math.abs(hash) % HARDCODED_FALLBACK_PROMPTS.length;
       return HARDCODED_FALLBACK_PROMPTS[index];
     };
 
-    // 1️⃣ Get yesterday's prompt
     const yesterdayDoc = await queryPromptsInRange(yesterdayStart, yesterdayEnd);
     let previousDayPrompt;
     if (yesterdayDoc) {
@@ -147,7 +146,6 @@ export class GetPrompt {
       };
     }
 
-    // 2️⃣ Get today's prompt
     const todayDoc = await queryPromptsInRange(todayStart, now);
     let todayPrompt = null;
     if (todayDoc) {

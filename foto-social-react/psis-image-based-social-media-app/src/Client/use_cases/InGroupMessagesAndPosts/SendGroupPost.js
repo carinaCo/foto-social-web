@@ -8,7 +8,7 @@
      image will be private, accessible only to authenticated users via authorized requests
     */
 
-     //TODO: one user can only send 1 post/day --> could be separate usecase
+     //TODO: optional: one user can only send 1 post/day --> could be separate usecase
 
      import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicationHelper.js';
      import { HttpClient } from '../../../utils/httpClient.js';
