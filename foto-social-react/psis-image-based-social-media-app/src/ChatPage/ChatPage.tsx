@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    AppBar, Box, CssBaseline
+    CssBaseline
 } from "@mui/material";
 import AppToolBar from "./AppToolBar.tsx";
 import BottomBeforeUpload from "./BottomBeforeUpload.tsx";
@@ -13,8 +13,6 @@ import toast from "react-hot-toast";
 const ChatPage: React.FC = () => {
     const { id: groupId } = useParams<{ id: string; }>();
     const { userId } = useAuth();
-    //const activeUserId = '06aabba6-1002-4002-9840-2127decb9eea';
-
     const [postData, setPostData] = React.useState<
         { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[]
     >([]);
@@ -27,7 +25,6 @@ const ChatPage: React.FC = () => {
                 const posts = await fetchPostsWithUsernames(groupId, userId);
                 setPostData(posts);
             } else {
-                console.error('Group ID is not defined');
                 toast.error('Group ID is not defined');
                 setPostData([]);
             }
@@ -45,26 +42,13 @@ const ChatPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-                    <AppBar>
-                        <AppToolBar/>
-                    </AppBar>
-            
-                    <Box sx={{marginLeft: '-32px',
-                             marginRight: '-32px',
-                            //  paddingLeft: '16px',
-                            //  paddingRight: '16px',
-                                width: '95vw',
-                             boxSizing: 'border-box',
-                             }} >
-                        <ChatPageContent
-                            postData={postData}
-                            isLoading={isLoading}
-                            activeUserId={userId}
-                        />
-            </Box>
-
+            <AppToolBar/>
+            <ChatPageContent
+                postData={postData}
+                isLoading={isLoading}
+                activeUserId={userId}
+            />
             <BottomBeforeUpload onPostSent={fetchPosts} />
-
         </>
     )
 }

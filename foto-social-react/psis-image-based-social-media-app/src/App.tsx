@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate } from 'react-router-dom';
 import './App.css'
 import GroupsPage from "./GroupPage/groupsPage.tsx";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {Box, createTheme, ThemeProvider} from "@mui/material";
 import BottomNavigationBar from "./GroupPage/bottomNavigationBar.tsx";
 import Login from "./Authentification/Login.tsx"
 import Register from "./Authentification/Register.tsx"

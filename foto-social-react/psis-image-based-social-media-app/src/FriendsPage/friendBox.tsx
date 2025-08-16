@@ -25,31 +25,35 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
     return (
         <>
             <Box>
-                <Grid container rowSpacing={1} columnSpacing={1}>
+                <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '64px', paddingBottom: '64px', mx: -4}}>
                     {friends.map((friend) => (
                             <Grid
                                 key={friend.username + friend.userId}
-                                size={{
-                                    xs: 12,
-                                    sm: 6,
-                                    md: 4,
-                                    lg: 6
-                            }}
+                                size={{ xs: 12, md: 6, lg: 6 }}
                                 onClick={() => handleItemClick(friend.userId)}
                                 sx={{
-                                    backdropFilter: 'blur(12px) saturate(180%)',
-                                    background: 'rgba(255,255,255,0.1)',
-                                    borderRadius: 4,
-                                    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)',
-                                    border: '1px solid rgba(255,255,255,0.18)',
-                                    p: 2,
+                                    backdropFilter: 'blur(10px) saturate(180%)',
+                                    background: 'rgba(255, 255, 255, 0.05)',
+                                    borderRadius: {
+                                        xs: 0,
+                                        md: '12px'
+                                    },
+                                    borderBottom: {
+                                        xs: '1px solid rgba(255, 255, 255, 0.1)',
+                                        md: 'none'
+                                    },
+                                    border: {
+                                        xs: 'none',
+                                        md: '1px solid rgba(255, 255, 255, 0.1)'
+                                    },
+                                    p: 3,
                                     pt: 3,
-                                    pb: 3,
+                                    pb: 6,
                                     transition: '0.3s',
                                     '&:hover': {
-                                        background: 'rgba(180, 100, 255, 0.18)',
-                                        boxShadow: '0 12px 32px 0 rgba(31, 38, 135, 0.28)',
-                                        transform: 'scale(1.03)'
+                                        filter: 'brightness(1.2)',
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
+                                        transform: {xs: 'scaleY(1.01)', md: 'scale(1.01)'}
                                     }
                                 }}
                             >
@@ -64,7 +68,6 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
                                     border: '1px solid white'
                                 }}/>
                                 <Box display="flex" alignItems="center" gap={2} mb={1}>
-                                    {/*<Avatar color="primary" />*/}
                                     <Typography variant="h6" sx={{ justifyContent: 'center' }}>
                                         {friend.username}
                                     </Typography>

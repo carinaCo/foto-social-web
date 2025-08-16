@@ -22,8 +22,7 @@ const ChatPageWithImage: React.FC = () => {
                         <AppBarOnlyBack/>
                     </AppBar>
             
-                    <Box sx={{marginLeft: '-32px',
-                             marginRight: '-32px',
+                    <Box sx={{
                             //  paddingLeft: '16px',
                             //  paddingRight: '16px',
                              boxSizing: 'border-box',

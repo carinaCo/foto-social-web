@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-    AppBar, Box, CssBaseline
-} from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import GlobalAppToolBar from "./GlobalAppToolBar.tsx";
 import ChatPageContent from "../ChatPage/ChatPageContent.tsx";
 import { fetchPostsWithUsernames} from "../ChatPage/helpers/chatHelper.tsx";
@@ -47,24 +45,12 @@ const GlobalPromptPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <AppBar>
-                <GlobalAppToolBar
-                    prompt={prompt}
-                />
-            </AppBar>
-            <Box sx={{marginLeft: '-32px',
-                marginRight: '-32px',
-                //  paddingLeft: '16px',
-                //  paddingRight: '16px',
-                width: '95vw',
-                boxSizing: 'border-box',
-            }} >
-                <ChatPageContent
-                    postData={postData}
-                    isLoading={isLoading}
-                    activeUserId={userId}
-                />
-            </Box>
+            <GlobalAppToolBar prompt={prompt} onPostSent={fetchPosts}/>
+            <ChatPageContent
+                postData={postData}
+                isLoading={isLoading}
+                activeUserId={userId}
+            />
         </>
     )
 }

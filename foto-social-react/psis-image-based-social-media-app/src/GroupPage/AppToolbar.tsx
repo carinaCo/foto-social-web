@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, IconButton, Avatar, Box, Alert, Snackbar} from '@mui/material';
+import {Toolbar, Typography, IconButton, Avatar, Box, Alert, Snackbar, AppBar} from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import UserInfoPopover from "./UserInfoPopper.tsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -13,6 +13,7 @@ interface AppToolbarProps {
 
 const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
     const location = useLocation();
+    const { userId } = useAuth();
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -49,20 +50,30 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
         }
     };
 
-    // TODO atm noch hardcoded
-    // const userId = "0a60fb39-d985-4543-8b3f-69aa79eb3839";
-    //const userId = "06aabba6-1002-4002-9840-2127decb9eea";
-    //const userId = "092ce280-8d97-45bc-a1a9-cedf9a95ff47";
-    const { userId, logout } = useAuth();
-
     return (
             <>
-                <Toolbar sx={{
-                    width: '100vw', background: '#3B3E5C',
-                    boxShadow: '0 4px 12px rgba(163, 144, 238, 0.2)',
-                    backdropFilter: 'blur(10px) saturate(180%)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-                }}>
+                <AppBar>
+                <Toolbar
+                    sx={{
+                        position: 'fixed',
+                        top: 10,
+                        right: 0,
+                        height: 64,
+                        zIndex: 1100,
+                        borderRadius: '24px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '95%',
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        backdropFilter: 'blur(20px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.18)',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        px: 2
+                    }}
+                >
                     <IconButton
                         size="large"
                         aria-label="account-icon"
@@ -70,19 +81,39 @@ const AppToolbar: React.FC<AppToolbarProps> = ({ onAddClick }) => {
                         aria-haspopup="true"
                         color="inherit"
                         onClick={handleClick}
+                        sx={{
+                            borderRadius: '50%',
+                            p: 0.5,
+                            '&:hover': {
+                                background: 'rgba(255,255,255,0.15)'
+                            }
+                        }}
                     >
-                        <Avatar sx={{bgcolor: '#6C63FF'}}/>
+                        <Avatar sx={{
+                            bgcolor: '#6C63FF',
+                            boxShadow: '0 0 10px rgba(108,99,255,0.5)'
+                        }}/>
                     </IconButton>
-                    <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
-                        <Typography variant="h5" component="div" sx={{color: 'rgba(255,255,255,0.9)'}}>
+
+                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+                        <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{
+                                color: 'rgba(255,255,255,0.95)',
+                                fontWeight: 600,
+                                textShadow: '0 0 6px rgba(255,255,255,0.4)'
+                            }}
+                        >
                             {getTitle()}
                         </Typography>
                     </Box>
 
                     {renderAppToolBarIconButton(location.pathname, onAddClick)}
-
                 </Toolbar>
-                    <UserInfoPopover
+                </AppBar>
+
+                <UserInfoPopover
                         open={Boolean(anchorEl)}
                         anchorEl={anchorEl}
                         userId={userId}
