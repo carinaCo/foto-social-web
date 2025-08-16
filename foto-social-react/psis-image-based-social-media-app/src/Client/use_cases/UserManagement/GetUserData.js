@@ -12,8 +12,6 @@ export class GetUserData {
     this.projectId = projectId;
   }
 
-  //TODO: see how to get user data when login performed
-
   async getUserGroups({ userId, firestoreHelper, httpClient }) {
     const groupsUrl = firestoreHelper.getGroupsUrl();
     const groupsResponse = await httpClient.listDocuments(groupsUrl);

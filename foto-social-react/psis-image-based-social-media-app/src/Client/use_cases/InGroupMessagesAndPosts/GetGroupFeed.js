@@ -5,8 +5,7 @@ import { FirestoreCommunicationHelper } from '../../../utils/firestoreCommunicat
 import { HttpClient } from '../../../utils/httpClient.js';
 import { getFirestoreAccessToken } from '../../../utils/getFirestoreAccessToken.js';
 
-//TODO: Repurpose to Global Feed
-//TODO: look at error?!
+//TODO: optional: Repurpose to Global Feed
 
 export class GetGroupFeed {
   constructor({ projectId }) {

@@ -504,7 +504,7 @@ const testSendGroupPost = async () => {
 
 //functionality
 //testLoginUser();
-testLogoutUser();
+//testLogoutUser();
 //testFindMatchingUsers();
 //testSendGroupInvite();
 //testSendGroupInvites(); //TODO: works but test again once more data!
