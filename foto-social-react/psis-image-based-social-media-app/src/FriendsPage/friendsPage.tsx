@@ -114,10 +114,12 @@ const FriendsPage: React.FC = () => {
             {/* Content-Bereich */}
             <Box>
                 {isLoading ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2, mt: 8 }}>
-                        Assembling the homies, give me a sec...
-                        <CircularProgress />
-                    </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
+                                Assembling the homies, give me a sec...
+                                <CircularProgress />
+                            </Box>
+                        </Box>
                 ) : (
                     !friends || friends.length === 0 ? (
                         <EmptyContentPlaceholder message={emptyContentMessage} />

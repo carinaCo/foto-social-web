@@ -126,16 +126,6 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
         }
     };
 
-    const [appBarWidth, setAppBarWidth] = useState<number | undefined>(undefined);
-
-    // leider ist das layout bei einem single entry komisch und nicht breit genug, deswegen hier der workaround
-    React.useEffect(() => {
-        const appBar = document.querySelector('.MuiAppBar-root');
-        if (appBar) {
-            setAppBarWidth(appBar.clientWidth);
-        }
-    }, []);
-
     if (isLoading) {
         return <LoadingPlaceholder message={'Chill bro, im loading atm...'} />;
     }
@@ -147,12 +137,13 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
             {!groups || groups.length === 0 ? (
                 <EmptyContentPlaceholder message={emptyContentMessage}/>
             ) : (
-                        <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '64px', paddingBottom: '64px', mx: -4, width: isSingleItem ? appBarWidth : 'auto' }}>
+                <Box>
+                        <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '64px', mx: -4 }} justifyContent={isSingleItem ? 'center' : 'flex-start'}>
                             {groups
                                 .filter(element => element.groupId !== 'a058d8c8-9b5d-4ac7-b630-cbb0378b3368')
                                 .map((element, index) => (
                                     <Grid
-                                        size={isSingleItem ? 12 :{ xs: 12, md: 6, lg: 6 }}
+                                        size={{ xs: 12, sm: 12, md: 6, lg: 6 }}
                                         key={element.groupId || index}
                                         sx={styles.gridItem}
                                     >
@@ -232,6 +223,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                     </Grid>
                                 ))}
                         </Grid>
+                </Box>
             )}
         </>
     );

@@ -54,6 +54,9 @@ const SettingsPage: React.FC = () => {
                 <SettingsIcon
                     sx={{
                         position: 'absolute',
+                        bottom: '50%', // Abstand von unten, z.B. 32px
+                        left: '50%',
+                        transform: 'translateX(-50%)',
                         filter: 'drop-shadow(0 0 30px rgba(140, 100, 225, 0.9))',
                         fontSize: { xs: 150, sm: 200, md: 300 },
                         color: 'rgba(108, 99, 255, 0.27)',

@@ -44,7 +44,7 @@ const Register = () => {
     };
 
     return (
-        <>
+        <Box sx={{ pt: '80px' }}>
             <ParticleLayer />
             <Container maxWidth="xs">
                 <CssBaseline />
@@ -112,7 +112,7 @@ const Register = () => {
                     </Box>
                 </Box>
             </Container>
-        </>
+        </Box>
     );
 };
 

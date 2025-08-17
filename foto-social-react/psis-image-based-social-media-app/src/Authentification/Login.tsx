@@ -44,7 +44,7 @@ const Login = () => {
     };
 
     return (
-        <>
+        <Box sx={{pt: '80px'}}>
             <ParticleLayer />
             <Container maxWidth="xs">
                 <CssBaseline />
@@ -96,7 +96,6 @@ const Login = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={ async () => {
-                                // await handleLoginUser('0a60fb39-d985-4543-8b3f-69aa79eb3839')
                                 await handleLoginUser(username, password);
                             }}
                             disabled={isRegisterOrLoginDisabled(username, password)}
@@ -111,7 +110,7 @@ const Login = () => {
                     </Box>
                 </Box>
             </Container>
-        </>
+        </Box>
     );
 };
 
