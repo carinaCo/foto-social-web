@@ -27,16 +27,33 @@ export class GetGroupPosts {
     const postsCollectionUrl = firestoreHelper.getGroupPostsUrl(groupId);
     const postsResponse = await httpClient.listDocuments(postsCollectionUrl);
 
-    const posts = postsResponse.documents.map(doc => {
-      const fields = doc.fields;
-      return {
-        postId: fields.postId?.stringValue || null,
-        userId: fields.userId?.stringValue || null
-      };
-    }).filter(post => post.postId);
-    
+      const today = new Date();
+      const todayUTCYear = today.getUTCFullYear();
+      const todayUTCMonth = today.getUTCMonth();
+      const todayUTCDate = today.getUTCDate();
 
-    return {
+
+      const posts = postsResponse.documents
+          .map(doc => {
+            const fields = doc.fields;
+            return {
+                postId: fields.postId?.stringValue || null,
+                userId: fields.userId?.stringValue || null,
+                time: fields.createdAt?.timestampValue || null
+            };
+          })
+          .filter(post => post.postId)
+          .filter(post => {
+              if (!post.time) return false;
+              const createdAt = new Date(post.time);
+              return (
+                  createdAt.getUTCFullYear() === todayUTCYear &&
+                  createdAt.getUTCMonth() === todayUTCMonth &&
+                  createdAt.getUTCDate() === todayUTCDate
+              );
+          });
+
+      return {
       groupId,
       posts
     };
