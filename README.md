@@ -1,6 +1,21 @@
 # FotoSocialWeb
 Social Media Web App
 
+# Prerequisites
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (version 16+ recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+
+# Installation
+Clone the repository and navigate to foto-social-web/foto-social-react/psis-image-based-social-media-app
+run npm install
+
+# Run the app
+execute "npm start" from the directory foto-social-web/foto-social-react/psis-image-based-social-media-app
+
+
+
 # Group Contribution Statement
 
 **Project Title:** Lock.Pic  
