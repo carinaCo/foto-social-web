@@ -156,7 +156,8 @@ const AddNewDrawer: React.FC<AddNewDrawerProps> = ({ open, onClose, onFriendAdde
             // const activeUserId = '0a60fb39-d985-4543-8b3f-69aa79eb3839'; // TODO: get active user id
             //const activeUserId = '092ce280-8d97-45bc-a1a9-cedf9a95ff47'; // TODO: get active user id
             const result = await addFriend(userId, userToAddId);
-            if (result?.success) {
+            const tluser = await addFriend(userToAddId, userId)
+            if (result?.success && tluser.success) {
                 toast.success('Der Bre wurde geadded!');
                 onFriendAdded?.();
             } else {
