@@ -15,7 +15,6 @@ import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
 import {getFriends} from "./helpers/friendHelper.ts";
 import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import {useAuth} from "../context/AuthContext.tsx";
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
@@ -93,7 +92,6 @@ const FriendsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <ParticleLayer />
                 <AppToolbar onAddClick={toggleDrawer(true)} />
                 {/*{pendingCount > 0 && (*/}
                 {/*    <Box>*/}

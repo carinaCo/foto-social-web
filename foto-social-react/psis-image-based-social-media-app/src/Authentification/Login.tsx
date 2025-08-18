@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, loginUser} from "./helpers/authenticationHelper.tsx";
 import toast from "react-hot-toast";
 import {authStyles} from "./helpers/authenticationStyles.ts";
@@ -45,7 +44,6 @@ const Login = () => {
 
     return (
         <Box sx={{pt: '80px'}}>
-            <ParticleLayer />
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box

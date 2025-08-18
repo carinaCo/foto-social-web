@@ -7,7 +7,6 @@ import {
 import AppToolbar from "../GroupPage/AppToolbar.tsx";
 import PaletteIcon from '@mui/icons-material/Palette';
 import {useNavigate} from "react-router-dom";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
 import {LogoutUser} from "../Client/use_cases/UserManagement/LogoutUser";
 import {useColorMode} from "../context/ThemeContext.tsx";
@@ -48,7 +47,6 @@ const SettingsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <ParticleLayer />
             <AppToolbar onAddClick={handleLogoutClick}/>
             <Box sx={{ mt: 10, textAlign: "center" }}>
                 <PaletteIcon

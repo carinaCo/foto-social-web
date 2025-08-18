@@ -12,6 +12,8 @@ import { useLocation } from 'react-router-dom';
 import ChatPageWithImage from "./ChatPage/ChatPageWithImage.tsx";
 import {Toaster} from "react-hot-toast";
 import { CustomThemeProvider } from "./context/ThemeContext";
+import ParticleLayer from "./GroupPage/ParticleLayer.tsx";
+import * as React from "react";
 
 const App = () => {
   const location = useLocation();
@@ -30,6 +32,7 @@ const App = () => {
   return (
     <>
       <CustomThemeProvider>
+          <ParticleLayer />
           <Toaster position="top-center" />
         <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />

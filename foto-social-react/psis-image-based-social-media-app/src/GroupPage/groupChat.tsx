@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { getGroupData, getUserData, isCurrentPrompter, getPrompts, setPrompt } from "./helpers/groupHelper.tsx";
 import type { PromptResult } from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type { GroupData } from "../Client/use_cases/GroupManagement/GetGroup";
-import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
 import toast from "react-hot-toast";
@@ -133,7 +132,6 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
     return (
         <>
-            <ParticleLayer />
             {!groups || groups.length === 0 ? (
                 <EmptyContentPlaceholder message={emptyContentMessage}/>
             ) : (
