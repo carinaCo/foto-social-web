@@ -9,13 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { getGroupData, getUserData, isCurrentPrompter, getPrompts, setPrompt } from "./helpers/groupHelper.tsx";
 import type { PromptResult } from "../Client/use_cases/PromptGeneration/GetPrompt";
 import type { GroupData } from "../Client/use_cases/GroupManagement/GetGroup";
-import ParticleLayer from "./ParticleLayer.tsx";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
 import toast from "react-hot-toast";
 import CheckIcon from '@mui/icons-material/Check';
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
-import {useState} from "react";
 
 const styles = {
     gridItem: {
@@ -60,6 +58,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
     const { userId } = useAuth();
     const navigate = useNavigate();
+    console.log('die group data: ', groups);
 
     const emptyContentMessage =
         <>
@@ -126,16 +125,6 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
         }
     };
 
-    const [appBarWidth, setAppBarWidth] = useState<number | undefined>(undefined);
-
-    // leider ist das layout bei einem single entry komisch und nicht breit genug, deswegen hier der workaround
-    React.useEffect(() => {
-        const appBar = document.querySelector('.MuiAppBar-root');
-        if (appBar) {
-            setAppBarWidth(appBar.clientWidth);
-        }
-    }, []);
-
     if (isLoading) {
         return <LoadingPlaceholder message={'Chill bro, im loading atm...'} />;
     }
@@ -143,16 +132,16 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
     return (
         <>
-            <ParticleLayer />
             {!groups || groups.length === 0 ? (
                 <EmptyContentPlaceholder message={emptyContentMessage}/>
             ) : (
-                        <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '64px', paddingBottom: '64px', mx: -4, width: isSingleItem ? appBarWidth : 'auto' }}>
+                <Box>
+                        <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '64px', mx: -4 }} justifyContent={isSingleItem ? 'center' : 'flex-start'}>
                             {groups
                                 .filter(element => element.groupId !== 'a058d8c8-9b5d-4ac7-b630-cbb0378b3368')
                                 .map((element, index) => (
                                     <Grid
-                                        size={isSingleItem ? 12 :{ xs: 12, md: 6, lg: 6 }}
+                                        size={{ xs: 12, sm: 12, md: 6, lg: 6 }}
                                         key={element.groupId || index}
                                         sx={styles.gridItem}
                                     >
@@ -163,7 +152,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                             gap={2}
                                         >
                                             <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                                <Box sx={{ textAlign: "center", fontWeight: "bold" }}>
+                                                <Box sx={{ textAlign: "center", fontWeight: "bold", textShadow: '0 0 6px rgba(255,255,255,0.4)' }}>
                                                     {element.name}
                                                 </Box>
                                                 <Avatar
@@ -232,6 +221,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                     </Grid>
                                 ))}
                         </Grid>
+                </Box>
             )}
         </>
     );

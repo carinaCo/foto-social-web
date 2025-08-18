@@ -15,7 +15,6 @@ import AddNewDrawer from "../GroupPage/AddNewDrawer.tsx";
 import {getFriends} from "./helpers/friendHelper.ts";
 import {getUserData} from "../GroupPage/helpers/groupHelper.tsx";
 import type {UserDataResult} from "../Client/use_cases/UserManagement/GetUserData";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import {useAuth} from "../context/AuthContext.tsx";
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
@@ -93,7 +92,6 @@ const FriendsPage: React.FC = () => {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <ParticleLayer />
                 <AppToolbar onAddClick={toggleDrawer(true)} />
                 {/*{pendingCount > 0 && (*/}
                 {/*    <Box>*/}
@@ -114,10 +112,12 @@ const FriendsPage: React.FC = () => {
             {/* Content-Bereich */}
             <Box>
                 {isLoading ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2, mt: 8 }}>
-                        Assembling the homies, give me a sec...
-                        <CircularProgress />
-                    </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
+                                Assembling the homies, give me a sec...
+                                <CircularProgress />
+                            </Box>
+                        </Box>
                 ) : (
                     !friends || friends.length === 0 ? (
                         <EmptyContentPlaceholder message={emptyContentMessage} />

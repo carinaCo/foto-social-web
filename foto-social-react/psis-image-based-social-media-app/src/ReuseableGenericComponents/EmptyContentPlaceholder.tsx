@@ -11,8 +11,10 @@ interface EmptyContentPlaceholderProps {
  */
 const EmptyContentPlaceholder: React.FC<EmptyContentPlaceholderProps> = ({ message }) => {
     return (
-        <Box>
-            {message}
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2 }}>
+                {message}
+            </Box>
         </Box>
     )
 }

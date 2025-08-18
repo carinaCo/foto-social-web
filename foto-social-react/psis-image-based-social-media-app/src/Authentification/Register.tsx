@@ -11,7 +11,6 @@ import {
 import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, registerUser} from "./helpers/authenticationHelper.tsx";
 import toast from 'react-hot-toast';
 import {authStyles} from "./helpers/authenticationStyles.ts";
@@ -44,8 +43,7 @@ const Register = () => {
     };
 
     return (
-        <>
-            <ParticleLayer />
+        <Box sx={{ pt: '80px' }}>
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -112,7 +110,7 @@ const Register = () => {
                     </Box>
                 </Box>
             </Container>
-        </>
+        </Box>
     );
 };
 

@@ -34,6 +34,7 @@ const ChatPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+    const hasSentPost = postData.some(post => post.userId === userId);
 
     React.useEffect(() => {
         void fetchPosts();
@@ -47,6 +48,7 @@ const ChatPage: React.FC = () => {
                 postData={postData}
                 isLoading={isLoading}
                 activeUserId={userId}
+                hasSentPost={hasSentPost}
             />
             <BottomBeforeUpload onPostSent={fetchPosts} />
         </>

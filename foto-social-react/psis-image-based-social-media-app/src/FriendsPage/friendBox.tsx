@@ -22,10 +22,12 @@ const FriendBox: React.FC<friendsBoxProps> = ({ friends }) => {
         });
     };
 
+    const isSingleItem = friends && friends.length === 1;
+
     return (
         <>
             <Box>
-                <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '64px', paddingBottom: '64px', mx: -4}}>
+                <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '64px', mx: -4}} justifyContent={isSingleItem ? 'center' : 'flex-start'}>
                     {friends.map((friend) => (
                             <Grid
                                 key={friend.username + friend.userId}

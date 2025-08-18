@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Typography from '@mui/material/Typography';
 import LockIcon from '@mui/icons-material/Lock';
 import {
     Avatar, Box,
-    Dialog, IconButton,
-    Grid
+    Dialog, IconButton
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import LoadingPlaceholder from "../ReuseableGenericComponents/LoadingPlaceholder.tsx";
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,6 +14,7 @@ interface ChatPageContentProps {
     postData: { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[];
     isLoading: boolean;
     activeUserId: string | null;
+    hasSentPost?: boolean;
 }
 
 const styles = {
@@ -39,8 +40,8 @@ const styles = {
     imageContainer: {
         position: 'relative',
         width: '100%',
-        height: '180px',
         borderRadius: 3,
+        // height: isSingleItem ? '180px' : null,
         overflow: 'visible',
         boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)',
         background: 'rgba(255,255,255,0.12)',
@@ -49,11 +50,9 @@ const styles = {
     }
 };
 
-const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId }) => {
+const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId, hasSentPost = true }) => {
     const [open, setOpen] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
-
-    const hasSentPost = postData.some(post => post.userId === activeUserId);
 
     const handleImageClick = (imgUrl: string) => {
         setSelectedImage(imgUrl);
@@ -65,35 +64,24 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
         setSelectedImage(null);
     };
 
-    const [appBarWidth, setAppBarWidth] = useState<number | undefined>(undefined);
-
-    // leider ist das layout bei einem single entry komisch und nicht breit genug, deswegen hier der workaround
-    React.useEffect(() => {
-        const appBar = document.querySelector('.MuiAppBar-root');
-        if (appBar) {
-            setAppBarWidth(appBar.clientWidth);
-        }
-    }, []);
-    const isSingleItem = postData && postData.length === 1;
-
     if (isLoading) {
         return <LoadingPlaceholder message={'Getting the posts beep boop...'} />;
     }
 
     return (
-        <>
+        <Box>
             {!postData || postData.length === 0 ? (
                 <EmptyContentPlaceholder message={'Be the first to post something!'} />
             ) : (
                 <Box>
-                    <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '72px', paddingBottom: '72px', mx: -4, width: isSingleItem ? appBarWidth : 'auto'}}>
+                    <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '72px', mx: -4}} justifyContent={'center'}>
                         {postData.map((element, index) => (
                             <Grid
-                                size={isSingleItem ? 12 : { xs: 12, md: 6, lg: 6 }}
+                                size={{xs: 12, md: 6, lg: 6}}
                                 key={index}
                                 sx={styles.gridItem}
                             >
-                                <Box sx={styles.imageContainer}>
+                                <Box sx={{...styles.imageContainer, height: '200px', display: 'flex'}}>
                                     <Typography
                                         fontWeight="bold"
                                         sx={{
@@ -106,7 +94,8 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
                                             py: 0.5,
                                             borderRadius: 2,
                                             boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-                                            zIndex: 2
+                                            zIndex: 2,
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
                                         }}
                                     >
                                         {element.username}
@@ -122,7 +111,8 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
                                             height: 56,
                                             bgcolor: activeUserId === element.userId ? '#FF6B6B' : '#5A54D1',
                                             zIndex: 2,
-                                            boxShadow: '0 2px 8px rgba(0,0,0,0.18)'
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
                                         }}
                                     >
                                         {element.username?.charAt(0) ?? 'T'}
@@ -220,7 +210,7 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
                     )}
                 </Box>
             </Dialog>
-        </>
+        </Box>
     );
 };
 

@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import ParticleLayer from "../GroupPage/ParticleLayer.tsx";
 import {isRegisterOrLoginDisabled, loginUser} from "./helpers/authenticationHelper.tsx";
 import toast from "react-hot-toast";
 import {authStyles} from "./helpers/authenticationStyles.ts";
@@ -44,8 +43,7 @@ const Login = () => {
     };
 
     return (
-        <>
-            <ParticleLayer />
+        <Box sx={{pt: '80px'}}>
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -96,7 +94,6 @@ const Login = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={ async () => {
-                                // await handleLoginUser('0a60fb39-d985-4543-8b3f-69aa79eb3839')
                                 await handleLoginUser(username, password);
                             }}
                             disabled={isRegisterOrLoginDisabled(username, password)}
@@ -111,7 +108,7 @@ const Login = () => {
                     </Box>
                 </Box>
             </Container>
-        </>
+        </Box>
     );
 };
 
