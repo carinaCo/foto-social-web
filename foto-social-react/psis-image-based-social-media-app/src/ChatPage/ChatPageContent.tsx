@@ -14,6 +14,7 @@ interface ChatPageContentProps {
     postData: { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[];
     isLoading: boolean;
     activeUserId: string | null;
+    hasSentPost: boolean;
 }
 
 const styles = {
@@ -49,11 +50,9 @@ const styles = {
     }
 };
 
-const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId }) => {
+const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId, hasSentPost }) => {
     const [open, setOpen] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
-
-    const hasSentPost = postData.some(post => post.userId === activeUserId);
 
     const handleImageClick = (imgUrl: string) => {
         setSelectedImage(imgUrl);
