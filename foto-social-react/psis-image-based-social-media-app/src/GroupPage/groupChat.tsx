@@ -15,7 +15,6 @@ import { useAuth } from "../context/AuthContext.tsx";
 import toast from "react-hot-toast";
 import CheckIcon from '@mui/icons-material/Check';
 import EmptyContentPlaceholder from "../ReuseableGenericComponents/EmptyContentPlaceholder.tsx";
-import {useState} from "react";
 
 const styles = {
     gridItem: {
@@ -60,6 +59,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
 
     const { userId } = useAuth();
     const navigate = useNavigate();
+    console.log('die group data: ', groups);
 
     const emptyContentMessage =
         <>
@@ -154,7 +154,7 @@ const GroupChat: React.FC<GroupChatProps> = ({ groupsChanged }) => {
                                             gap={2}
                                         >
                                             <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                                <Box sx={{ textAlign: "center", fontWeight: "bold" }}>
+                                                <Box sx={{ textAlign: "center", fontWeight: "bold", textShadow: '0 0 6px rgba(255,255,255,0.4)' }}>
                                                     {element.name}
                                                 </Box>
                                                 <Avatar

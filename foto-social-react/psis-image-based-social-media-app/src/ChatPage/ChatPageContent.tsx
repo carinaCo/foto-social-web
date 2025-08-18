@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Typography from '@mui/material/Typography';
 import LockIcon from '@mui/icons-material/Lock';
 import {
@@ -14,7 +14,7 @@ interface ChatPageContentProps {
     postData: { username: string | null; userId?: string | null | undefined; imageReference?: string | null | undefined; }[];
     isLoading: boolean;
     activeUserId: string | null;
-    hasSentPost: boolean;
+    hasSentPost?: boolean;
 }
 
 const styles = {
@@ -50,7 +50,7 @@ const styles = {
     }
 };
 
-const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId, hasSentPost }) => {
+const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, activeUserId, hasSentPost = true }) => {
     const [open, setOpen] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
@@ -64,26 +64,24 @@ const ChatPageContent: React.FC<ChatPageContentProps> = ({ postData, isLoading, 
         setSelectedImage(null);
     };
 
-    const isSingleItem = postData && postData.length === 1;
-
     if (isLoading) {
         return <LoadingPlaceholder message={'Getting the posts beep boop...'} />;
     }
-    // justifyContent={isSingleItem ? 'center' : 'flex-start'}
+
     return (
         <Box>
             {!postData || postData.length === 0 ? (
                 <EmptyContentPlaceholder message={'Be the first to post something!'} />
             ) : (
                 <Box>
-                    <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '72px', mx: -4}} justifyContent={isSingleItem ? 'center' : 'flex-start'}>
+                    <Grid container spacing={{xs: 0, md: 2}} sx={{ pt: '80px', paddingBottom: '72px', mx: -4}} justifyContent={'center'}>
                         {postData.map((element, index) => (
                             <Grid
                                 size={{xs: 12, md: 6, lg: 6}}
                                 key={index}
                                 sx={styles.gridItem}
                             >
-                                <Box sx={{...styles.imageContainer, height: !isSingleItem ? '200px' : null, display: 'flex'}}>
+                                <Box sx={{...styles.imageContainer, height: '200px', display: 'flex'}}>
                                     <Typography
                                         fontWeight="bold"
                                         sx={{

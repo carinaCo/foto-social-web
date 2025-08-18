@@ -50,7 +50,6 @@ const GlobalPromptPage: React.FC = () => {
                 postData={postData}
                 isLoading={isLoading}
                 activeUserId={userId}
-                hasSentPost={true}
             />
         </>
     )

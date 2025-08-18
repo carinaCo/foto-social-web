@@ -1,7 +1,6 @@
 import {Route, Routes, Navigate } from 'react-router-dom';
 import './App.css'
 import GroupsPage from "./GroupPage/groupsPage.tsx";
-import {Box, createTheme, ThemeProvider} from "@mui/material";
 import BottomNavigationBar from "./GroupPage/bottomNavigationBar.tsx";
 import Login from "./Authentification/Login.tsx"
 import Register from "./Authentification/Register.tsx"
@@ -12,20 +11,7 @@ import FriendsPage from "./FriendsPage/friendsPage.tsx";
 import { useLocation } from 'react-router-dom';
 import ChatPageWithImage from "./ChatPage/ChatPageWithImage.tsx";
 import {Toaster} from "react-hot-toast";
-
-const darkTheme = createTheme({
-  
-  palette: {
-    mode: 'dark',
-      background: {
-        default: '#3B3E5C'
-      }
-  },
-});
-
-
-  
-
+import { CustomThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
   const location = useLocation();
@@ -43,7 +29,7 @@ const App = () => {
   };
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
+      <CustomThemeProvider>
           <Toaster position="top-center" />
         <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
@@ -61,7 +47,7 @@ const App = () => {
           {isNavBarVisible() ? (
         <BottomNavigationBar  />
           ) : <></>}
-    </ThemeProvider>
+    </CustomThemeProvider>
     </>
   )
 }

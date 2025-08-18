@@ -24,6 +24,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import UserInfoPopover from "../GroupPage/UserInfoPopper.tsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import KeyOffIcon from "@mui/icons-material/KeyOff";
 
 const globalGroupId = 'a058d8c8-9b5d-4ac7-b630-cbb0378b3368';
 
@@ -225,10 +226,25 @@ const GlobalAppToolBar: React.FC<GlobalAppToolBarProps> = ({ prompt, onPostSent 
                     {preview && <img src={preview} alt="Preview" style={chatPageStyles.previewImage} />}
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
-                    <Button onClick={handleDialogCancel} variant="contained" sx={chatPageStyles.dialogActionsCancelButton}>
+                    <Button onClick={handleDialogCancel}
+                            variant="contained"
+                            endIcon={
+                        <Icon sx={{ color: '#ffffff', display: 'flex', alignItems: 'center' }}>
+                            <KeyOffIcon />
+                        </Icon>
+                    }
+                            sx={chatPageStyles.dialogActionsCancelButton}>
                         Abbrechen
                     </Button>
-                    <Button onClick={handleSend} variant="contained" sx={chatPageStyles.dialogActionsSendButton}>
+                    <Button onClick={handleSend}
+                            variant="contained"
+                            sx={chatPageStyles.dialogActionsSendButton}
+                            endIcon={
+                                <Icon sx={{ color: '#ffffff', display: 'flex', alignItems: 'center' }}>
+                                    <KeyIcon />
+                                </Icon>
+                            }
+                    >
                         Senden
                     </Button>
                 </DialogActions>

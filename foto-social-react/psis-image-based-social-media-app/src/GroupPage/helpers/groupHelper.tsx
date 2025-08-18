@@ -109,14 +109,16 @@ export const renderAppToolBarIconButton = (
 const startDate = new Date('2024-01-01T00:00:00Z');
 
 export const isCurrentPrompter = (UserID: string | undefined, groupData: GetGroup.GroupData) => {
+    // hier muss der user mit user id: null rausgefiltert werden
+    const validMembers = groupData.members.filter(member => member.userId);
     const now = Date.now(); // current time in ms
     const start = startDate.getTime(); // start time in ms
 
     const msPerDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
     const daysElapsed = Math.floor((now - start) / msPerDay);
 
-    const index = daysElapsed % groupData.members.length;
-    return groupData.members[index].userId === UserID
+    const index = daysElapsed % validMembers.length;
+    return validMembers[index].userId === UserID
 }
 
 export const getPrompts = async (groupId: string) => {
